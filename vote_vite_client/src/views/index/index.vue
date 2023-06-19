@@ -1,6 +1,6 @@
 <template>
     <div>
-1
+
     </div>
 </template>
 
@@ -8,15 +8,14 @@
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
 <route lang="yaml">
-name: dep
+name: index
 meta: 
-  title: 部门评价
-  icon: chat-o
+  title: 首页
+  icon: wap-home-o
   visible: true
   keepAlive: true
-  requiredAuth: true
+  requiredAuth: false
+  order: 2
 </route>

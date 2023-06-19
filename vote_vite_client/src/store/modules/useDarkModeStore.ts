@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-const useDarkModeStore = defineStore(
+export default defineStore(
   "dark-mode",
   () => {
     let darkMode = ref(false);
@@ -22,5 +22,3 @@ const useDarkModeStore = defineStore(
     },
   }
 );
-
-export default useDarkModeStore;

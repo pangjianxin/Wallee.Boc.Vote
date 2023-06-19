@@ -16,7 +16,7 @@ router.beforeEach((to, _from, next) => {
   const { isTokenValid } = useOidcStore();
   if (!isTokenValid && to.path != "/login" && to.meta?.requiredAuth === true) {
     toastError("您访问的页面需要授权，现已转到登录页面");
-    next("/login");
+    next({ name: "sys.login" });
   } else {
     // 路由缓存
     useCachedViewStore().addCachedView(to);

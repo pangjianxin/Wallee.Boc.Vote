@@ -1,18 +1,6 @@
-<script setup lang="ts">
-import Tabbar from "/@/components/Tabbar/index.vue";
-import NavBar from "/@/components/NavBar/index.vue";
-import useCachedViewStore from "/@/store/modules/cachedView";
-import { useDarkMode } from "/@/hooks/useToggleDarkMode";
-import { computed } from "vue";
-
-const cachedViews = computed(() => {
-    return useCachedViewStore().cachedViewList;
-});
-</script>
-
 <template>
     <div class="app-wrapper">
-        <van-config-provider :theme="useDarkMode() ? 'dark' : 'light'">
+        <van-config-provider :theme="darkMode ? 'dark' : 'light'">
             <nav-bar />
             <router-view v-slot="{ Component }">
                 <keep-alive :include="cachedViews">
@@ -23,6 +11,18 @@ const cachedViews = computed(() => {
         </van-config-provider>
     </div>
 </template>
+
+<script setup lang="ts">
+import Tabbar from "/@/components/Tabbar/index.vue";
+import NavBar from "/@/components/NavBar/index.vue";
+import useCachedViewStore from "/@/store/modules/cachedView";
+import useDarkModeStore from '/@/store/modules/useDarkModeStore';
+import { storeToRefs } from "pinia";
+const { darkMode } = storeToRefs(useDarkModeStore());
+const cachedViews = computed(() => {
+    return useCachedViewStore().cachedViewList;
+});
+</script>
 
 <style lang="scss" scoped>
 @import "/@/styles/mixin.scss";

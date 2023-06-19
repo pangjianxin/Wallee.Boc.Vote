@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-button type="primary" />
+    1
   </div>
 </template>
 
@@ -8,14 +8,14 @@
 
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped></style>
 <route lang="yaml">
-name: account
+name: organizationUnits.index
 meta: 
-  title: 账户
-  icon: setting-o
-  order: 1
-  keepAlive: true
+  title: 部门评价
+  icon: chat-o
   visible: true
+  keepAlive: true
   requiredAuth: false
+  order: 3
 </route>
