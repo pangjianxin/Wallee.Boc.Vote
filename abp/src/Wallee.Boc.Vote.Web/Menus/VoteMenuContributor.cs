@@ -5,6 +5,7 @@ using Volo.Abp.Identity.Web.Navigation;
 using Volo.Abp.SettingManagement.Web.Navigation;
 using Volo.Abp.TenantManagement.Web.Navigation;
 using Volo.Abp.UI.Navigation;
+using Wallee.Boc.Vote.Permissions;
 
 namespace Wallee.Boc.Vote.Web.Menus;
 
@@ -18,7 +19,7 @@ public class VoteMenuContributor : IMenuContributor
         }
     }
 
-    private Task ConfigureMainMenuAsync(MenuConfigurationContext context)
+    private async Task ConfigureMainMenuAsync(MenuConfigurationContext context)
     {
         var administration = context.Menu.GetAdministration();
         var l = context.GetLocalizer<VoteResource>();
@@ -40,12 +41,20 @@ public class VoteMenuContributor : IMenuContributor
         }
         else
         {
+#pragma warning disable CS0162 // 检测到无法访问的代码
             administration.TryRemoveMenuItem(TenantManagementMenuNames.GroupName);
+#pragma warning restore CS0162 // 检测到无法访问的代码
         }
 
         administration.SetSubItemOrder(IdentityMenuNames.GroupName, 2);
         administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 3);
 
-        return Task.CompletedTask;
+        if (await context.IsGrantedAsync(VotePermissions.OrganizationUnits.Default))
+        {
+            var identity = administration.GetMenuItem(IdentityMenuNames.GroupName);
+            identity.AddItem(new ApplicationMenuItem(VoteMenus.OrganizationUnit, l["Menu:OrganizationUnit"], "/Identity/OrganizationUnits"));
+        }
+
+
     }
 }

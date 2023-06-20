@@ -8,18 +8,6 @@ export function toastError(message?: string) {
   });
 }
 
-export function getFinancingFileUrl(fileName: string | null) {
-  if (!fileName) return null;
-  return `${
-    import.meta.env["VITE_API_URL"]
-  }/api/common/files/download?fileName=${fileName}`;
-}
-
-export function downloadFile(path: string) {
-  let url = `${import.meta.env["VITE_API_URL"]}${path}`;
-  window.open(url, "_self");
-}
-
 export function getEnumDesc<T extends { [key: string]: any }>(
   mode: string,
   t: T
@@ -77,3 +65,23 @@ export function nameof<T>(key: keyof T, instance?: T): keyof T {
 export const imageBase64Url = (sealData: string) => {
   return `data:image/png;base64,${sealData}`;
 };
+
+export function hexToRgba(hex: string, opacity: number) {
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+    return r + r + g + g + b + b;
+  });
+
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  opacity = opacity >= 0 && opacity <= 1 ? Number(opacity) : 1;
+  return result
+    ? "rgba(" +
+        [
+          parseInt(result[1], 16),
+          parseInt(result[2], 16),
+          parseInt(result[3], 16),
+          opacity,
+        ].join(",") +
+        ")"
+    : hex;
+}

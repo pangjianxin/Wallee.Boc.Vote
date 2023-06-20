@@ -2,9 +2,9 @@
 
 public class VoteMenus
 {
-    private const string Prefix = "Vote";
-    public const string Home = Prefix + ".Home";
-
+    private const string _prefix = "Vote";
+    public const string Home = _prefix + ".Home";
+    public const string OrganizationUnit = _prefix + ".OrganizationUnit";
     //Add your menu items here...
 
 }

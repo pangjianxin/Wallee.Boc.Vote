@@ -23,6 +23,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Pages\Identity\OrganizationUnits\AddRoleToOuModal.cshtml" />
+    <None Include="Pages\Identity\OrganizationUnits\AddUserToOuModal.cshtml" />
+    <None Include="Pages\Identity\OrganizationUnits\CreateModal.cshtml" />
+    <None Include="Pages\Identity\OrganizationUnits\EditModal.cshtml" />
+    <None Include="Pages\Identity\OrganizationUnits\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Pages\**\*.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

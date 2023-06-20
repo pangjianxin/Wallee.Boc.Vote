@@ -2,7 +2,13 @@
   "culture": "en",
   "texts": {
     "Menu:Home": "Home",
-    "Welcome": "Welcome",
-    "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io."
+    "OrganizationUnit": "OrganizationUnit",
+    "Permission:Organization": "OrganizationUnits",
+    "Permission:OrganizationUnits:ManageRoles": "ManageRoles",
+    "Permission:OrganizationUnits:ManageUsers": "ManageUsers",
+    "Menu:OrganizationUnit": "OrganizationUnit",
+    "Permission:Create": "Create",
+    "Permission:Update": "Update",
+    "Permission:Delete": "Delete"
   }
 }

@@ -12,9 +12,10 @@ using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
+using Volo.Abp.Authorization.Permissions;
+using Wallee.Boc.Vote.Authorization.Permissions;
 
 namespace Wallee.Boc.Vote;
-
 [DependsOn(
     typeof(AbpAuditLoggingDomainSharedModule),
     typeof(AbpBackgroundJobsDomainSharedModule),
@@ -35,6 +36,12 @@ public class VoteDomainSharedModule : AbpModule
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        //这个实际上是在Abp.Security.Authorization这个里面的，不属于domain层
+        Configure<AbpPermissionOptions>(options =>
+        {
+            options.ValueProviders.Add<OrganizationUnitPermissionValueProvider>();
+        });
+
         Configure<AbpVirtualFileSystemOptions>(options =>
         {
             options.FileSets.AddEmbedded<VoteDomainSharedModule>();

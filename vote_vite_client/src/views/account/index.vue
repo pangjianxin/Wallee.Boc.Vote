@@ -17,5 +17,5 @@ meta:
   order: 1
   keepAlive: true
   visible: true
-  requiredAuth: false
+  requiredAuth: true
 </route>

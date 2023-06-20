@@ -37,6 +37,14 @@ using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.UI;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
+using System;
+using Wallee.Boc.Vote.Web.Extensions;
+using System.Linq;
+using Volo.Abp.Timing;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Localization;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Wallee.Boc.Vote.Web;
 
@@ -71,11 +79,17 @@ public class VoteWebModule : AbpModule
 
         PreConfigure<OpenIddictBuilder>(builder =>
         {
+            builder.AddServer(options =>
+            {
+                options.SetAccessTokenLifetime(TimeSpan.FromDays(1));
+                options.UseAspNetCore().DisableTransportSecurityRequirement();
+            });
             builder.AddValidation(options =>
             {
-                options.AddAudiences("Vote");
+                options.AddAudiences("Financing");
                 options.UseLocalServer();
                 options.UseAspNetCore();
+
             });
         });
     }
@@ -85,6 +99,8 @@ public class VoteWebModule : AbpModule
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
 
+        context.Services.AddSameSiteCookiePolicy();// cookie policy to deal with temporary browser incompatibilities
+
         ConfigureAuthentication(context);
         ConfigureUrls(configuration);
         ConfigureBundles();
@@ -93,6 +109,37 @@ public class VoteWebModule : AbpModule
         ConfigureNavigationServices();
         ConfigureAutoApiControllers();
         ConfigureSwaggerServices(context.Services);
+        ConfigureCors(context, configuration);
+        ConfigureClock();
+    }
+
+    private void ConfigureClock()
+    {
+        Configure<AbpClockOptions>(options =>
+        {
+            options.Kind = DateTimeKind.Local;
+        });
+    }
+    private void ConfigureCors(ServiceConfigurationContext context, IConfiguration configuration)
+    {
+        context.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder
+                    .WithOrigins(
+                        configuration["App:CorsOrigins"]!
+                            .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                            .Select(o => o.RemovePostFix("/"))
+                            .ToArray()
+                    )
+                    .WithAbpExposedHeaders()
+                    .SetIsOriginAllowedToAllowWildcardSubdomains()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+        });
     }
 
     private void ConfigureAuthentication(ServiceConfigurationContext context)
@@ -157,7 +204,7 @@ public class VoteWebModule : AbpModule
     {
         Configure<AbpAspNetCoreMvcOptions>(options =>
         {
-            options.ConventionalControllers.Create(typeof(VoteApplicationModule).Assembly);
+            //options.ConventionalControllers.Create(typeof(VoteApplicationModule).Assembly);
         });
     }
 
@@ -166,9 +213,11 @@ public class VoteWebModule : AbpModule
         services.AddAbpSwaggerGen(
             options =>
             {
+                options.SchemaFilter<FinancingSwaggerSchemaFilter>();
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Vote API", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
-                options.CustomSchemaIds(type => type.FullName);
+                options.CustomSchemaIds(type => type.FriendlyId().Replace("[", "Of").Replace("]", ""));
+                options.CustomOperationIds(options => $"{options.ActionDescriptor.RouteValues["controller"]}{options.ActionDescriptor.RouteValues["action"]}");
             }
         );
     }
@@ -183,16 +232,33 @@ public class VoteWebModule : AbpModule
             app.UseDeveloperExceptionPage();
         }
 
-        app.UseAbpRequestLocalization();
+        //app.UseAbpRequestLocalization();
+        app.UseAbpRequestLocalization(options =>
+        {
+            var supportedCultures = new[]
+            {
+                new CultureInfo("zh-Hans"),
+                new CultureInfo("en"),
+            };
+            options.DefaultRequestCulture = new RequestCulture("zh-Hans");
+            options.SupportedCultures = supportedCultures;
+            options.SupportedUICultures = supportedCultures;
+            options.RequestCultureProviders = new List<IRequestCultureProvider>
+            {
+                new QueryStringRequestCultureProvider(),
+                new CookieRequestCultureProvider()
+            };
+        });
 
         if (!env.IsDevelopment())
         {
             app.UseErrorPage();
         }
-
+        app.UseCookiePolicy();// added this, Before UseAuthentication or anything else that writes cookies.
         app.UseCorrelationId();
         app.UseStaticFiles();
         app.UseRouting();
+        app.UseCors();
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
 
