@@ -1,7 +1,8 @@
 ﻿using System;
 using Volo.Abp.Domain.Entities.Auditing;
+using Wallee.Boc.Vote.Appraisements;
 
-namespace Wallee.Boc.Vote.Appraisements
+namespace Wallee.Boc.Vote.EvaluationContents
 {
     /// <summary>
     /// 评价内容
@@ -16,9 +17,8 @@ namespace Wallee.Boc.Vote.Appraisements
             Guid id,
             string name,
             string description,
-            EvaluationCategory category)
+            EvaluationCategory category) : base(id)
         {
-            Id = id;
             Name = name;
             Description = description;
             Category = category;

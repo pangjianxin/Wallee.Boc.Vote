@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Entities.Auditing;
+using Wallee.Boc.Vote.Appraisements;
 
-namespace Wallee.Boc.Vote.Appraisements
+namespace Wallee.Boc.Vote.AppraisementResults
 {
-    public class AppraisementResult : AggregateRoot<Guid>
+    public class AppraisementResult : AuditedAggregateRoot<Guid>
     {
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
         protected AppraisementResult() { }
 #pragma warning restore CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
-        public AppraisementResult(Guid id,
+        public AppraisementResult(
+            Guid id,
             Guid appraisementId,
             Guid evaluatorId,
             Guid candidateId,
             string clientIpAddress,
-            EvaluationCategory category)
+            EvaluationCategory category) : base(id)
         {
-            Id = id;
             AppraisementId = appraisementId;
             Evaluator = evaluatorId;
             CandidateId = candidateId;

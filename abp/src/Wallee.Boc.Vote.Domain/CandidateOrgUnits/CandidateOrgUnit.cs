@@ -13,17 +13,13 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
             Guid organizationUnitId,
             string organCode,
             string organName,
-            CandidateOrgUnitCategory category,
-            string superiorName,
-            string superiorEhr) : base(id)
+            CandidateOrgUnitCategory category) : base(id)
         {
             OrganizationUnitId = organizationUnitId;
             OrganCode = organCode;
             OrganName = organName;
             IsActive = true;
             Category = category;
-            SuperiorName = superiorName;
-            SuperiorEhr = superiorEhr;
         }
 
         public Guid OrganizationUnitId { get; private set; }

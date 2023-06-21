@@ -16,6 +16,7 @@ using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.PermissionManagement;
 using Wallee.Boc.Vote.PermissionManagement;
+using Volo.Abp.BlobStoring;
 
 namespace Wallee.Boc.Vote;
 [DependsOn(
@@ -29,7 +30,8 @@ namespace Wallee.Boc.Vote;
     typeof(AbpPermissionManagementDomainIdentityModule),
     typeof(AbpSettingManagementDomainModule),
     typeof(AbpTenantManagementDomainModule),
-    typeof(AbpEmailingModule)
+    typeof(AbpEmailingModule),
+    typeof(AbpBlobStoringModule)
 )]
 public class VoteDomainModule : AbpModule
 {

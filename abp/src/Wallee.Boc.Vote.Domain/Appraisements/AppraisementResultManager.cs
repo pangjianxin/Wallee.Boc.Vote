@@ -1,11 +1,11 @@
-﻿using Boc.Vote.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.Users;
+using Wallee.Boc.Vote.AppraisementResults;
 
 namespace Wallee.Boc.Vote.Appraisements
 {

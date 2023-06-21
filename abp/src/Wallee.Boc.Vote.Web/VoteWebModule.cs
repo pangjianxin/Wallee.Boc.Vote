@@ -86,7 +86,7 @@ public class VoteWebModule : AbpModule
             });
             builder.AddValidation(options =>
             {
-                options.AddAudiences("Financing");
+                options.AddAudiences("Vote");
                 options.UseLocalServer();
                 options.UseAspNetCore();
 

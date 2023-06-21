@@ -12,6 +12,10 @@ using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using Wallee.Boc.Vote.AppraisementResults;
+using Wallee.Boc.Vote.Appraisements;
+using Wallee.Boc.Vote.CandidateOrgUnits;
+using Wallee.Boc.Vote.EvaluationContents;
 
 namespace Wallee.Boc.Vote.EntityFrameworkCore;
 
@@ -53,6 +57,10 @@ public class VoteDbContext :
 
     #endregion
 
+    public DbSet<Appraisement> Appraisements { get; set; }
+    public DbSet<AppraisementResult> AppraisementResults { get; set; }
+    public DbSet<EvaluationContent> EvaluationContents { get; set; }
+    public DbSet<CandidateOrgUnit> CandidateOrgUnits { get; set; }
     public VoteDbContext(DbContextOptions<VoteDbContext> options)
         : base(options)
     {
@@ -73,7 +81,7 @@ public class VoteDbContext :
         builder.ConfigureOpenIddict();
         builder.ConfigureFeatureManagement();
         builder.ConfigureTenantManagement();
-
+        builder.ConfigureVote();
         /* Configure your own tables/entities inside here */
 
         //builder.Entity<YourEntity>(b =>

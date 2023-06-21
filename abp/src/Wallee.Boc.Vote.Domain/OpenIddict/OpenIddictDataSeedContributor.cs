@@ -82,7 +82,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         var vueClientId = configurationSection["Vote_App:ClientId"];
         if (!vueClientId.IsNullOrWhiteSpace())
         {
-            var consoleAndAngularClientRootUrl = configurationSection["Vote_App:RootUrl"]?.TrimEnd('/');
+            var vueClientRootUrl = configurationSection["Vote_App:RootUrl"]?.TrimEnd('/');
             await CreateApplicationAsync(
                 name: vueClientId!,
                 type: OpenIddictConstants.ClientTypes.Public,
@@ -95,9 +95,32 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     OpenIddictConstants.GrantTypes.RefreshToken
                 },
                 scopes: commonScopes,
-                redirectUri: consoleAndAngularClientRootUrl,
-                clientUri: consoleAndAngularClientRootUrl,
-                postLogoutRedirectUri: consoleAndAngularClientRootUrl
+                redirectUri: vueClientRootUrl,
+                clientUri: vueClientRootUrl,
+                postLogoutRedirectUri: vueClientRootUrl
+            );
+        }
+
+        //VUE Admin Client
+        var vueAdminClientId = configurationSection["Vote_App_Admin:ClientId"];
+        if (!vueAdminClientId.IsNullOrWhiteSpace())
+        {
+            var vueAdminClientRootUrl = configurationSection["Vote_App_Admin:RootUrl"]?.TrimEnd('/');
+            await CreateApplicationAsync(
+                name: vueAdminClientId!,
+                type: OpenIddictConstants.ClientTypes.Public,
+                consentType: OpenIddictConstants.ConsentTypes.Implicit,
+                displayName: "Vote vue admin application",
+                secret: null,
+                grantTypes: new List<string>
+                {
+                    OpenIddictConstants.GrantTypes.Password,
+                    OpenIddictConstants.GrantTypes.RefreshToken
+                },
+                scopes: commonScopes,
+                redirectUri: vueAdminClientRootUrl,
+                clientUri: vueAdminClientRootUrl,
+                postLogoutRedirectUri: vueAdminClientRootUrl
             );
         }
 

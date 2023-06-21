@@ -10,7 +10,7 @@ using Wallee.Boc.Vote.Permissions;
 
 namespace Wallee.Boc.Vote.OrganizationUnits
 {
-    [RemoteService(Name = IdentityRemoteServiceConsts.RemoteServiceName)]
+    [RemoteService(Name = VoteRemoteServiceConsts.RemoteServiceName)]
     [Route("api/identity/organization-units")]
     [Authorize(VotePermissions.OrganizationUnits.Default)]
     public class OrganizationUnitController : VoteController, IOrganizationUnitAppService

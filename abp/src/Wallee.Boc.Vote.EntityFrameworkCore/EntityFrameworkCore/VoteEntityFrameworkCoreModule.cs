@@ -12,6 +12,10 @@ using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using Wallee.Boc.Vote.Appraisements;
+using Wallee.Boc.Vote.AppraisementResults;
+using Wallee.Boc.Vote.CandidateOrgUnits;
+using Wallee.Boc.Vote.EvaluationContents;
 
 namespace Wallee.Boc.Vote.EntityFrameworkCore;
 
@@ -38,15 +42,19 @@ public class VoteEntityFrameworkCoreModule : AbpModule
     {
         context.Services.AddAbpDbContext<VoteDbContext>(options =>
         {
-                /* Remove "includeAllEntities: true" to create
-                 * default repositories only for aggregate roots */
+            /* Remove "includeAllEntities: true" to create
+             * default repositories only for aggregate roots */
             options.AddDefaultRepositories(includeAllEntities: true);
+            options.AddRepository<Appraisement, AppraisementRepository>();
+            options.AddRepository<AppraisementResult, AppraisementResultRepository>();
+            options.AddRepository<CandidateOrgUnit, CandidateOrgUnitRepository>();
+            options.AddRepository<EvaluationContent, EvaluationContentRepository>();
         });
 
         Configure<AbpDbContextOptions>(options =>
         {
-                /* The main point to change your DBMS.
-                 * See also VoteMigrationsDbContextFactory for EF Core tooling. */
+            /* The main point to change your DBMS.
+             * See also VoteMigrationsDbContextFactory for EF Core tooling. */
             options.UseSqlServer();
         });
 
