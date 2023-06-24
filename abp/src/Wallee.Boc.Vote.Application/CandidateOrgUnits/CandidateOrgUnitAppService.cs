@@ -19,7 +19,7 @@ using Wallee.Boc.Vote.RulesEngines;
 namespace Wallee.Boc.Vote.CandidateOrgUnits
 {
     public class CandidateOrgUnitAppService :
-        CrudAppService<CandidateOrgUnit, CandidateOrgUnitDto, Guid, GetCandidateOrgUnitInputDto, CandidateOrgUnitCreateDto, CandidateOrgUnitUpdateDto>,
+        CrudAppService<CandidateOrgUnit, CandidateOrgUnitDto, Guid, GetCandidateOrgUnitsInputDto, CandidateOrgUnitCreateDto, CandidateOrgUnitUpdateDto>,
         ICandidateOrgUnitAppService, ITransientDependency
     {
         private readonly IJsonSerializer _jsonSerializer;
@@ -41,15 +41,13 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
 
         public async override Task<CandidateOrgUnitDto> CreateAsync(CandidateOrgUnitCreateDto input)
         {
-            var department = new CandidateOrgUnit(GuidGenerator.Create(), input.OrganizationUnitId, input.OrganCode, input.OrganName, input.Category);
-
             var superior = await UserAppService.GetAsync(input.SuperiorId) ?? throw new UserFriendlyException("未找到相关用户，请核对");
 
-            department.SetSuperior(superior.Name, superior.Surname);
+            var candidateOrgUnit = new CandidateOrgUnit(GuidGenerator.Create(), input.OrganizationUnitId, input.OrganCode, input.OrganName, superior.Id, superior.Name, input.Category);
 
-            await CandidateOrgUnitRepository.InsertAsync(department);
+            await CandidateOrgUnitRepository.InsertAsync(candidateOrgUnit);
 
-            return ObjectMapper.Map<CandidateOrgUnit, CandidateOrgUnitDto>(department);
+            return ObjectMapper.Map<CandidateOrgUnit, CandidateOrgUnitDto>(candidateOrgUnit);
         }
 
         public async override Task<CandidateOrgUnitDto> UpdateAsync(Guid id, CandidateOrgUnitUpdateDto input)
@@ -75,7 +73,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
 
             var superior = await UserAppService.GetAsync(input.SuperiorId) ?? throw new UserFriendlyException("未找到相关用户，请查证");
 
-            department.SetSuperior(superior.Name, superior.Surname);
+            department.SetSuperior(superior.Id, superior.Name);
 
             await CandidateOrgUnitRepository.UpdateAsync(department);
 
@@ -134,7 +132,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
             }
         }
 
-        protected override async Task<IQueryable<CandidateOrgUnit>> CreateFilteredQueryAsync(GetCandidateOrgUnitInputDto input)
+        protected override async Task<IQueryable<CandidateOrgUnit>> CreateFilteredQueryAsync(GetCandidateOrgUnitsInputDto input)
         {
             return (await base.CreateFilteredQueryAsync(input)).ApplyFilter(input);
         }

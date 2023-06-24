@@ -51,7 +51,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         }
 
         [HttpGet]
-        public async Task<PagedResultDto<CandidateOrgUnitDto>> GetListAsync(GetCandidateOrgUnitInputDto input)
+        public async Task<PagedResultDto<CandidateOrgUnitDto>> GetListAsync(GetCandidateOrgUnitsInputDto input)
         {
             return await _candidateOrgUnitAppService.GetListAsync(input);
         }

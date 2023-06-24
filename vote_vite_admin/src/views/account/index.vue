@@ -1,17 +1,18 @@
+<script setup lang="ts">
+
+</script>
+
 <template>
   <div>
     <van-button type="primary" />
   </div>
 </template>
 
-<script setup lang="ts">
-
-</script>
-
 <style scoped lang="scss"></style>
+
 <route lang="yaml">
 name: account
-meta: 
+meta:
   title: 账户
   icon: setting
   order: 1

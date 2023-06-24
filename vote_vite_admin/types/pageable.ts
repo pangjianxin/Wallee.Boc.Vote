@@ -1,5 +1,5 @@
-export type Pageable = {
-  pageNum: number;
-  pageSize: number;
-  total: number;
-};
+export interface Pageable {
+  pageNum: number
+  pageSize: number
+  total: number
+}

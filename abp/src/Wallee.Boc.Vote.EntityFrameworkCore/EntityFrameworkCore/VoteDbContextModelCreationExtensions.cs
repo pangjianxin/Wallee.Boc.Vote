@@ -64,7 +64,6 @@ namespace Wallee.Boc.Vote.EntityFrameworkCore
                 it.ConfigureByConvention();
                 it.Property(it => it.OrganName).HasMaxLength(100).IsRequired();
                 it.Property(it => it.OrganCode).HasMaxLength(20).IsRequired();
-                it.Property(it => it.SuperiorEhr).HasMaxLength(20).IsRequired();
                 it.Property(it => it.SuperiorName).HasMaxLength(50).IsRequired();
             });
         }

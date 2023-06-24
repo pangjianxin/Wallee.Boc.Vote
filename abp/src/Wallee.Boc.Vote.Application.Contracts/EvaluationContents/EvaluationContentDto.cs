@@ -5,7 +5,7 @@ using Wallee.Boc.Vote.Appraisements;
 
 namespace Wallee.Boc.Vote.EvaluationContents
 {
-    public class EvaluationContentDto : EntityDto<Guid>, IHasConcurrencyStamp
+    public class EvaluationContentDto : AuditedEntityDto<Guid>, IHasConcurrencyStamp
     {
         /// <summary>
         /// 履职评价名称(项目)

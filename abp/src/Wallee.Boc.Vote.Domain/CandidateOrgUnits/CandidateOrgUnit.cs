@@ -13,11 +13,15 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
             Guid organizationUnitId,
             string organCode,
             string organName,
+            Guid superior,
+            string superiorName,
             CandidateOrgUnitCategory category) : base(id)
         {
             OrganizationUnitId = organizationUnitId;
             OrganCode = organCode;
             OrganName = organName;
+            Superior = superior;
+            SuperiorName = superiorName;
             IsActive = true;
             Category = category;
         }
@@ -40,18 +44,18 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         /// </summary>
         public CandidateOrgUnitCategory Category { get; private set; }
         /// <summary>
+        /// 分管领导用户Id
+        /// </summary>
+        public Guid Superior { get; private set; }
+        /// <summary>
         /// 分管领导名称
         /// </summary>
         public string SuperiorName { get; private set; }
-        /// <summary>
-        /// 分管领导ehr号
-        /// </summary>
-        public string SuperiorEhr { get; private set; }
 
-        public void SetSuperior(string superiorName, string superiorEhr)
+        public void SetSuperior(Guid superior, string superiorName)
         {
+            Superior = superior;
             SuperiorName = superiorName;
-            SuperiorEhr = superiorEhr;
         }
 
         public void SetOrgUnitInfo(string organCode, string organName)

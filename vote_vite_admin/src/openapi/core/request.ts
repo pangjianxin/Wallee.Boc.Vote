@@ -26,7 +26,7 @@ axios.interceptors.response.use(
           useOidcStore().clearState();
           router.replace({
             name: "sys.login",
-            query: { returnUrl: router.currentRoute.value.fullPath },
+            query: { returnUrl: router.currentRoute.value.name?.toString() },
           });
       }
       // 返回接口返回的错误信息
@@ -359,8 +359,8 @@ export const request = <T>(
     } catch (error) {
       if (error instanceof ApiError) {
         reject(
-          error.body.error.details ??
-            error.body.error.message ??
+          error.body.error?.details ??
+            error.body.error?.message ??
             error.body.error_description
         );
       } else {

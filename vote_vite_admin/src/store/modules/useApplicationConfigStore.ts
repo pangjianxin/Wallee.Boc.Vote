@@ -1,15 +1,15 @@
-import { defineStore } from "pinia";
-import {
+import { defineStore } from 'pinia'
+import { AbpApplicationConfigurationService } from '/@/openapi/index'
+import type {
+  ApplicationAuthConfigurationDto,
   ApplicationConfigurationDto,
   ApplicationLocalizationConfigurationDto,
-  ApplicationAuthConfigurationDto,
   ApplicationSettingConfigurationDto,
-  CurrentUserDto,
   CurrentTenantDto,
-} from "/@/openapi/index";
-import { AbpApplicationConfigurationService } from "/@/openapi/index";
+  CurrentUserDto,
+} from '/@/openapi/index'
 
-export default defineStore("applicationConfig", {
+export default defineStore('applicationConfig', {
   state: (): ApplicationConfigurationDto => {
     return {
       localization: undefined,
@@ -20,52 +20,51 @@ export default defineStore("applicationConfig", {
       currentTenant: undefined,
       timing: undefined,
       clock: undefined,
-    };
+    }
   },
   getters: {
     getLocalization(): ApplicationLocalizationConfigurationDto | undefined {
-      return this.localization;
+      return this.localization
     },
     getAuth(): ApplicationAuthConfigurationDto | undefined {
-      return this.auth;
+      return this.auth
     },
     getSetting(): ApplicationSettingConfigurationDto | undefined {
-      return this.setting;
+      return this.setting
     },
     getCurrentUser(): CurrentUserDto | undefined {
-      return this.currentUser;
+      return this.currentUser
     },
     getCUrrentUserName(): string | null | undefined {
-      return this.currentUser?.name;
+      return this.currentUser?.name
     },
     isAuthenticated(): boolean | undefined {
-      return this.currentUser?.isAuthenticated;
+      return this.currentUser?.isAuthenticated
     },
     getCurrentTenant(): CurrentTenantDto | undefined {
-      return this.currentTenant;
+      return this.currentTenant
     },
   },
   actions: {
     async initConfig() {
-      let res =
-        await AbpApplicationConfigurationService.abpApplicationConfigurationGet(
-          { includeLocalizationResources: false }
-        );
-      if (res) {
-        this.store(res);
-      }
+      const res
+        = await AbpApplicationConfigurationService.abpApplicationConfigurationGet(
+          { includeLocalizationResources: false },
+        )
+      if (res)
+        this.store(res)
     },
     store(config: ApplicationConfigurationDto) {
-      this.localization = config.localization;
-      this.auth = config.auth;
-      this.setting = config.setting;
-      this.currentUser = config.currentUser;
-      this.currentTenant = config.currentTenant;
+      this.localization = config.localization
+      this.auth = config.auth
+      this.setting = config.setting
+      this.currentUser = config.currentUser
+      this.currentTenant = config.currentTenant
     },
   },
   persist: {
     storage: localStorage,
-    paths: ["localization", "auth", "setting", "currentUser", "currentTenant"],
-    key: "app-config",
+    paths: ['localization', 'auth', 'setting', 'currentUser', 'currentTenant'],
+    key: 'app-config',
   },
-});
+})

@@ -1,13 +1,13 @@
-import type { EvaluationContentDto } from "/@/openapi";
-import { EvaluationContentService } from "/@/openapi";
+import type { CandidateOrgUnitDto } from "/@/openapi";
+import { CandidateOrgUnitService } from "/@/openapi";
 import type { Pageable } from "/#/pageable";
 
-export function useEvaluationContentList() {
+export function useCandidateOrgUnitList() {
   const loading = ref(false);
   const filter = ref("");
   const sorting = ref("");
-  const list = ref<EvaluationContentDto[]>([]);
-  const cachedList = ref<EvaluationContentDto[]>([]);
+  const list = ref<CandidateOrgUnitDto[]>([]);
+  const cachedList = ref<CandidateOrgUnitDto[]>([]);
   const finished = ref(false);
   const pageable = reactive<Pageable>({
     pageNum: 1,
@@ -17,7 +17,7 @@ export function useEvaluationContentList() {
 
   const getList = async () => {
     try {
-      const res = await EvaluationContentService.evaluationContentGetList({
+      const res = await CandidateOrgUnitService.candidateOrgUnitGetList({
         filter: filter.value,
         sorting: sorting.value,
         maxResultCount: pageable.pageSize,
@@ -26,7 +26,9 @@ export function useEvaluationContentList() {
       list.value = res.items ?? [];
       cachedList.value.push(...(res.items ?? []));
       pageable.total = res.totalCount!;
-      if (res.items?.length === 0) finished.value = true;
+      if (res.items?.length === 0) {
+        finished.value = true;
+      }
     } catch {
       finished.value = true;
     } finally {

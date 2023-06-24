@@ -7,7 +7,7 @@ using Volo.Abp.DependencyInjection;
 namespace Wallee.Boc.Vote.CandidateOrgUnits
 {
     public interface ICandidateOrgUnitAppService :
-        ICrudAppService<CandidateOrgUnitDto, Guid, GetCandidateOrgUnitInputDto, CandidateOrgUnitCreateDto, CandidateOrgUnitUpdateDto>,
+        ICrudAppService<CandidateOrgUnitDto, Guid, GetCandidateOrgUnitsInputDto, CandidateOrgUnitCreateDto, CandidateOrgUnitUpdateDto>,
         ITransientDependency
     {
         Task<List<CandidateOrgUnitDto>> GetCandidateOrgUnitEvaList();

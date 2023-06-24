@@ -1,24 +1,23 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia'
 
 export default defineStore(
-  "dark-mode",
+  'dark-mode',
   () => {
-    let darkMode = ref(false);
+    const darkMode = ref(false)
     const toggleDarkMode = () => {
-      darkMode.value = !darkMode.value;
-      if (darkMode.value === true) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    };
+      darkMode.value = !darkMode.value
+      if (darkMode.value === true)
+        document.documentElement.classList.add('dark')
+      else
+        document.documentElement.classList.remove('dark')
+    }
 
-    return { darkMode, toggleDarkMode };
+    return { darkMode, toggleDarkMode }
   },
   {
     persist: {
       storage: localStorage,
-      key: "dark-mode",
+      key: 'dark-mode',
     },
-  }
-);
+  },
+)

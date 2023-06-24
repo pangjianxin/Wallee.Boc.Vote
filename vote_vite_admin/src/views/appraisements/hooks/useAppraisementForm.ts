@@ -1,6 +1,6 @@
-import { FormInstance, FieldRule } from "vant";
+import type { FormInstance, FieldRule } from "vant";
 import { AppraisementCreateDto, AppraisementService } from "/@/openapi";
-import { toastError } from "/@/utils/app";
+import { toast } from "/@/utils/app";
 export const useCandidateOrgUnitForm = () => {
   let loading = ref(false);
   let formRef = ref<FormInstance>();
@@ -53,7 +53,7 @@ export const useCandidateOrgUnitForm = () => {
       });
       return res;
     } catch (err: any) {
-      toastError(err.message);
+      toast(err.message);
       return undefined;
     } finally {
       loading.value = false;

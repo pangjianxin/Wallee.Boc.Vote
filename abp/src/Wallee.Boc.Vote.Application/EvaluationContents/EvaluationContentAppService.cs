@@ -34,13 +34,6 @@ namespace Wallee.Boc.Vote.EvaluationContents
 
             return ObjectMapper.Map<EvaluationContent, EvaluationContentDto>(content);
         }
-
-        public override async Task<PagedResultDto<EvaluationContentDto>> GetListAsync(GetEvaluationContentInputDto input)
-        {
-            await Task.Delay(1000);
-            return await base.GetListAsync(input);
-        }
-
         public async override Task<EvaluationContentDto> UpdateAsync(Guid id, EvaluationContentUpdateDto input)
         {
             var content = await EvaluationContentRepository.GetAsync(id);
