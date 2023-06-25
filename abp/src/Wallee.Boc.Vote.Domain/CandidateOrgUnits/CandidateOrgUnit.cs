@@ -58,8 +58,9 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
             SuperiorName = superiorName;
         }
 
-        public void SetOrgUnitInfo(string organCode, string organName)
+        public void SetOrgUnitInfo(Guid organizationUnitId, string organCode, string organName)
         {
+            OrganizationUnitId = organizationUnitId;
             OrganCode = organCode;
             OrganName = organName;
         }
@@ -67,6 +68,11 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         public void SetCategory(CandidateOrgUnitCategory category)
         {
             Category = category;
+        }
+
+        public void SetActive(bool active)
+        {
+            IsActive = active;
         }
     }
 }

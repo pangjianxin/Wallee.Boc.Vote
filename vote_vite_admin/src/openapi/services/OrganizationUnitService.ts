@@ -50,11 +50,13 @@ requestBody?: OrganizationUnitCreateDto,
      * @throws ApiError
      */
     public static organizationUnitGetList({
+filter,
 skipCount,
 maxResultCount,
 sorting,
 combineWith,
 }: {
+filter?: string,
 skipCount?: number,
 maxResultCount?: number,
 sorting?: string,
@@ -64,6 +66,7 @@ combineWith?: CombineType,
             method: 'GET',
             url: '/api/identity/organization-units',
             query: {
+                'Filter': filter,
                 'SkipCount': skipCount,
                 'MaxResultCount': maxResultCount,
                 'Sorting': sorting,

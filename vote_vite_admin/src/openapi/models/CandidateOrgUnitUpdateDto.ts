@@ -5,8 +5,9 @@
 import type { CandidateOrgUnitCategory } from './CandidateOrgUnitCategory';
 
 export type CandidateOrgUnitUpdateDto = {
-    organName?: string | null;
-    organCode?: string | null;
     category?: CandidateOrgUnitCategory;
+    superiorId?: string;
+    organizationUnitId?: string;
     concurrencyStamp?: string | null;
+    isActive?: boolean;
 };

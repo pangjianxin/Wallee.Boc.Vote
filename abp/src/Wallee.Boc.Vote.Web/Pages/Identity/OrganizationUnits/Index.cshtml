@@ -31,14 +31,12 @@
         <abp-row>
             <abp-column size-lg="_4">
                 <abp-card>
-                    <abp-card-header background="Light">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span>机构目录树</span>
-                            @if (await Authorization.IsGrantedAsync(VotePermissions.OrganizationUnits.Create))
-                            {
-                                <abp-button size="Small" button-type="Primary" icon="fas fa-plus" text="新增根机构" id="CreateNewOrganizationUnit"></abp-button>
-                            }
-                        </div>
+                    <abp-card-header background="Light" class="d-flex flex-row justify-content-between align-items-center">
+                        <span>机构目录树</span>
+                        @if (await Authorization.IsGrantedAsync(VotePermissions.OrganizationUnits.Create))
+                        {
+                            <abp-button size="Small" button-type="Primary" icon="fas fa-plus" text="新增根机构" id="CreateNewRootOrganizationUnit"></abp-button>
+                        }
                     </abp-card-header>
                     <abp-card-body>
                         <abp-table id="ousTable" class="nowrap" />

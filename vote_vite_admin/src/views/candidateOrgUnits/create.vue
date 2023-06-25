@@ -16,14 +16,17 @@
     <van-form ref="formRef" @submit="createCandidateOrgUnit">
       <van-cell-group>
         <van-cell title="待评价部门名称" />
-        <van-field v-model="(form.organName as string)" name="organName" left-icon="description" placeholder="待评价部门名称"
-          :rules="formRules.organName">
+        <van-field readonly v-model="selectedOrgUnit" left-icon="description" placeholder="点击选择组织机构"
+          name="organizationUnitId" :rules="formRules.organizationUnitId" @click="showOrgUnitLookupPopup = true">
         </van-field>
+        <organizationUnitLookup :show-popup="showOrgUnitLookupPopup" @update:organization-unit="onOrgUnitLookupConfirmed">
+        </organizationUnitLookup>
 
-        <van-cell title="待评价部门编码" />
-        <van-field v-model="(form.organCode as string)" name="organCode" left-icon="records" placeholder="待评价部门编码"
-          :rules="formRules.name">
+        <van-cell title="分管行领导" />
+        <van-field v-model="selectedUser" left-icon="records" placeholder="点击选择用户" name="superiorId"
+          :rules="formRules.superiorId" @click="showUserLookupPopup = true">
         </van-field>
+        <userLookup :show-popup="showUserLookupPopup" @update:user="onUserLookupConfirmed"></userLookup>
 
         <van-cell title="待评价部门类别" />
         <van-radio-group v-model="form.category" direction="horizontal" class="van-cell van-field">
@@ -32,11 +35,6 @@
           </van-radio>
         </van-radio-group>
 
-        <van-cell title="分管行领导" />
-        <van-field v-model="form.superiorId" name="superiorId" left-icon="records" placeholder="分管行领导"
-          :rules="formRules.superiorId" @click="showPopup = true">
-        </van-field>
-        <userLookup :show-popup="showPopup" @update:userid="onUserLookupConfirmed"></userLookup>
       </van-cell-group>
       <van-row class="mt-10px">
         <van-button block type="primary" native-type="submit" :loading="loading">
@@ -50,11 +48,15 @@
 import pageHeader from '/@/components/PageHeader/index.vue';
 import { useCandidateOrgUnitCreateForm } from './hooks/useCandidateOrgUnitCreateForm'
 import userLookup from './components/userLookup.vue';
+import organizationUnitLookup from './components/orgUnitLookup.vue';
 import { enum2arr } from '/@/utils/app'
 import { CandidateOrgUnitCategory } from '/@/openapi'
 
 const router = useRouter();
-let showPopup = ref(false);
+let showUserLookupPopup = ref(false);
+let showOrgUnitLookupPopup = ref(false);
+let selectedOrgUnit = ref("");
+let selectedUser = ref("");
 const { loading, form, formRef, formRules, createCandidateOrgUnit } = useCandidateOrgUnitCreateForm();
 
 async function gotoIndex() {
@@ -63,10 +65,16 @@ async function gotoIndex() {
   })
 }
 
-const onUserLookupConfirmed = (params: { name: string | undefined, id: string | undefined }) => {
-  console.log(params);
-  form.superiorId = params.id;
-  showPopup.value = false;
+const onUserLookupConfirmed = (params: { text: string | undefined, value: string | undefined }) => {
+  selectedUser.value = params?.text!;
+  form.superiorId = params?.value;
+  showUserLookupPopup.value = false;
+}
+
+const onOrgUnitLookupConfirmed = (params: { text: string | undefined, value: string | undefined }) => {
+  selectedOrgUnit.value = params?.text!;
+  form.organizationUnitId = params?.value;
+  showOrgUnitLookupPopup.value = false;
 }
 
 </script>

@@ -10,6 +10,7 @@ using Volo.Abp;
 using Volo.Abp.Application.Services;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
 using Volo.Abp.Json;
 using Wallee.Boc.Vote.Blobs;
@@ -20,22 +21,26 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
 {
     public class CandidateOrgUnitAppService :
         CrudAppService<CandidateOrgUnit, CandidateOrgUnitDto, Guid, GetCandidateOrgUnitsInputDto, CandidateOrgUnitCreateDto, CandidateOrgUnitUpdateDto>,
-        ICandidateOrgUnitAppService, ITransientDependency
+        ICandidateOrgUnitAppService
     {
         private readonly IJsonSerializer _jsonSerializer;
+        private readonly IOrganizationUnitRepository _organizationUnitRepository;
+        public readonly ICandidateOrgUnitRepository _candidateOrgUnitRepository;
 
         public CandidateOrgUnitAppService(ICandidateOrgUnitRepository candidateOrgUnitRepository,
             IIdentityUserAppService userAppService,
             IBlobContainer<DepEvaAnalysisContainer> depEvaAnalysisContainer,
-            IJsonSerializer jsonSerializer) : base(candidateOrgUnitRepository)
+            IJsonSerializer jsonSerializer,
+            IOrganizationUnitRepository organizationUnitRepository) : base(candidateOrgUnitRepository)
         {
-            CandidateOrgUnitRepository = candidateOrgUnitRepository;
+            _candidateOrgUnitRepository = candidateOrgUnitRepository;
             UserAppService = userAppService;
             DepEvaAnalysisContainer = depEvaAnalysisContainer;
             _jsonSerializer = jsonSerializer;
+            _organizationUnitRepository = organizationUnitRepository;
         }
 
-        public ICandidateOrgUnitRepository CandidateOrgUnitRepository { get; }
+
         public IIdentityUserAppService UserAppService { get; }
         public IBlobContainer<DepEvaAnalysisContainer> DepEvaAnalysisContainer { get; }
 
@@ -43,31 +48,50 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         {
             var superior = await UserAppService.GetAsync(input.SuperiorId) ?? throw new UserFriendlyException("未找到相关用户，请核对");
 
-            var candidateOrgUnit = new CandidateOrgUnit(GuidGenerator.Create(), input.OrganizationUnitId, input.OrganCode, input.OrganName, superior.Id, superior.Name, input.Category);
+            if (await _candidateOrgUnitRepository.AnyAsync(it => it.OrganizationUnitId == input.OrganizationUnitId))
+            {
+                throw new UserFriendlyException("已存在该机构,不能重复添加");
+            }
 
-            await CandidateOrgUnitRepository.InsertAsync(candidateOrgUnit);
+            var orgUnit = await _organizationUnitRepository.GetAsync(input.OrganizationUnitId) ?? throw new UserFriendlyException("未找到相关机构信息,请核对");
+
+            var candidateOrgUnit = new CandidateOrgUnit(GuidGenerator.Create(), orgUnit.Id, orgUnit.Code, orgUnit.DisplayName, superior.Id, superior.Name, input.Category);
+
+            await _candidateOrgUnitRepository.InsertAsync(candidateOrgUnit);
 
             return ObjectMapper.Map<CandidateOrgUnit, CandidateOrgUnitDto>(candidateOrgUnit);
         }
 
         public async override Task<CandidateOrgUnitDto> UpdateAsync(Guid id, CandidateOrgUnitUpdateDto input)
         {
-            CandidateOrgUnit candidateOrgUnit = await CandidateOrgUnitRepository.GetAsync(id);
-
+            CandidateOrgUnit candidateOrgUnit = await _candidateOrgUnitRepository.GetAsync(id);
             candidateOrgUnit.ConcurrencyStamp = input.ConcurrencyStamp;
 
-            candidateOrgUnit.SetOrgUnitInfo(input.OrganCode, input.OrganName);
+            if (candidateOrgUnit.OrganizationUnitId != input.OrganizationUnitId)
+            {
+                if (await _candidateOrgUnitRepository.AnyAsync(it => it.OrganizationUnitId == input.OrganizationUnitId))
+                {
+                    throw new UserFriendlyException($"组织机构已存在");
+                }
+            }
+            var organizationUnit = await _organizationUnitRepository.GetAsync(input.OrganizationUnitId);
+            candidateOrgUnit.SetOrgUnitInfo(organizationUnit.Id, organizationUnit.Code, organizationUnit.DisplayName);
+
+            var user = await UserAppService.GetAsync(input.SuperiorId);
+            candidateOrgUnit.SetSuperior(user.Id, user.Name);
 
             candidateOrgUnit.SetCategory(input.Category);
 
-            await CandidateOrgUnitRepository.UpdateAsync(candidateOrgUnit);
+            candidateOrgUnit.SetActive(input.IsActive);
+
+            await _candidateOrgUnitRepository.UpdateAsync(candidateOrgUnit);
 
             return ObjectMapper.Map<CandidateOrgUnit, CandidateOrgUnitDto>(candidateOrgUnit);
         }
 
         public async Task<CandidateOrgUnitDto> UpdateSuperiorAsync(Guid id, CandidateOrgUnitUpdateSuperiorDto input)
         {
-            var department = await CandidateOrgUnitRepository.GetAsync(id);
+            var department = await _candidateOrgUnitRepository.GetAsync(id);
 
             department.ConcurrencyStamp = input.ConcurrencyStamp;
 
@@ -75,7 +99,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
 
             department.SetSuperior(superior.Id, superior.Name);
 
-            await CandidateOrgUnitRepository.UpdateAsync(department);
+            await _candidateOrgUnitRepository.UpdateAsync(department);
 
             return ObjectMapper.Map<CandidateOrgUnit, CandidateOrgUnitDto>(department);
         }
@@ -123,7 +147,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
             }
             if (predicateResult != null)
             {
-                var list = await CandidateOrgUnitRepository.GetListDynamicallyAsync(predicateResult.Predicate, predicateResult.Parameters);
+                var list = await _candidateOrgUnitRepository.GetListDynamicallyAsync(predicateResult.Predicate, predicateResult.Parameters);
                 return ObjectMapper.Map<List<CandidateOrgUnit>, List<CandidateOrgUnitDto>>(list);
             }
             else

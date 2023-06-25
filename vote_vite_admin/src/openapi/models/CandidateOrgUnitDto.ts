@@ -10,11 +10,12 @@ export type CandidateOrgUnitDto = {
     creatorId?: string | null;
     lastModificationTime?: string | null;
     lastModifierId?: string | null;
-    readonly organizationUnitId?: string;
+    organizationUnitId?: string;
     organName?: string | null;
     organCode?: string | null;
     category?: CandidateOrgUnitCategory;
-    readonly superior?: string;
-    readonly superiorName?: string | null;
+    superior?: string;
+    superiorName?: string | null;
+    isActive?: boolean;
     concurrencyStamp?: string | null;
 };

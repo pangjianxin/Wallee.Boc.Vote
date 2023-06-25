@@ -9,7 +9,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         /// <summary>
         /// 组织机构id
         /// </summary>
-        public Guid OrganizationUnitId { get; private set; }
+        public Guid OrganizationUnitId { get; set; }
         /// <summary>
         /// 部门名称
         /// </summary>
@@ -25,11 +25,12 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         /// <summary>
         /// 分管领导用户Id
         /// </summary>
-        public Guid Superior { get; private set; }
+        public Guid Superior { get; set; }
         /// <summary>
         /// 分管领导名称
         /// </summary>
-        public string SuperiorName { get; private set; } = null!;
+        public string SuperiorName { get; set; } = null!;
+        public bool IsActive { get; set; }
         public string ConcurrencyStamp { get; set; } = null!;
     }
 }

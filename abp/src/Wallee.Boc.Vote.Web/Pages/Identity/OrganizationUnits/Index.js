@@ -140,6 +140,9 @@
                     title: "机构名称",
                     data: "displayName",
                 }, {
+                    title: "机构编码",
+                    data: "code",
+                }, {
                     title: "操作",
                     rowAction: {
                         items:
@@ -178,6 +181,16 @@
                                         editModal.open({ organizationUnitId: data.record.id });
                                     }
                                 }, {
+                                    text: "子机构",
+                                    iconClass: "fas fa-plus",
+                                    visible: abp.auth.isGranted('Vote.OrganizationUnit.Update'),
+                                    confirmMessage: function (data) {
+                                        return `确认新增子机构?(${data.record.displayName})`;
+                                    },
+                                    action: function (data) {
+                                        createModal.open({ parentId: data.record.id });
+                                    }
+                                }, {
                                     text: l('Delete'),
                                     iconClass: "fas fa-trash",
                                     visible: abp.auth.isGranted('Vote.OrganizationUnit.Delete'),
@@ -211,7 +224,7 @@
         addRoleToOuModal.open({ organizationUnitId: currentOu });
     });
 
-    $("#CreateNewOrganizationUnit").click(function () {
+    $("#CreateNewRootOrganizationUnit").click(function () {
         createModal.open();
     });
 

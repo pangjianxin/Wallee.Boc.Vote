@@ -30,7 +30,9 @@
               <van-tag type="success">
                 {{ CandidateOrgUnitCategory[item.category!] }}
               </van-tag>
-              <van-tag type="primary" class="ml-5px">{{ dayjs(item.creationTime).format('YYYY-MM-DD') }}</van-tag>
+              <van-tag :type="item.isActive === true ? 'primary' : 'danger'" class="ml-5px">
+                {{ item.isActive ? "有效" : "无效" }}
+              </van-tag>
             </div>
           </div>
           <div class="flex-1"></div>
@@ -50,7 +52,6 @@
 import pageHeader from '/@/components/PageHeader/index.vue'
 import { useCandidateOrgUnitList } from './hooks/useCandidateOrgUnitList';
 import { CandidateOrgUnitCategory, CandidateOrgUnitDto, CandidateOrgUnitService } from '/@/openapi';
-import dayjs from 'dayjs';
 import { confirmDialog } from '/@/utils/app';
 const { loading, finished, cachedList, getList, pageable } = useCandidateOrgUnitList();
 const router = useRouter()
