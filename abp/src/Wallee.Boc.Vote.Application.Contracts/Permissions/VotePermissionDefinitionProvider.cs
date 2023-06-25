@@ -22,8 +22,6 @@ public class VotePermissionDefinitionProvider : PermissionDefinitionProvider
         organizationUnitsPermission.AddChild(VotePermissions.OrganizationUnits.Delete, L("Permission:Delete"));
         organizationUnitsPermission.AddChild(VotePermissions.OrganizationUnits.ManageRoles, L("Permission:OrganizationUnits:ManageRoles"));
         organizationUnitsPermission.AddChild(VotePermissions.OrganizationUnits.ManageUsers, L("Permission:OrganizationUnits:ManageUsers"));
-
-
     }
 
     private static LocalizableString L(string name)

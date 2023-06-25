@@ -1,7 +1,11 @@
 import type { FormInstance, FieldRule } from "vant";
-import { AppraisementCreateDto, AppraisementService } from "/@/openapi";
-import { toast } from "/@/utils/app";
-export const useCandidateOrgUnitForm = () => {
+import {
+  AppraisementCategory,
+  AppraisementCreateDto,
+  AppraisementService,
+} from "/@/openapi";
+import { notify, toast } from "/@/utils/app";
+export const useAppraisementCreateForm = () => {
   let loading = ref(false);
   let formRef = ref<FormInstance>();
   let formRules = reactive<Record<string, FieldRule[]>>({
@@ -41,8 +45,16 @@ export const useCandidateOrgUnitForm = () => {
       },
     ],
   });
-
-  let form = reactive<AppraisementCreateDto>({});
+  const clearForm = () => {
+    form.category = AppraisementCategory.部门评价;
+    form.name = undefined;
+    form.description = undefined;
+    form.start = undefined;
+    form.end = undefined;
+  };
+  let form = reactive<AppraisementCreateDto>({
+    category: AppraisementCategory.部门评价,
+  });
 
   const createAppraisement = async () => {
     try {
@@ -51,9 +63,11 @@ export const useCandidateOrgUnitForm = () => {
       let res = await AppraisementService.appraisementCreate({
         requestBody: form,
       });
+      clearForm();
+      notify("创建成功");
       return res;
     } catch (err: any) {
-      toast(err.message);
+      if (err) toast(err.message);
       return undefined;
     } finally {
       loading.value = false;

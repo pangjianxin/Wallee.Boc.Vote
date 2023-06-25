@@ -5,9 +5,7 @@ import { notify, toast } from "/@/utils/app";
 
 export function useCandidateOrgUnitCreateForm() {
   const loading = ref(false);
-
   const formRef = ref<FormInstance>();
-
   const formRules = reactive<Record<string, FieldRule[]>>({
     organizationUnitId: [
       {

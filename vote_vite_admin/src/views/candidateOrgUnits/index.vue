@@ -37,10 +37,13 @@
           </div>
           <div class="flex-1"></div>
           <div class="self-end">
-            <van-button type="danger" plain size="mini" @click="(_$event: any) => deleteCandidateOrgUnit(item)">
+            <van-button type="danger" icon="delete" plain size="mini"
+              @click="(_$event: any) => deleteCandidateOrgUnit(item)">
               删除
             </van-button>
-            <van-button type="primary" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)">修改</van-button>
+            <van-button type="primary" icon="setting" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)">
+              修改
+            </van-button>
           </div>
         </div>
       </div>
