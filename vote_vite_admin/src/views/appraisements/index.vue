@@ -14,35 +14,32 @@
     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" :offset="0" class="h-100%"
       @load="onLoad">
       <div v-for="item in cachedList" :key="item.id"
-        class="flex flex-col justify-center items-center mt-5px px-5px py-10px shadow-sm shadow-warmgray b-rd-5px bg-gradient-linear shape-[100deg] bg-gradient-from-red bg-gradient-via-orange bg-gradient-to-rose">
-        <div class="flex flex-row justify-start items-center w-100%">
-          <div class="flex flex-col justify-center items-start">
-            <div class="flex flex-row items-center">
-              <span class="i-mdi-folder-home-outline text-20px text-sky-300 mr-5px fw-600"></span>
-              <span class="text-16px fw-600">{{ item.name }}</span>
-            </div>
-            <div class="text-12px c-gray-400 mt-5px">
-              <van-tag type="success">
-                {{ AppraisementCategory[item.category!] }}
-              </van-tag>
-              <van-tag :type="isNotExpired(item.end!) ? 'primary' : 'danger'" class="ml-5px">
-                {{ isNotExpired(item.end!) ? "进行中" : "已过期" }}
-              </van-tag>
-            </div>
-            <van-text-ellipsis :rows="2" expand-text="展开" collapse-text="收起" :content="item.description!"
-              class="mt-5px text-12px c-gray-500 w-100%">
-            </van-text-ellipsis>
-          </div>
-          <div class="flex-1"></div>
+        class="flex flex-col mt-5px px-5px py-10px shadow-sm shadow-warmgray b-rd-5px bg-gradient-linear shape-[100deg] bg-gradient-from-purple bg-gradient-via-orange bg-gradient-to-rose">
+        <div class="flex flex-row justify-between items-center w-100%">
+          <span>
+            <i class="i-mdi-folder-home-outline text-20px text-sky-300 mr-5px fw-600"></i>
+            <text class="text-16px fw-600">{{ item.name }}</text>
+          </span>
+          <span>
+            <van-button type="danger" icon="delete" plain size="mini" @click="(_$event: any) => deleteAppraisement(item)">
+              删除
+            </van-button>
+            <van-button type="primary" icon="setting" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)">
+              修改
+            </van-button>
+          </span>
         </div>
-        <div class="self-end mt-5">
-          <van-button type="danger" icon="delete" plain size="mini" @click="(_$event: any) => deleteAppraisement(item)">
-            删除
-          </van-button>
-          <van-button type="primary" icon="setting" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)">
-            修改
-          </van-button>
+        <div class="text-12px c-gray-400 mt-5px">
+          <van-tag type="success">
+            {{ AppraisementCategory[item.category!] }}
+          </van-tag>
+          <van-tag :type="isNotExpired(item.end!) ? 'primary' : 'danger'" class="ml-5px">
+            {{ isNotExpired(item.end!) ? "进行中" : "已过期" }}
+          </van-tag>
         </div>
+        <van-text-ellipsis :rows="2" expand-text="展开" collapse-text="收起" :content="item.description!"
+          class="my-5px text-12px c-gray-500 w-100%">
+        </van-text-ellipsis>
       </div>
     </van-list>
   </div>

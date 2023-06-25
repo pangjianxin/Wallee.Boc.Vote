@@ -16,7 +16,7 @@
     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" :offset="0" class="h-100%"
       @load="onLoad">
       <div v-for="item in cachedList" :key="item.id"
-        class="flex flex-col justify-center items-center mt-5px px-5px py-10px shadow-sm shadow-warmgray b-rd-5px bg-gradient-linear shape-[100deg] bg-gradient-from-red bg-gradient-via-orange bg-gradient-to-rose">
+        class="flex flex-col justify-center items-center mt-5px px-5px py-10px shadow-sm shadow-warmgray b-rd-5px bg-gradient-linear shape-[100deg] bg-gradient-from-sky bg-gradient-via-orange bg-gradient-to-yellow">
         <div class="flex flex-row justify-start items-center w-100%">
           <div class="flex flex-col justify-center items-start ml-3px">
             <div class="flex flex-row items-center">
