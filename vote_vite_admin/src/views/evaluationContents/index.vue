@@ -8,7 +8,7 @@
         创建或者更新评估内容请点击相关按钮继续
       </template>
       <template #action>
-        <van-button type="primary" @click="gotoCreate" icon="plus" plain size="mini">创建</van-button>
+        <van-button type="primary" @click="gotoCreate" icon="plus" plain size="mini">创建内容</van-button>
       </template>
     </peageHeader>
     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" :offset="0" class="h-100%"
@@ -18,7 +18,7 @@
         <div class="flex flex-row justify-start items-center w-100%">
           <div class="flex flex-col justify-center items-start ml-3px">
             <div class="flex flex-row items-center">
-              <span class="i-mdi-login text-20px text-sky-300 mr-5px fw-600"></span>
+              <span class="i-mdi-file-cog-outline text-20px mr-5px fw-600"></span>
               <span class="text-16px fw-600">{{ item.name }}</span>
             </div>
             <div class="text-12px c-gray-400 mt-5px">
@@ -33,7 +33,9 @@
             <van-button type="danger" plain size="mini" @click="(_$event: any) => deleteEvaluation(item)">
               删除
             </van-button>
-            <van-button type="primary" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)">修改</van-button>
+            <van-button type="primary" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)">
+              修改
+            </van-button>
           </div>
         </div>
         <van-text-ellipsis :rows="2" expand-text="展开" collapse-text="收起" :content="item.description!"

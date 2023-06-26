@@ -16,9 +16,9 @@
       <div v-for="item in cachedList" :key="item.id"
         class="flex flex-col mt-5px px-5px py-10px shadow-sm shadow-warmgray b-rd-5px bg-gradient-linear shape-[100deg] bg-gradient-from-purple bg-gradient-via-orange bg-gradient-to-rose">
         <div class="flex flex-row justify-between items-center w-100%">
-          <span>
-            <i class="i-mdi-folder-home-outline text-20px text-sky-300 mr-5px fw-600"></i>
-            <text class="text-16px fw-600">{{ item.name }}</text>
+          <span class="flex items-center text-16px fw-600">
+            <i class="i-mdi-note-multiple-outline text-16px"></i>
+            {{ item.name }}
           </span>
           <span>
             <van-button type="danger" icon="delete" plain size="mini" @click="(_$event: any) => deleteAppraisement(item)">

@@ -14,38 +14,40 @@
             </template>
         </pageHeader>
         <van-form ref="formRef" @submit="createAppraisement">
-            <van-cell-group>
-                <van-cell title="评价活动名称"></van-cell>
-                <van-field v-model="(form.name as string)" left-icon="description" placeholder="请输入评价活动名称" name="name"
-                    :rules="formRules.name">
+            <van-cell-group inset>
+
+                <van-field label="活动名称" left-icon="description" v-model="(form.name as string)" placeholder="请输入评价活动名称"
+                    name="name" :rules="formRules.name">
                 </van-field>
 
-
-                <van-cell title="评价活动描述"></van-cell>
-                <van-field type="textarea" v-model="(form.description as string)" left-icon="description"
-                    placeholder="请输入评价活动描述" name="description" :rules="formRules.description">
+                <van-field name="category" left-icon="description" label="活动类别">
+                    <template #input>
+                        <van-radio-group v-model="form.category" direction="horizontal">
+                            <van-radio v-for="item in enum2arr(AppraisementCategory)" label-position="right" :name="item">
+                                {{ AppraisementCategory[item] }}
+                            </van-radio>
+                        </van-radio-group>
+                    </template>
                 </van-field>
 
-                <van-cell icon="calendar-o" title="活动时间效期" @click="showCalendar = true">
+                <van-cell icon="calendar-o" title="活动效期" @click="showCalendar = true">
                     <template #value>
                         <template v-if="form.start && form.end">
-                            <van-tag plain type="primary">{{ form.start }}</van-tag>
+                            <van-tag plain type="primary">{{ dayjs(form.start).format("YY/MM/DD") }}</van-tag>
                             -
-                            <van-tag plain type="danger">{{ form.end }}</van-tag>
+                            <van-tag plain type="danger">{{ dayjs(form.end).format("YY/MM/DD") }}</van-tag>
                         </template>
                         <template v-else>
                             <span class="text-10px c-gray-300">请选择日期范围</span>
                         </template>
                     </template>
                 </van-cell>
-                <van-calendar v-model:show="showCalendar" type="range" @confirm="onCalendarConfirm"></van-calendar>
+                <van-calendar v-model:show="showCalendar" type="range" @confirm="onCalendarConfirm">
+                </van-calendar>
 
-                <van-cell title="评价活动类别"></van-cell>
-                <van-radio-group v-model="form.category" direction="horizontal" class="van-cell van-field">
-                    <van-radio v-for="item in enum2arr(AppraisementCategory)" label-position="right" :name="item">
-                        {{ AppraisementCategory[item] }}
-                    </van-radio>
-                </van-radio-group>
+                <van-field label="活动描述" left-icon="description" type="textarea" v-model="(form.description as string)"
+                    placeholder="请输入评价活动描述" autosize name="description" :rules="formRules.description">
+                </van-field>
 
             </van-cell-group>
             <van-row class="mt-10px">

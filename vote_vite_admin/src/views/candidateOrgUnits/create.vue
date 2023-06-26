@@ -14,27 +14,29 @@
       </template>
     </pageHeader>
     <van-form ref="formRef" @submit="createCandidateOrgUnit">
-      <van-cell-group>
-        <van-cell title="待评价部门名称" />
-        <van-field readonly v-model="selectedOrgUnit" left-icon="description" placeholder="点击选择组织机构"
+      <van-cell-group inset>
+
+        <van-field label="部门名称" left-icon="description" readonly v-model="selectedOrgUnit" placeholder="点击选择组织机构"
           name="organizationUnitId" :rules="formRules.organizationUnitId" @click="showOrgUnitLookupPopup = true">
         </van-field>
         <organizationUnitLookup :show-popup="showOrgUnitLookupPopup" @update:organization-unit="onOrgUnitLookupConfirmed">
         </organizationUnitLookup>
 
-        <van-cell title="分管行领导" />
-        <van-field v-model="selectedUser" left-icon="records" placeholder="点击选择用户" name="superiorId"
+
+        <van-field label="分管领导" left-icon="records" v-model="selectedUser" placeholder="点击选择用户" name="superiorId"
           :rules="formRules.superiorId" @click="showUserLookupPopup = true">
         </van-field>
         <userLookup :show-popup="showUserLookupPopup" @update:user="onUserLookupConfirmed"></userLookup>
 
-        <van-cell title="待评价部门类别" />
-        <van-radio-group v-model="form.category" direction="horizontal" class="van-cell van-field">
-          <van-radio v-for="item in enum2arr(CandidateOrgUnitCategory)" label-position="right" :name="item">
-            {{ CandidateOrgUnitCategory[item] }}
-          </van-radio>
-        </van-radio-group>
-
+        <van-field label="部门类别" left-icon="records">
+          <template #input>
+            <van-radio-group icon-size="16" v-model="form.category" direction="horizontal">
+              <van-radio v-for="item in enum2arr(CandidateOrgUnitCategory)" label-position="right" :name="item">
+                {{ CandidateOrgUnitCategory[item] }}
+              </van-radio>
+            </van-radio-group>
+          </template>
+        </van-field>
       </van-cell-group>
       <van-row class="mt-10px">
         <van-button block type="primary" native-type="submit" :loading="loading">
