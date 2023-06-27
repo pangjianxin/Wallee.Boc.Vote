@@ -45,6 +45,13 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Localization;
 using System.Collections.Generic;
 using System.Globalization;
+using Microsoft.AspNetCore.Http;
+using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.Tasks;
+using Volo.Abp.MultiTenancy;
+using Volo.Abp.Users;
+using Microsoft.Extensions.Logging;
 
 namespace Wallee.Boc.Vote.Web;
 
@@ -111,7 +118,78 @@ public class VoteWebModule : AbpModule
         ConfigureSwaggerServices(context.Services);
         ConfigureCors(context, configuration);
         ConfigureClock();
+        ConfigureRateLimiters(context);
     }
+    private void ConfigureRateLimiters(ServiceConfigurationContext context)
+    {
+        //https://devblogs.microsoft.com/dotnet/announcing-rate-limiting-for-dotnet/
+        context.Services.AddRateLimiter(limiterOptions =>
+        {
+            limiterOptions.OnRejected = (context, cancellationToken) =>
+            {
+                if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+                {
+                    context.HttpContext.Response.Headers.RetryAfter =
+                        ((int)retryAfter.TotalSeconds).ToString(NumberFormatInfo.InvariantInfo);
+                }
+
+                context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+                context.HttpContext.RequestServices.GetService<ILoggerFactory>()?
+                    .CreateLogger("Microsoft.AspNetCore.RateLimitingMiddleware")
+                    .LogWarning("OnRejected: {RequestPath}", context.HttpContext.Request.Path);
+
+                return new ValueTask();
+            };
+
+            limiterOptions.AddPolicy("UserBasedRateLimiting", context =>
+            {
+                var currentUser = context.RequestServices.GetService<ICurrentUser>();
+
+                if (currentUser is not null && currentUser.IsAuthenticated)
+                {
+                  
+                    return RateLimitPartition.GetTokenBucketLimiter(currentUser.UserName, _ => new TokenBucketRateLimiterOptions
+                    {
+                        TokenLimit = 2,
+                        ReplenishmentPeriod = TimeSpan.FromMinutes(1),
+                        TokensPerPeriod = 4,
+                        AutoReplenishment = true,
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = 3,
+                    });
+                }
+
+
+                return RateLimitPartition.GetSlidingWindowLimiter("anonymous-user",
+                    _ => new SlidingWindowRateLimiterOptions
+                    {
+                        PermitLimit = 2,
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = 1,
+                        Window = TimeSpan.FromMinutes(1),
+                        SegmentsPerWindow = 2
+                    });
+            });
+
+            limiterOptions.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+            {
+                var currentTenant = context.RequestServices.GetService<ICurrentTenant>();
+
+                if (currentTenant is not null && currentTenant.IsAvailable)
+                {
+                    return RateLimitPartition.GetConcurrencyLimiter(currentTenant!.Name, _ => new ConcurrencyLimiterOptions
+                    {
+                        PermitLimit = 5,
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = 1
+                    });
+                }
+
+                return RateLimitPartition.GetNoLimiter("host");
+            });
+        });
+    }
+
 
     private void ConfigureClock()
     {
@@ -257,8 +335,10 @@ public class VoteWebModule : AbpModule
         app.UseCookiePolicy();// added this, Before UseAuthentication or anything else that writes cookies.
         app.UseCorrelationId();
         app.UseStaticFiles();
+
         app.UseRouting();
         app.UseCors();
+        app.UseRateLimiter();
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
 
