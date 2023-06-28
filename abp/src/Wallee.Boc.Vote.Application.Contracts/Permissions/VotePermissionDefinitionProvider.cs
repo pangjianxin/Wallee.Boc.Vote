@@ -22,6 +22,11 @@ public class VotePermissionDefinitionProvider : PermissionDefinitionProvider
         organizationUnitsPermission.AddChild(VotePermissions.OrganizationUnits.Delete, L("Permission:Delete"));
         organizationUnitsPermission.AddChild(VotePermissions.OrganizationUnits.ManageRoles, L("Permission:OrganizationUnits:ManageRoles"));
         organizationUnitsPermission.AddChild(VotePermissions.OrganizationUnits.ManageUsers, L("Permission:OrganizationUnits:ManageUsers"));
+
+        var appraisementPermission = myGroup.AddPermission(VotePermissions.Appraisements.Default, L("Permission:Appraisement"));
+        appraisementPermission.AddChild(VotePermissions.Appraisements.Create, L("Permission:Create"));
+        appraisementPermission.AddChild(VotePermissions.Appraisements.Update, L("Permission:Update"));
+        appraisementPermission.AddChild(VotePermissions.Appraisements.Delete, L("Permission:Delete"));
     }
 
     private static LocalizableString L(string name)

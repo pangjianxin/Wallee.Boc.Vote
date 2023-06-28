@@ -7,7 +7,7 @@
     "Permission:Organization": "组织机构",
     "Permission:OrganizationUnits:ManageRoles": "管理角色",
     "Permission:OrganizationUnits:ManageUsers": "管理用户",
-
+    "Permission:Appraisement": "评价活动",
     "Permission:Create": "创建",
     "Permission:Update": "更新",
     "Permission:Delete": "删除"

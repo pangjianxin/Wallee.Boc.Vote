@@ -13,22 +13,23 @@
         </van-button>
       </template>
     </pageHeader>
-    <van-form ref="formRef" @submit="createCandidateOrgUnit">
+    <van-form ref="formRef" @submit="createCandidateOrgUnit" class="mt-10px">
       <van-cell-group inset>
 
-        <van-field label="部门名称" left-icon="description" readonly v-model="selectedOrgUnit" placeholder="点击选择组织机构"
-          name="organizationUnitId" :rules="formRules.organizationUnitId" @click="showOrgUnitLookupPopup = true">
+        <van-field label-align="top" label="部门名称" left-icon="description" readonly v-model="selectedOrgUnit"
+          placeholder="点击选择组织机构" name="organizationUnitId" :rules="formRules.organizationUnitId"
+          @click="showOrgUnitLookupPopup = true">
         </van-field>
         <organizationUnitLookup :show-popup="showOrgUnitLookupPopup" @update:organization-unit="onOrgUnitLookupConfirmed">
         </organizationUnitLookup>
 
 
-        <van-field label="分管领导" left-icon="records" v-model="selectedUser" placeholder="点击选择用户" name="superiorId"
-          :rules="formRules.superiorId" @click="showUserLookupPopup = true">
+        <van-field label-align="top" label="分管领导" left-icon="records" v-model="selectedUser" placeholder="点击选择用户"
+          name="superiorId" :rules="formRules.superiorId" @click="showUserLookupPopup = true">
         </van-field>
         <userLookup :show-popup="showUserLookupPopup" @update:user="onUserLookupConfirmed"></userLookup>
 
-        <van-field label="部门类别" left-icon="records">
+        <van-field label-align="top" label="部门类别" left-icon="records">
           <template #input>
             <van-radio-group icon-size="16" v-model="form.category" direction="horizontal">
               <van-radio v-for="item in enum2arr(CandidateOrgUnitCategory)" label-position="right" :name="item">

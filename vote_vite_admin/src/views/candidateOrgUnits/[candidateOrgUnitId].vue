@@ -9,22 +9,22 @@
         </van-button>
       </template>
     </pageHeader>
-    <van-form ref="formRef" @submit="updateCandidateOrgUnit">
+    <van-form ref="formRef" @submit="updateCandidateOrgUnit" class="mt-10px">
       <van-cell-group>
-        <van-field label="部门名称" left-icon="description" readonly v-model="selectedOrgUnit" placeholder="待评价部门名称"
-          :rules="formRules.organizationUnitId" @click="showOrgUnitLookupPopup = true">
+        <van-field label-align="top" label="部门名称" left-icon="description" readonly v-model="selectedOrgUnit"
+          placeholder="待评价部门名称" :rules="formRules.organizationUnitId" @click="showOrgUnitLookupPopup = true">
         </van-field>
         <organizationUnitLookup :show-popup="showOrgUnitLookupPopup" @update:organization-unit="onOrgUnitLookupConfirmed">
         </organizationUnitLookup>
 
-        <van-field label="分管领导" left-icon="records" v-model="selectedUser" name="superiorId" placeholder="分管行领导"
-          :rules="formRules.superiorId" @click="showUserLookupPopup = true">
+        <van-field label-align="top" label="分管领导" left-icon="records" v-model="selectedUser" name="superiorId"
+          placeholder="分管行领导" :rules="formRules.superiorId" @click="showUserLookupPopup = true">
         </van-field>
         <userLookup :show-popup="showUserLookupPopup" @update:user="onUserLookupConfirmed"></userLookup>
 
-        <van-field label="部门类型" left-icon="description" name="category">
+        <van-field label-align="top" label="部门类型" left-icon="description" name="category">
           <template #input>
-            <van-radio-group icon-size="16" v-model="form.category" direction="horizontal">
+            <van-radio-group v-model="form.category" direction="horizontal">
               <van-radio v-for="item in enum2arr(CandidateOrgUnitCategory)" label-position="right" :name="item">
                 {{ CandidateOrgUnitCategory[item] }}
               </van-radio>
@@ -32,9 +32,9 @@
           </template>
         </van-field>
 
-        <van-field label="是否有效" left-icon="description" name="isActive">
+        <van-field label-align="top" label="是否有效" left-icon="description" name="isActive">
           <template #input>
-            <van-radio-group icon-size="16" v-model="form.isActive" direction="horizontal">
+            <van-radio-group v-model="form.isActive" direction="horizontal">
               <van-radio label-position="right" :name="true"> 有效 </van-radio>
               <van-radio label-position="right" :name="false"> 无效 </van-radio>
             </van-radio-group>

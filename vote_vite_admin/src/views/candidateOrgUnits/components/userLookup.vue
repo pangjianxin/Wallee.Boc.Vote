@@ -1,6 +1,6 @@
 <template>
     <van-popup :show="showPopup" round position="bottom">
-        <van-search v-model="searchValue" @search="userLookup"></van-search>
+        <van-search v-model="searchValue" @search="userLookup" placeholder="请输入用户名进行检索"></van-search>
         <van-picker :columns="columns" @cancel="onCancel" @confirm="onConfirm" />
     </van-popup>
 </template>

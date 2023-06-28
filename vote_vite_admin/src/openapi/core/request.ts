@@ -13,6 +13,7 @@ import type { OnCancel } from "./CancelablePromise";
 import type { OpenAPIConfig } from "./OpenAPI";
 import useOidcStore from "/@/store/modules/useOidcStore";
 import router from "/@/router";
+import { toast } from "/@/utils/app";
 
 axios.interceptors.response.use(
   (response) => {
@@ -294,6 +295,7 @@ const catchErrorCodes = (
     401: "Unauthorized",
     403: "Forbidden",
     404: "Not Found",
+    429: "Too Many Requests",
     500: "Internal Server Error",
     502: "Bad Gateway",
     503: "Service Unavailable",
@@ -357,14 +359,21 @@ export const request = <T>(
         resolve(result.body);
       }
     } catch (error) {
+      let errorMessage: string;
       if (error instanceof ApiError) {
-        reject(
-          error.body.error?.details ??
+        if (error.status === 429) {
+          errorMessage = "请求频率过高，请稍后再试";
+        } else {
+          errorMessage =
+            error.body.error?.details ??
             error.body.error?.message ??
-            error.body.error_description
-        );
+            error.body.error_description;
+        }
+        toast(errorMessage);
+        reject(errorMessage);
       } else {
-        reject(error);
+        errorMessage = "未知错误";
+        reject(errorMessage);
       }
     }
   });

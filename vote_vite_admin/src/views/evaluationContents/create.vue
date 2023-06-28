@@ -9,12 +9,12 @@
         </van-button>
       </template>
     </pageHeader>
-    <van-form ref="formRef" @submit="createEvaluationContent">
+    <van-form ref="formRef" @submit="createEvaluationContent" class="mt-10px">
       <van-cell-group>
-        <van-field label="内容名称" v-model="(form.name as string)" name="name" left-icon="records" placeholder="填写评估内容名称"
+        <van-field label-align="top" label="内容名称" v-model="(form.name as string)" name="name" left-icon="records" placeholder="填写评估内容名称"
           :rules="formRules.name" />
 
-        <van-field label="内容类型" left-icon="description" name="category">
+        <van-field label-align="top" label="内容类型" left-icon="description" name="category">
           <template #input>
             <van-radio-group icon-size="16" v-model="form.category" direction="horizontal">
               <van-radio v-for="item in enum2arr(EvaluationCategory)" label-position="right" :name="item">
@@ -24,8 +24,8 @@
           </template>
         </van-field>
 
-        <van-field label="内容描述" left-icon="description" v-model="(form.description as string)" type="textarea" autosize
-          name="description" placeholder="评估内容描述" :rules="formRules.description" />
+        <van-field label-align="top" label="内容描述" left-icon="description" v-model="(form.description as string)"
+          type="textarea" autosize name="description" placeholder="评估内容描述" :rules="formRules.description" />
       </van-cell-group>
       <van-row class="mt-10px">
         <van-button block type="primary" native-type="submit" :loading="loading">

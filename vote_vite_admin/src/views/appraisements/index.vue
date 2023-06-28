@@ -8,7 +8,10 @@
         点击新增按钮进入创建评价活动页面
       </template>
       <template #action>
-        <van-button type="primary" plain size="mini" icon="plus" @click="gotoCreate">创建活动</van-button>
+        <van-row justify="end">
+          <van-button type="primary" plain size="mini" icon="plus" @click="gotoCreate">创建</van-button>
+          <van-button type="primary" plain size="mini" icon="replay" @click="refresh">刷新</van-button>
+        </van-row>
       </template>
     </pageHeader>
     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" :offset="0" class="h-100%"
@@ -62,6 +65,12 @@ const onLoad = async () => {
   await getList();
   pageable.pageNum++;
 };
+
+const refresh = async () => {
+  pageable.pageNum = 1;
+  cachedList.value = [];
+  await onLoad();
+}
 
 const deleteAppraisement = async (item: AppraisementDto) => {
   let res = await confirmDialog("删除该活动", `确认删除${item.name}吗?`);

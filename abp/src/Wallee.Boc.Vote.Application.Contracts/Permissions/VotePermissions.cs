@@ -15,4 +15,12 @@ public static class VotePermissions
         public const string ManageRoles = Default + ".ManageRoles";
         public const string ManageUsers = Default + ".ManageUsers";
     }
+
+    public class Appraisements
+    {
+        public const string Default = GroupName + ".Appraisements";
+        public const string Update = Default + ".Update";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
 }

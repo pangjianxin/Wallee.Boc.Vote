@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="flex flex-row justify-between bg-sky-100 b-rd-5px py-10px px-5px">
+  <div class="flex flex-row justify-between py-10px px-5px shadow-sm shadow-warmgray b-rd-5px">
     <div class="flex flex-row items-center">
       <div class="i-mdi-home text-36px c-red-400" />
       <div class="flex flex-col justify-center items-start">

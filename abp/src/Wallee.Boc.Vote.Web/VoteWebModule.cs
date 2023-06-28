@@ -115,108 +115,17 @@ public class VoteWebModule : AbpModule
         ConfigureVirtualFileSystem(hostingEnvironment);
         ConfigureNavigationServices();
         ConfigureAutoApiControllers();
-        ConfigureSwaggerServices(context.Services);
-        ConfigureCors(context, configuration);
+        ConfigureSwaggerServices(context.Services);      
         ConfigureClock();
-        ConfigureRateLimiters(context);
+        context.ConfigureCors(configuration);
+        context.ConfigureRateLimiters();
     }
-    private void ConfigureRateLimiters(ServiceConfigurationContext context)
-    {
-        //https://devblogs.microsoft.com/dotnet/announcing-rate-limiting-for-dotnet/
-        context.Services.AddRateLimiter(limiterOptions =>
-        {
-            limiterOptions.OnRejected = (context, cancellationToken) =>
-            {
-                if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
-                {
-                    context.HttpContext.Response.Headers.RetryAfter =
-                        ((int)retryAfter.TotalSeconds).ToString(NumberFormatInfo.InvariantInfo);
-                }
-
-                context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
-                context.HttpContext.RequestServices.GetService<ILoggerFactory>()?
-                    .CreateLogger("Microsoft.AspNetCore.RateLimitingMiddleware")
-                    .LogWarning("OnRejected: {RequestPath}", context.HttpContext.Request.Path);
-
-                return new ValueTask();
-            };
-
-            limiterOptions.AddPolicy("UserBasedRateLimiting", context =>
-            {
-                var currentUser = context.RequestServices.GetService<ICurrentUser>();
-
-                if (currentUser is not null && currentUser.IsAuthenticated)
-                {
-                  
-                    return RateLimitPartition.GetTokenBucketLimiter(currentUser.UserName, _ => new TokenBucketRateLimiterOptions
-                    {
-                        TokenLimit = 2,
-                        ReplenishmentPeriod = TimeSpan.FromMinutes(1),
-                        TokensPerPeriod = 4,
-                        AutoReplenishment = true,
-                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                        QueueLimit = 3,
-                    });
-                }
-
-
-                return RateLimitPartition.GetSlidingWindowLimiter("anonymous-user",
-                    _ => new SlidingWindowRateLimiterOptions
-                    {
-                        PermitLimit = 2,
-                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                        QueueLimit = 1,
-                        Window = TimeSpan.FromMinutes(1),
-                        SegmentsPerWindow = 2
-                    });
-            });
-
-            limiterOptions.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
-            {
-                var currentTenant = context.RequestServices.GetService<ICurrentTenant>();
-
-                if (currentTenant is not null && currentTenant.IsAvailable)
-                {
-                    return RateLimitPartition.GetConcurrencyLimiter(currentTenant!.Name, _ => new ConcurrencyLimiterOptions
-                    {
-                        PermitLimit = 5,
-                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                        QueueLimit = 1
-                    });
-                }
-
-                return RateLimitPartition.GetNoLimiter("host");
-            });
-        });
-    }
-
 
     private void ConfigureClock()
     {
         Configure<AbpClockOptions>(options =>
         {
             options.Kind = DateTimeKind.Local;
-        });
-    }
-    private void ConfigureCors(ServiceConfigurationContext context, IConfiguration configuration)
-    {
-        context.Services.AddCors(options =>
-        {
-            options.AddDefaultPolicy(builder =>
-            {
-                builder
-                    .WithOrigins(
-                        configuration["App:CorsOrigins"]!
-                            .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                            .Select(o => o.RemovePostFix("/"))
-                            .ToArray()
-                    )
-                    .WithAbpExposedHeaders()
-                    .SetIsOriginAllowedToAllowWildcardSubdomains()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-            });
         });
     }
 
@@ -296,6 +205,11 @@ public class VoteWebModule : AbpModule
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FriendlyId().Replace("[", "Of").Replace("]", ""));
                 options.CustomOperationIds(options => $"{options.ActionDescriptor.RouteValues["controller"]}{options.ActionDescriptor.RouteValues["action"]}");
+                var filePath = Path.Combine(AppContext.BaseDirectory, "Wallee.Boc.Vote.HttpApi.xml");
+                if (File.Exists(filePath))
+                {
+                    options.IncludeXmlComments(filePath);
+                }
             }
         );
     }
@@ -335,18 +249,15 @@ public class VoteWebModule : AbpModule
         app.UseCookiePolicy();// added this, Before UseAuthentication or anything else that writes cookies.
         app.UseCorrelationId();
         app.UseStaticFiles();
-
         app.UseRouting();
         app.UseCors();
-        app.UseRateLimiter();
         app.UseAuthentication();
+        app.UseRateLimiter();
         app.UseAbpOpenIddictValidation();
-
         if (MultiTenancyConsts.IsEnabled)
         {
             app.UseMultiTenancy();
         }
-
         app.UseUnitOfWork();
         app.UseAuthorization();
         app.UseSwagger();

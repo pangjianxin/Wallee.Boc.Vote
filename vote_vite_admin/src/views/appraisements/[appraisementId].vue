@@ -14,14 +14,13 @@
                 </van-button>
             </template>
         </pageHeader>
-        <van-form ref="formRef" @submit="updateAppraisement">
+        <van-form ref="formRef" @submit="updateAppraisement" class="mt-10px">
             <van-cell-group inset>
-
-                <van-field label="活动名称" left-icon="description" v-model="(form.name as string)" placeholder="请输入评价活动名称"
-                    name="name" :rules="formRules.name">
+                <van-field input-align="right" label="活动名称" left-icon="description" v-model="(form.name as string)"
+                    placeholder="请输入评价活动名称" name="name" :rules="formRules.name">
                 </van-field>
 
-                <van-field name="category" left-icon="description" label="活动类别">
+                <van-field input-align="right" name="category" left-icon="description" label="活动类别">
                     <template #input>
                         <van-radio-group v-model="form.category" direction="horizontal">
                             <van-radio v-for="item in enum2arr(AppraisementCategory)" label-position="right" :name="item">
@@ -46,8 +45,9 @@
                 <van-calendar v-model:show="showCalendar" type="range" @confirm="onCalendarConfirm">
                 </van-calendar>
 
-                <van-field label="活动描述" left-icon="description" type="textarea" v-model="(form.description as string)"
-                    placeholder="请输入评价活动描述" autosize name="description" :rules="formRules.description">
+                <van-field label-align="top" label="活动描述" left-icon="description" type="textarea"
+                    v-model="(form.description as string)" placeholder="请输入评价活动描述" autosize name="description"
+                    :rules="formRules.description">
                 </van-field>
 
             </van-cell-group>
