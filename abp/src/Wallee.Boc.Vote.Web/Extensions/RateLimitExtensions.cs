@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Threading.RateLimiting;
 using System.Threading.Tasks;
 using Volo.Abp.Modularity;
+using Volo.Abp.MultiTenancy;
 using Volo.Abp.Users;
 
 namespace Wallee.Boc.Vote.Web.Extensions
@@ -59,15 +60,17 @@ namespace Wallee.Boc.Vote.Web.Extensions
 
                     if (currentUser is not null && currentUser.IsAuthenticated)
                     {
-                        return RateLimitPartition.GetSlidingWindowLimiter<string>(currentUser.UserName, _ => new SlidingWindowRateLimiterOptions
-                        {
-                            PermitLimit = 2,
-                            SegmentsPerWindow = 2,
-                            Window = TimeSpan.FromSeconds(6),
-                            AutoReplenishment = true,
-                            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                            QueueLimit = 0,
-                        });
+                        RateLimitPartition<string> partition = RateLimitPartition.GetSlidingWindowLimiter<string>(currentUser.UserName,
+                            _ => new SlidingWindowRateLimiterOptions
+                            {
+                                PermitLimit = 2,
+                                SegmentsPerWindow = 2,
+                                Window = TimeSpan.FromSeconds(6),
+                                AutoReplenishment = true,
+                                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                                QueueLimit = 0,
+                            });
+                        return partition;
                     }
                     return RateLimitPartition.GetNoLimiter("");
                 });

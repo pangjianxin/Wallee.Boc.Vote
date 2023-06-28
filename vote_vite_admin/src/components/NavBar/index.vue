@@ -1,3 +1,14 @@
+<template>
+  <van-nav-bar fixed placeholder left-text="返回" left-arrow @click-left="onClickLeft">
+    <template #title>
+      {{ route.meta.title }}
+    </template>
+    <template #right>
+      <van-icon size="20" name="setting-o" @click="onAccountClick"></van-icon>
+      <van-icon size="24" :name="darkMode ? 'closed-eye' : 'eye-o'" class="ml-10px" @click="onToggleDarkMode" />
+    </template>
+  </van-nav-bar>
+</template>
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import useDarkModeStore from '/@/store/modules/useDarkModeStore'
@@ -10,23 +21,17 @@ const router = useRouter()
 const darkModeStore = useDarkModeStore()
 const { darkMode } = storeToRefs(darkModeStore)
 
-function onClickRight() {
+
+const onAccountClick = () => {
+  console.log("account ci");
+}
+
+function onToggleDarkMode() {
   darkModeStore.toggleDarkMode()
 }
 function onClickLeft() {
   router.go(-1)
 }
 </script>
-
-<template>
-  <van-nav-bar fixed placeholder left-text="返回" left-arrow @click-right="onClickRight" @click-left="onClickLeft">
-    <template #title>
-      {{ route.meta.title }}
-    </template>
-    <template #right>
-      <van-icon size="32" :name="darkMode ? light_mode : dark_mode" />
-    </template>
-  </van-nav-bar>
-</template>
 
 <style scoped></style>
