@@ -11,7 +11,30 @@ import type { ApiResult } from "./ApiResult";
 import { CancelablePromise } from "./CancelablePromise";
 import type { OnCancel } from "./CancelablePromise";
 import type { OpenAPIConfig } from "./OpenAPI";
-import { toastError } from "/@/utils/app";
+import useOidcStore from "/@/store/modules/useOidcStore";
+import router from "/@/router";
+import { toast } from "/@/utils/app";
+
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response) {
+      switch (error.response.status) {
+        // 返回401，清除token信息并跳转到登录页面
+        case 401:
+          useOidcStore().clearState();
+          router.replace({
+            name: "sys.login",
+            query: { returnUrl: router.currentRoute.value.name?.toString() },
+          });
+      }
+      // 返回接口返回的错误信息
+      return Promise.reject(error);
+    }
+  }
+);
 
 const isDefined = <T>(
   value: T | null | undefined
@@ -163,6 +186,7 @@ const getHeaders = async (
     {};
 
   const headers = Object.entries({
+    Accept: "application/json",
     ...additionalHeaders,
     ...options.headers,
     ...formHeaders,
@@ -227,7 +251,6 @@ const sendRequest = async <T>(
     method: options.method,
     withCredentials: config.WITH_CREDENTIALS,
     cancelToken: source.token,
-    responseType: options.responseType,
   };
 
   onCancel(() => source.cancel("The user aborted a request."));
@@ -272,6 +295,7 @@ const catchErrorCodes = (
     401: "Unauthorized",
     403: "Forbidden",
     404: "Not Found",
+    429: "Too Many Requests",
     500: "Internal Server Error",
     502: "Bad Gateway",
     503: "Service Unavailable",
@@ -329,26 +353,28 @@ export const request = <T>(
           statusText: response.statusText,
           body: responseHeader ?? responseBody,
         };
+
         catchErrorCodes(options, result);
+
         resolve(result.body);
       }
     } catch (error) {
+      let errorMessage: string;
       if (error instanceof ApiError) {
-        console.log(error.message);
-        console.log(error.body);
-        console.log(error.status);
-        toastError(
-          error.body.error.details ??
-            error.body.error.message ??
-            error.body.error_description
-        );
-        if (error.status === 401) {
-          window.location.href = "/login";
+        if (error.status === 429) {
+          errorMessage = "请求频率过高，请稍后再试";
+        } else {
+          errorMessage =
+            error.body.error?.details ??
+            error.body.error?.message ??
+            error.body.error_description;
         }
+        toast(errorMessage);
+        reject(errorMessage);
       } else {
-        console.error(error);
+        errorMessage = "未知错误";
+        reject(errorMessage);
       }
-      reject(error);
     }
   });
 };

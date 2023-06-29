@@ -1,8 +1,8 @@
 {
   "name": "wallee.boc.vote",
-  "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
@@ -21,6 +21,7 @@
     "vue-router": "^4.2.2"
   },
   "devDependencies": {
+    "@iconify-json/mdi": "^1.1.52",
     "@types/node": "^20.3.1",
     "@vitejs/plugin-vue": "^4.1.0",
     "@vitejs/plugin-vue-jsx": "^3.0.1",

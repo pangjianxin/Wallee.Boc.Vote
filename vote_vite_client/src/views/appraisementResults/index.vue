@@ -6,15 +6,17 @@
   <div />
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>
 
 <route lang="yaml">
-name: index
-meta:
-  title: 首页
-  icon: wap-home
+name: appraisementResult.index
+meta: 
+  title: 评价结果
+  icon: send-gift
   visible: true
+  requiredAuth: true
   keepAlive: true
-  requiredAuth: false
-  order: 3
+  order: 5
 </route>

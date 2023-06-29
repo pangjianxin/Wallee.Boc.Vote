@@ -1,93 +1,95 @@
-import { reactive } from "vue";
-import { FormInstance, FieldRule } from "vant";
-import { CancelablePromise } from "/@/openapi/core/CancelablePromise";
-import { request as __request } from "/@/openapi/core/request";
-import { OpenAPI } from "/@/openapi/core/OpenAPI";
-import { toastError } from "/@/utils/app";
+import { reactive } from 'vue'
+import type { FieldRule, FormInstance } from 'vant'
+import type { CancelablePromise } from '/@/openapi/core/CancelablePromise'
+import { request as __request } from '/@/openapi/core/request'
+import { OpenAPI } from '/@/openapi/core/OpenAPI'
+import { toast } from '/@/utils/app'
 
 export interface PasswordLogin {
-  username: string;
-  password: string;
-  grant_type: string;
-  client_id: string;
-  scope: string;
+  username: string
+  password: string
+  grant_type: string
+  client_id: string
+  scope: string
 }
 
-export const useLogin = () => {
-  let loading = ref(false);
-  let formRef = ref<FormInstance>();
+export function useLogin() {
+  const loading = ref(false)
+  const formRef = ref<FormInstance>()
 
-  let form = reactive<PasswordLogin>({
-    username: "",
-    password: "",
-    grant_type: import.meta.env["VITE_OIDC_GRANT_TYPE_PASSWORD"],
-    client_id: import.meta.env["VITE_OIDC_CLIENT_ID"],
-    scope: import.meta.env["VITE_OIDC_SCOPE"],
-  });
+  const form = reactive<PasswordLogin>({
+    username: '',
+    password: '',
+    grant_type: import.meta.env.VITE_OIDC_GRANT_TYPE_PASSWORD,
+    client_id: import.meta.env.VITE_OIDC_CLIENT_ID,
+    scope: import.meta.env.VITE_OIDC_SCOPE,
+  })
 
-  let formRules = reactive<Record<string, FieldRule[]>>({
+  const formRules = reactive<Record<string, FieldRule[]>>({
     username: [
       {
         required: true,
-        message: "请输入你的用户名",
-        trigger: "onChange",
+        message: '请输入你的用户名',
+        trigger: 'onChange',
       },
     ],
     password: [
       {
         required: true,
-        message: "请输入你的密码",
-        trigger: "onChange",
+        message: '请输入你的密码',
+        trigger: 'onChange',
       },
     ],
-  });
+  })
 
   const passwordLogin = async () => {
     try {
-      await formRef.value?.validate();
-      loading.value = true;
+      await formRef.value?.validate()
+      loading.value = true
       return await __request<
         CancelablePromise<{
-          access_token: string;
-          token_type: string;
-          id_token: string;
-          expires_in: number;
+          access_token: string
+          token_type: string
+          id_token: string
+          expires_in: number
         }>
       >(OpenAPI, {
-        method: "POST",
-        url: "/connect/token",
+        method: 'POST',
+        url: '/connect/token',
         body: form,
-        mediaType: "application/x-www-form-urlencoded",
+        mediaType: 'application/x-www-form-urlencoded',
         errors: {
-          400: `Bad Request`,
-          401: `Unauthorized`,
-          403: `Forbidden`,
-          404: `Not Found`,
-          500: `Server Error`,
-          501: `Server Error`,
+          400: 'Bad Request',
+          401: 'Unauthorized',
+          403: 'Forbidden',
+          404: 'Not Found',
+          500: 'Server Error',
+          501: 'Server Error',
         },
-      });
-    } catch (err: any) {
-      toastError(err.message);
-      return undefined;
-    } finally {
-      loading.value = false;
+      })
     }
-  };
+    catch (err: any) {
+      toast(err.message)
+      return undefined
+    }
+    finally {
+      loading.value = false
+    }
+  }
 
   function getUserInfo() {
     return __request(OpenAPI, {
-      method: "GET",
-      url: "/connect/userinfo",
+      method: 'GET',
+      url: '/connect/userinfo',
       errors: {
-        400: `Bad Request`,
-        401: `Unauthorized`,
-        403: `Forbidden`,
-        404: `Not Found`,
-        500: `Server Error`,
-        501: `Server Error`,
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        500: 'Server Error',
+        501: 'Server Error',
       },
-    });
+    })
   }
 
   return {
@@ -97,5 +99,5 @@ export const useLogin = () => {
     formRules,
     passwordLogin,
     getUserInfo,
-  };
-};
+  }
+}

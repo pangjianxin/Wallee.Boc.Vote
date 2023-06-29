@@ -10,5 +10,6 @@ declare module "vue-router" {
     visible?: boolean; //是否隐藏该路由
     order?: number; //该路由的顺序号
     keepAlive?: boolean; //是否需要keep-valive
+    permission?: string; //该路由的权限
   }
 }

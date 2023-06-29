@@ -1,13 +1,13 @@
 import { defineStore } from "pinia";
-import {
+import { AbpApplicationConfigurationService } from "/@/openapi/index";
+import type {
+  ApplicationAuthConfigurationDto,
   ApplicationConfigurationDto,
   ApplicationLocalizationConfigurationDto,
-  ApplicationAuthConfigurationDto,
   ApplicationSettingConfigurationDto,
-  CurrentUserDto,
   CurrentTenantDto,
+  CurrentUserDto,
 } from "/@/openapi/index";
-import { AbpApplicationConfigurationService } from "/@/openapi/index";
 
 export default defineStore("applicationConfig", {
   state: (): ApplicationConfigurationDto => {
@@ -47,13 +47,11 @@ export default defineStore("applicationConfig", {
   },
   actions: {
     async initConfig() {
-      let res =
+      const res =
         await AbpApplicationConfigurationService.abpApplicationConfigurationGet(
           { includeLocalizationResources: false }
         );
-      if (res) {
-        this.store(res);
-      }
+      if (res) this.store(res);
     },
     store(config: ApplicationConfigurationDto) {
       this.localization = config.localization;
@@ -61,6 +59,14 @@ export default defineStore("applicationConfig", {
       this.setting = config.setting;
       this.currentUser = config.currentUser;
       this.currentTenant = config.currentTenant;
+    },
+    isPermited(permissionName: string): boolean {
+      let policies = this.auth?.grantedPolicies;
+      if (policies) {
+        return policies[permissionName]?.valueOf() === true ?? false;
+      } else {
+        return false;
+      }
     },
   },
   persist: {
