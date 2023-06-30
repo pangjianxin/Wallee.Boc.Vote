@@ -27,7 +27,24 @@ public class VotePermissionDefinitionProvider : PermissionDefinitionProvider
         appraisementPermission.AddChild(VotePermissions.Appraisements.Create, L("Permission:Create"));
         appraisementPermission.AddChild(VotePermissions.Appraisements.Update, L("Permission:Update"));
         appraisementPermission.AddChild(VotePermissions.Appraisements.Delete, L("Permission:Delete"));
+
+        var appraisementResultPermission = myGroup.AddPermission(VotePermissions.AppraisementResults.Default, L("Permission:AppraisementResults"));
+        appraisementResultPermission.AddChild(VotePermissions.AppraisementResults.Create, L("Permission:Create"));
+        appraisementResultPermission.AddChild(VotePermissions.AppraisementResults.Update, L("Permission:Update"));
+        appraisementResultPermission.AddChild(VotePermissions.AppraisementResults.Delete, L("Permission:Delete"));
+
+        var candidateOrgUnitPermittion = myGroup.AddPermission(VotePermissions.CandidateOrgUnits.Default, L("Permission:CandidateOrgUnits"));
+        candidateOrgUnitPermittion.AddChild(VotePermissions.CandidateOrgUnits.Create, L("Permission:Create"));
+        candidateOrgUnitPermittion.AddChild(VotePermissions.CandidateOrgUnits.Update, L("Permission:Update"));
+        candidateOrgUnitPermittion.AddChild(VotePermissions.CandidateOrgUnits.Delete, L("Permission:Delete"));
+
+        var evaluationContentPermission = myGroup.AddPermission(VotePermissions.EvaluationContents.Default, L("Permission:EvaluationContents"));
+        evaluationContentPermission.AddChild(VotePermissions.EvaluationContents.Create, L("Permission:Create"));
+        evaluationContentPermission.AddChild(VotePermissions.EvaluationContents.Update, L("Permission:Update"));
+        evaluationContentPermission.AddChild(VotePermissions.EvaluationContents.Delete, L("Permission:Delete"));
+
     }
+
 
     private static LocalizableString L(string name)
     {

@@ -8,6 +8,9 @@
     "Permission:OrganizationUnits:ManageRoles": "管理角色",
     "Permission:OrganizationUnits:ManageUsers": "管理用户",
     "Permission:Appraisement": "评价活动",
+    "Permission:AppraisementResults": "评价结果",
+    "Permission:CandidateOrgUnits": "待评价部门",
+    "Permission:EvaluationContents": "评价内容",
     "Permission:Create": "创建",
     "Permission:Update": "更新",
     "Permission:Delete": "删除"

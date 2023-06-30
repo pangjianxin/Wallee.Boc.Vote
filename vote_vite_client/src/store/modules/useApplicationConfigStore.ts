@@ -60,10 +60,10 @@ export default defineStore("applicationConfig", {
       this.currentUser = config.currentUser;
       this.currentTenant = config.currentTenant;
     },
-    isPermited(permissionName: string): boolean {
+    isPermited(permission: string): boolean {
       let policies = this.auth?.grantedPolicies;
       if (policies) {
-        return policies[permissionName]?.valueOf() === true ?? false;
+        return policies[permission]?.valueOf() === true ?? false;
       } else {
         return false;
       }

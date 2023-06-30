@@ -15,8 +15,9 @@ name: appraisementResult.index
 meta: 
   title: 评价结果
   icon: send-gift
-  visible: true
-  requiredAuth: true
+  visible: true 
   keepAlive: true
   order: 5
+  requiredAuth: true
+  permission: Vote.AppraisementResults
 </route>

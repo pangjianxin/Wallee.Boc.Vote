@@ -99,7 +99,8 @@ meta:
   title: 待评部门
   icon: manager
   visible: true
-  requiredAuth: true
   keepAlive: false
   order: 1
+  requiredAuth: true
+  permission: Vote.CandidateOrgUnits
 </route>

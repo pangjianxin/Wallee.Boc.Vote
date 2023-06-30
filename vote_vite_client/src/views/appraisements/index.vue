@@ -9,8 +9,12 @@
       </template>
       <template #action>
         <van-row justify="end">
-          <van-button type="primary" plain size="mini" icon="plus" @click="gotoCreate">创建</van-button>
-          <van-button type="primary" plain size="mini" icon="replay" @click="refresh">刷新</van-button>
+          <van-button type="primary" plain size="mini" icon="plus" @click="gotoCreate"
+            v-permission="'Vote.Appraisements.Create'">
+            创建</van-button>
+          <van-button type="primary" plain size="mini" icon="replay" @click="refresh">
+            刷新
+          </van-button>
         </van-row>
       </template>
     </pageHeader>
@@ -24,10 +28,12 @@
             {{ item.name }}
           </span>
           <span>
-            <van-button type="danger" icon="delete" plain size="mini" @click="(_$event: any) => deleteAppraisement(item)">
+            <van-button type="danger" icon="delete" plain size="mini" @click="(_$event: any) => deleteAppraisement(item)"
+              v-permission="'Vote.Appraisements.Delete'">
               删除
             </van-button>
-            <van-button type="primary" icon="setting" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)">
+            <van-button type="primary" icon="setting" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)"
+              v-permission="'Vote.Appraisements.Update'">
               修改
             </van-button>
           </span>
@@ -110,7 +116,8 @@ meta:
   title: 评价活动
   icon: balance-list
   visible: true
-  requiredAuth: true
   keepAlive: true
   order: 2
+  requiredAuth: true
+  permission: Vote.Appraisements
 </route>

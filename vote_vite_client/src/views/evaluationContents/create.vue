@@ -11,8 +11,8 @@
     </pageHeader>
     <van-form ref="formRef" @submit="createEvaluationContent" class="mt-10px">
       <van-cell-group>
-        <van-field label-align="top" label="内容名称" v-model="(form.name as string)" name="name" left-icon="records" placeholder="填写评估内容名称"
-          :rules="formRules.name" />
+        <van-field label-align="top" label="内容名称" v-model="(form.name as string)" name="name" left-icon="records"
+          placeholder="填写评估内容名称" :rules="formRules.name" />
 
         <van-field label-align="top" label="内容类型" left-icon="description" name="category">
           <template #input>
@@ -28,7 +28,7 @@
           type="textarea" autosize name="description" placeholder="评估内容描述" :rules="formRules.description" />
       </van-cell-group>
       <van-row class="mt-10px">
-        <van-button block type="primary" native-type="submit" :loading="loading">
+        <van-button block type="primary" native-type="submit" :loading="loading" v-permission="'Vote.EvaluationContents.Create'">
           提交
         </van-button>
       </van-row>
@@ -65,6 +65,7 @@ meta:
   title: 新增评估内容
   icon: column
   visible: false
-  requiredAuth: false
   keepAlive: true
+  requiredAuth: true
+  permission: Vote.EvaluationContents.Create
 </route>

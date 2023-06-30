@@ -28,11 +28,11 @@ router.beforeEach((to, _from, next) => {
         returnUrl: to.name?.toString(),
       },
     });
-  } else if (to.meta?.permission) {
-    if (!isPermited(to.meta.permission)) {
-      toast("你没有权限访问该页面");
-    }
   } else {
+    if (to.meta?.permission && !isPermited(to.meta.permission)) {
+      toast("你没有权限访问该页面");
+      return;
+    }
     // 路由缓存
     useCachedViewStore().addCachedView(to);
     next();

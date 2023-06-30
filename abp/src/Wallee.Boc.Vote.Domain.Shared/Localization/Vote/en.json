@@ -8,6 +8,9 @@
     "Permission:OrganizationUnits:ManageUsers": "ManageUsers",
     "Menu:OrganizationUnit": "OrganizationUnit",
     "Permission:Appraisement": "Appraisement",
+    "Permission:AppraisementResults": "AppraisementResults",
+    "Permission:CandidateOrgUnits": "CandidateOrgUnits",
+    "Permission:EvaluationContents": "EvaluationContents",
     "Permission:Create": "Create",
     "Permission:Update": "Update",
     "Permission:Delete": "Delete"

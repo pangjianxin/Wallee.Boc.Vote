@@ -23,4 +23,29 @@ public static class VotePermissions
         public const string Create = Default + ".Create";
         public const string Delete = Default + ".Delete";
     }
+
+    public class AppraisementResults
+    {
+        public const string Default = GroupName + ".AppraisementResults";
+        public const string Update = Default + ".Update";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
+
+    public class CandidateOrgUnits
+    {
+        public const string Default = GroupName + ".CandidateOrgUnits";
+        public const string Update = Default + ".Update";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+
+    }
+
+    public class EvaluationContents
+    {
+        public const string Default = GroupName + ".EvaluationContents";
+        public const string Update = Default + ".Update";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
 }

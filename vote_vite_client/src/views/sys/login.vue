@@ -10,7 +10,7 @@ const route = useRoute()
 <template>
   <div>
     <loginTitle />
-    <passwordLogin :return-url="route.query.returnUrl as string" />
+    <passwordLogin :return-url="route.query.returnUrl as string"></passwordLogin>
     <loginWave />
   </div>
 </template>

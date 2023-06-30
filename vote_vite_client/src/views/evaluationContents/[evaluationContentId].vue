@@ -30,7 +30,7 @@
         </van-field>
       </van-cell-group>
       <van-row class="mt-10px">
-        <van-button block type="primary" native-type="submit" :loading="loading">
+        <van-button block type="primary" native-type="submit" :loading="loading" v-permission="'Vote.EvaluationContents.Update'">
           提交
         </van-button>
       </van-row>
@@ -82,4 +82,5 @@ meta:
   visible: false
   keepAlive: false
   requiredAuth: true
+  permission: Vote.EvaluationContent.Update
 </route>

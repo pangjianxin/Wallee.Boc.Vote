@@ -15,31 +15,29 @@
       @load="onLoad">
       <div v-for="item in cachedList" :key="item.id" class="flex flex-col justify-center items-center mt-5px p-10px shadow-sm shadow-warmgray b-rd-5px  bg-gradient-linear shape-[100deg] bg-gradient-from-red bg-gradient-via-orange bg-gradient-to-rose
         dark:bg-gradient-from-gray dark:bg-gradient-via-red dark:bg-gradient-to-black">
-        <div class="flex flex-row justify-start items-center w-100%">
-          <div class="flex flex-col justify-center items-start ml-3px">
-            <div class="flex flex-row items-center">
-              <span class="i-mdi-file-cog-outline text-20px mr-5px fw-600"></span>
-              <span class="text-16px fw-600">{{ item.name }}</span>
-            </div>
-            <div class="text-12px c-gray-400 mt-5px">
-              <van-tag type="success">
-                {{ EvaluationCategory[item.category!] }}
-              </van-tag>
-              <van-tag class="ml-5px">{{ dayjs(item.creationTime).format('YYYY-MM-DD') }}</van-tag>
-            </div>
+        <div class="flex flex-col ml-3px w-100%">
+          <div class="flex flex-row items-center">
+            <span class="i-mdi-file-cog-outline text-20px mr-5px fw-600"></span>
+            <span class="text-16px fw-600">{{ item.name }}</span>
           </div>
-          <div class="flex-1"></div>
-          <div class="self-end">
-            <van-button type="danger" plain size="mini" @click="(_$event: any) => deleteEvaluation(item)">
-              删除
-            </van-button>
-            <van-button type="primary" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)">
-              修改
-            </van-button>
+          <div class="text-12px c-gray-400 mt-5px">
+            <van-tag type="success">
+              {{ EvaluationCategory[item.category!] }}
+            </van-tag>
+            <van-tag class="ml-5px">{{ dayjs(item.creationTime).format('YYYY-MM-DD') }}</van-tag>
           </div>
         </div>
         <van-text-ellipsis :rows="2" expand-text="展开" collapse-text="收起" :content="item.description!"
-          class="mt-5px text-12px c-gray-500 w-100%"></van-text-ellipsis>
+          class="mt-5px text-12px c-gray-500 w-100%">
+        </van-text-ellipsis>
+        <div class="self-end">
+          <van-button type="danger" plain size="mini" @click="(_$event: any) => deleteEvaluation(item)">
+            删除
+          </van-button>
+          <van-button type="primary" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)">
+            修改
+          </van-button>
+        </div>
       </div>
     </van-list>
   </div>
@@ -86,13 +84,15 @@ const deleteEvaluation = async (content: EvaluationContentDto) => {
 </script>
 
 <style scoped lang="scss"></style>
+
 <route lang="yaml">
 name: evaluationContent.index
 meta: 
   title: 评估内容
   icon: column
   visible: true
-  requiredAuth: true
   keepAlive: false
   order: 4
+  requiredAuth: true
+  permission: Vote.EvaluationContents
 </route>
