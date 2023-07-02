@@ -14,12 +14,16 @@ import { request as __request } from '../core/request';
 export class AppraisementService {
 
     /**
+     * 创建评价活动
      * @returns AppraisementDto Success
      * @throws ApiError
      */
     public static appraisementCreate({
 requestBody,
 }: {
+/**
+ * 参数
+ */
 requestBody?: AppraisementCreateDto,
 }): CancelablePromise<AppraisementDto> {
         return __request(OpenAPI, {
@@ -39,6 +43,7 @@ requestBody?: AppraisementCreateDto,
     }
 
     /**
+     * 评价活动的分页数据
      * @returns PagedResultDtoOfAppraisementDto Success
      * @throws ApiError
      */
@@ -77,6 +82,7 @@ combineWith?: CombineType,
     }
 
     /**
+     * 删除评价活动
      * @returns any Success
      * @throws ApiError
      */
@@ -103,6 +109,7 @@ id: string,
     }
 
     /**
+     * 通过ID查找评价活动
      * @returns AppraisementDto Success
      * @throws ApiError
      */
@@ -129,6 +136,7 @@ id: string,
     }
 
     /**
+     * 更新评价活动
      * @returns AppraisementDto Success
      * @throws ApiError
      */
@@ -159,6 +167,7 @@ requestBody?: AppraisementUpdateDto,
     }
 
     /**
+     * 获取未过期的评价活动列表
      * @returns AppraisementDto Success
      * @throws ApiError
      */

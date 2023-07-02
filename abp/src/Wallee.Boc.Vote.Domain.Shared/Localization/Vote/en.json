@@ -2,6 +2,7 @@
   "culture": "en",
   "texts": {
     "Menu:Home": "Home",
+    "Menu:RulesEngine": "RulesEngine",
     "OrganizationUnit": "OrganizationUnit",
     "Permission:Organization": "OrganizationUnits",
     "Permission:OrganizationUnits:ManageRoles": "ManageRoles",
@@ -11,6 +12,8 @@
     "Permission:AppraisementResults": "AppraisementResults",
     "Permission:CandidateOrgUnits": "CandidateOrgUnits",
     "Permission:EvaluationContents": "EvaluationContents",
+    "Permission:RulesEngines": "RulesEngines",
+    "Menu:RulesEngine_CandidtaeOrgUnit": "RulesEngine_CandidateOrgUnit",
     "Permission:Create": "Create",
     "Permission:Update": "Update",
     "Permission:Delete": "Delete"

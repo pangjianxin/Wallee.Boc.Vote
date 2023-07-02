@@ -2,8 +2,10 @@
   "culture": "zh-Hans",
   "texts": {
     "Menu:Home": "首页",
+    "Menu:RulesEngine": "规则引擎",
     "OrganizationUnit": "组织机构",
     "Menu:OrganizationUnit": "组织机构",
+    "Menu:RulesEngine_CandidtaeOrgUnit": "待评价部门过滤",
     "Permission:Organization": "组织机构",
     "Permission:OrganizationUnits:ManageRoles": "管理角色",
     "Permission:OrganizationUnits:ManageUsers": "管理用户",
@@ -11,6 +13,7 @@
     "Permission:AppraisementResults": "评价结果",
     "Permission:CandidateOrgUnits": "待评价部门",
     "Permission:EvaluationContents": "评价内容",
+    "Permission:RulesEngines": "规则引擎",
     "Permission:Create": "创建",
     "Permission:Update": "更新",
     "Permission:Delete": "删除"

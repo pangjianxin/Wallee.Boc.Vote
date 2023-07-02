@@ -35,9 +35,13 @@ public class VoteApplicationModule : AbpModule
         {
             options.Containers.ConfigureDefault(container =>
             {
+                //container.UseFileSystem(fileSystem =>
+                //{
+                //    fileSystem.BasePath = "/app/files";
+                //});
                 container.UseFileSystem(fileSystem =>
                 {
-                    fileSystem.BasePath = "/app/files";
+                    fileSystem.BasePath = "C:\\Users\\jianxin\\Desktop\\tmep\\blobs";
                 });
             });
         });

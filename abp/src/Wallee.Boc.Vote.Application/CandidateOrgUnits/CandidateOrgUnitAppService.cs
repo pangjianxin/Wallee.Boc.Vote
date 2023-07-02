@@ -16,6 +16,7 @@ using Volo.Abp.Json;
 using Wallee.Boc.Vote.Blobs;
 using Wallee.Boc.Vote.Identity;
 using Wallee.Boc.Vote.RulesEngines;
+using Wallee.Boc.Vote.StringExtensions;
 
 namespace Wallee.Boc.Vote.CandidateOrgUnits
 {
@@ -26,27 +27,28 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         private readonly IJsonSerializer _jsonSerializer;
         private readonly IOrganizationUnitRepository _organizationUnitRepository;
         public readonly ICandidateOrgUnitRepository _candidateOrgUnitRepository;
+        public IIdentityUserAppService _userAppService;
+        public IBlobContainer<CandidateOrgUnitEvaContainer> _candidateOrgUnitEvaContainer;
 
         public CandidateOrgUnitAppService(ICandidateOrgUnitRepository candidateOrgUnitRepository,
             IIdentityUserAppService userAppService,
-            IBlobContainer<DepEvaAnalysisContainer> depEvaAnalysisContainer,
+            IBlobContainer<CandidateOrgUnitEvaContainer> candidateOrgUnitEvaContainer,
             IJsonSerializer jsonSerializer,
             IOrganizationUnitRepository organizationUnitRepository) : base(candidateOrgUnitRepository)
         {
             _candidateOrgUnitRepository = candidateOrgUnitRepository;
-            UserAppService = userAppService;
-            DepEvaAnalysisContainer = depEvaAnalysisContainer;
+            _userAppService = userAppService;
+            _candidateOrgUnitEvaContainer = candidateOrgUnitEvaContainer;
             _jsonSerializer = jsonSerializer;
             _organizationUnitRepository = organizationUnitRepository;
         }
 
 
-        public IIdentityUserAppService UserAppService { get; }
-        public IBlobContainer<DepEvaAnalysisContainer> DepEvaAnalysisContainer { get; }
+
 
         public async override Task<CandidateOrgUnitDto> CreateAsync(CandidateOrgUnitCreateDto input)
         {
-            var superior = await UserAppService.GetAsync(input.SuperiorId) ?? throw new UserFriendlyException("未找到相关用户，请核对");
+            var superior = await _userAppService.GetAsync(input.SuperiorId) ?? throw new UserFriendlyException("未找到相关用户，请核对");
 
             if (await _candidateOrgUnitRepository.AnyAsync(it => it.OrganizationUnitId == input.OrganizationUnitId))
             {
@@ -77,7 +79,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
             var organizationUnit = await _organizationUnitRepository.GetAsync(input.OrganizationUnitId);
             candidateOrgUnit.SetOrgUnitInfo(organizationUnit.Id, organizationUnit.Code, organizationUnit.DisplayName);
 
-            var user = await UserAppService.GetAsync(input.SuperiorId);
+            var user = await _userAppService.GetAsync(input.SuperiorId);
             candidateOrgUnit.SetSuperior(user.Id, user.Name);
 
             candidateOrgUnit.SetCategory(input.Category);
@@ -95,7 +97,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
 
             department.ConcurrencyStamp = input.ConcurrencyStamp;
 
-            var superior = await UserAppService.GetAsync(input.SuperiorId) ?? throw new UserFriendlyException("未找到相关用户，请查证");
+            var superior = await _userAppService.GetAsync(input.SuperiorId) ?? throw new UserFriendlyException("未找到相关用户，请查证");
 
             department.SetSuperior(superior.Id, superior.Name);
 
@@ -104,11 +106,36 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
             return ObjectMapper.Map<CandidateOrgUnit, CandidateOrgUnitDto>(department);
         }
 
+        public async Task UpdateRulesEngine(string workflowDef)
+        {
+            if (!workflowDef.IsWorkflowValid(_jsonSerializer))
+            {
+                throw new UserFriendlyException("json格式不正确，请重新输入");
+            }
+            var bytes = workflowDef.GetBytes();
+
+            await _candidateOrgUnitEvaContainer.SaveAsync(BlobFileConsts.CandidateOrgUnitEvaFile, bytes, true);
+        }
+
+        public async Task<string> GetRulesEngine()
+        {
+            if (await _candidateOrgUnitEvaContainer.ExistsAsync(BlobFileConsts.CandidateOrgUnitEvaFile))
+            {
+                var stream = await _candidateOrgUnitEvaContainer.GetOrNullAsync(BlobFileConsts.CandidateOrgUnitEvaFile);
+                stream.Position = 0;
+                using (var reader = new StreamReader(stream))
+                {
+                    return await reader.ReadToEndAsync();
+                }
+            }
+            return string.Empty;
+        }
+
         public async Task<List<CandidateOrgUnitDto>> GetCandidateOrgUnitEvaList()
         {
             PredicateResult? predicateResult = null;
 
-            var stream = await DepEvaAnalysisContainer.GetAsync(BlobFileConsts.DepartmentEvaAnalysisFile);
+            var stream = await _candidateOrgUnitEvaContainer.GetAsync(BlobFileConsts.CandidateOrgUnitEvaFile);
 
             stream.Position = 0;
 

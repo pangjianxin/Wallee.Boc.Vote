@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.DependencyInjection;
@@ -61,6 +60,20 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         public async Task<CandidateOrgUnitDto> UpdateAsync(Guid id, CandidateOrgUnitUpdateDto input)
         {
             return await _candidateOrgUnitAppService.UpdateAsync(id, input);
+        }
+
+        [HttpGet]
+        [Route("rules-engine")]
+        public Task<string> GetRulesEngine()
+        {
+            return _candidateOrgUnitAppService.GetRulesEngine();
+        }
+
+        [HttpPost]
+        [Route("rules-engine")]
+        public async Task UpdateRulesEngine(string workflowDef)
+        {
+            await _candidateOrgUnitAppService.UpdateRulesEngine(workflowDef);
         }
 
         [HttpPut]

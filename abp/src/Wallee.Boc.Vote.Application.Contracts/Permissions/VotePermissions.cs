@@ -48,4 +48,12 @@ public static class VotePermissions
         public const string Create = Default + ".Create";
         public const string Delete = Default + ".Delete";
     }
+
+    public class RulesEngines
+    {
+        public const string Default = GroupName + ".RulesEngines";
+        public const string Update = Default + ".Update";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
 }

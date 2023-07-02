@@ -11,6 +11,8 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         ITransientDependency
     {
         Task<List<CandidateOrgUnitDto>> GetCandidateOrgUnitEvaList();
+        Task<string> GetRulesEngine();
+        Task UpdateRulesEngine(string workflowDef);
         Task<CandidateOrgUnitDto> UpdateSuperiorAsync(Guid id, CandidateOrgUnitUpdateSuperiorDto input);
     }
 }

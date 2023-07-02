@@ -43,6 +43,11 @@ public class VotePermissionDefinitionProvider : PermissionDefinitionProvider
         evaluationContentPermission.AddChild(VotePermissions.EvaluationContents.Update, L("Permission:Update"));
         evaluationContentPermission.AddChild(VotePermissions.EvaluationContents.Delete, L("Permission:Delete"));
 
+        var rulesEnginesPermission = myGroup.AddPermission(VotePermissions.RulesEngines.Default, L("Permission:RulesEngines"));
+        rulesEnginesPermission.AddChild(VotePermissions.RulesEngines.Create, L("Permission:Create"));
+        rulesEnginesPermission.AddChild(VotePermissions.RulesEngines.Update, L("Permission:Update"));
+        rulesEnginesPermission.AddChild(VotePermissions.RulesEngines.Delete, L("Permission:Delete"));
+
     }
 
 

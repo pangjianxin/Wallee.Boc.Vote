@@ -9,7 +9,10 @@
       </template>
       <template #action>
         <van-button type="primary" size="mini" plain @click="gotoCreate">
-          创建待评部门
+          创建部门
+        </van-button>
+        <van-button plain size="mini" icon="plus" type="success" @click="gotoRulesEngine">
+          规则引擎
         </van-button>
       </template>
     </pageHeader>
@@ -87,6 +90,12 @@ const gotoEdit = async (orgId: string) => {
 const gotoCreate = async () => {
   await router.push({
     name: 'candidateOrgUnit.create',
+  })
+}
+
+const gotoRulesEngine = async () => {
+  await router.push({
+    name: "candidateOrgUnits.rulesEngine"
   })
 }
 </script>
