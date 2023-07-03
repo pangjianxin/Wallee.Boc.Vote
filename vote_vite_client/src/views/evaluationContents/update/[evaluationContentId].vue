@@ -30,7 +30,8 @@
         </van-field>
       </van-cell-group>
       <van-row class="mt-10px">
-        <van-button block type="primary" native-type="submit" :loading="loading" v-permission="'Vote.EvaluationContents.Update'">
+        <van-button block type="primary" native-type="submit" :loading="loading"
+          v-permission="'Vote.EvaluationContents.Update'">
           提交
         </van-button>
       </van-row>
@@ -39,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { useEvlauationContentUpdateForm } from "./hooks/useEvaluationContentUpdateForm";
+import { useEvlauationContentUpdateForm } from "../hooks/useEvaluationContentUpdateForm";
 import { EvaluationCategory, EvaluationContentService } from "/@/openapi";
 import { enum2arr } from "/@/utils/app";
 import pageHeader from "/@/components/PageHeader/index.vue";

@@ -8,56 +8,35 @@
         该页面可通向编辑、新增和删除等功能页面
       </template>
       <template #action>
-        <van-button type="primary" size="mini" plain @click="gotoCreate">
+        <van-button type="primary" size="mini" plain @click="gotoCreate" icon="plus"
+          v-permission="'Vote.CandidateOrgUnits.Create'">
           创建部门
-        </van-button>
-        <van-button plain size="mini" icon="plus" type="success" @click="gotoRulesEngine">
-          规则引擎
         </van-button>
       </template>
     </pageHeader>
     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" :offset="0" class="h-100%"
       @load="onLoad">
-      <div v-for="item in cachedList" :key="item.id" class="flex flex-col justify-center items-center mt-5px px-5px py-10px shadow-sm shadow-warmgray b-rd-5px bg-gradient-linear shape-[100deg] bg-gradient-from-sky bg-gradient-via-orange bg-gradient-to-yellow
-        dark:bg-gradient-from-gray dark:bg-gradient-via-red dark:bg-gradient-to-black">
-        <div class="flex flex-row justify-start items-center w-100%">
-          <div class="flex flex-col justify-center items-start ml-3px">
-            <div class="flex flex-row items-center">
-              <span class="i-mdi-folder-home-outline text-20px text-sky-300 mr-5px fw-600"></span>
-              <span class="text-16px fw-600">{{ item.organName }}</span>
-            </div>
-            <div class="text-12px fw-100 c-gray-700">
-              机构编号:{{ item.organCode }},分管行领导:{{ item.superiorName }}
-            </div>
-            <div class="text-12px c-gray-400 mt-5px">
-              <van-tag type="success">
-                {{ CandidateOrgUnitCategory[item.category!] }}
-              </van-tag>
-              <van-tag :type="item.isActive === true ? 'primary' : 'danger'" class="ml-5px">
-                {{ item.isActive ? "有效" : "无效" }}
-              </van-tag>
-            </div>
-          </div>
-          <div class="flex-1"></div>
-          <div class="self-end">
-            <van-button type="danger" icon="delete" plain size="mini"
-              @click="(_$event: any) => deleteCandidateOrgUnit(item)">
-              删除
-            </van-button>
-            <van-button type="primary" icon="setting" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)">
-              修改
-            </van-button>
-          </div>
-        </div>
-      </div>
+      <candidateOrgUnitVue v-for="item in cachedList" :key="item.id!" :org-unit="item">
+        <template #action>
+          <van-button type="danger" icon="delete" plain size="mini"
+            @click="(_$event: any) => deleteCandidateOrgUnit(item)" v-permission="'Vote.CandidateOrgUnits.Delete'">
+            删除
+          </van-button>
+          <van-button type="primary" icon="setting" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)"
+            v-permission="'Vote.CandidateOrgUnits.Update'">
+            修改
+          </van-button>
+        </template>
+      </candidateOrgUnitVue>
     </van-list>
   </div>
 </template>
 
 <script setup lang="ts">
 import pageHeader from '/@/components/PageHeader/index.vue'
+import candidateOrgUnitVue from './components/candidateOrgUnit.vue';
 import { useCandidateOrgUnitList } from './hooks/useCandidateOrgUnitList';
-import { CandidateOrgUnitCategory, CandidateOrgUnitDto, CandidateOrgUnitService } from '/@/openapi';
+import { CandidateOrgUnitDto, CandidateOrgUnitService } from '/@/openapi';
 import { confirmDialog } from '/@/utils/app';
 const { loading, finished, cachedList, getList, pageable } = useCandidateOrgUnitList();
 const router = useRouter()
@@ -92,24 +71,18 @@ const gotoCreate = async () => {
     name: 'candidateOrgUnit.create',
   })
 }
-
-const gotoRulesEngine = async () => {
-  await router.push({
-    name: "candidateOrgUnits.rulesEngine"
-  })
-}
 </script>
 
 <style scoped></style>
 
-<route lang="yaml">
-name: candidateOrgUnit.index
-meta:
-  title: 待评部门
-  icon: manager
-  visible: true
-  keepAlive: false
-  order: 1
-  requiredAuth: true
-  permission: Vote.CandidateOrgUnits
-</route>
+<route lang="yaml"> 
+name: candidateOrgUnit.index 
+meta: 
+  title: 待评部门 
+  icon: manager 
+  visible: true 
+  keepAlive: false 
+  order: 1 
+  requiredAuth: true 
+  permission: Vote.CandidateOrgUnits 
+</route> 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Tabbar from '/@/components/Tabbar/index.vue'
 import NavBar from '/@/components/NavBar/index.vue'
-import useCachedViewStore from '/@/store/modules/cachedView'
+import useCachedViewStore from '/@/store/modules/useCachedView'
 import useDarkModeStore from '/@/store/modules/useDarkModeStore'
 import { storeToRefs } from 'pinia'
 import { ConfigProviderThemeVars } from 'vant';

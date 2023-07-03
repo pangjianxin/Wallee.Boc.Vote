@@ -31,7 +31,7 @@ export default defineStore(
       expires_at: null,
       refresh_token: null,
       id_token: null,
-    })
+    });
 
     const userInfo = reactive<UserDto>({
       sub: undefined,
@@ -44,13 +44,13 @@ export default defineStore(
       phone_number_verified: undefined,
       email: undefined,
       email_verified: undefined,
-    })
+    });
 
     const isTokenValid = computed<boolean>(() => {
       const expiredTimeStamp = tokenInfo.expires_at
       const currentTimeStamp = Date.now()
       return Number(expiredTimeStamp) - currentTimeStamp > 0
-    })
+    });
 
     const storeTokenInfo = (token: any) => {
       tokenInfo.access_token = token.access_token
@@ -58,7 +58,8 @@ export default defineStore(
       tokenInfo.expires_at = expires_at
       tokenInfo.refresh_token = token.refresh_token
       tokenInfo.id_token = token.id_token
-    }
+    };
+    
     const storeUserInfo = (user: any) => {
       userInfo.sub = user.sub
       userInfo.tenantid = user.tenantid
@@ -70,13 +71,13 @@ export default defineStore(
       userInfo.phone_number_verified = user.phone_number_verified
       userInfo.email = user.email
       userInfo.email_verified = user.email_verified
-    }
+    };
+
     const clearState = () => {
       tokenInfo.access_token = undefined
       tokenInfo.expires_at = undefined
       tokenInfo.refresh_token = undefined
       tokenInfo.id_token = undefined
-
       userInfo.sub = undefined
       userInfo.tenantid = undefined
       userInfo.preferred_username = undefined
@@ -87,7 +88,7 @@ export default defineStore(
       userInfo.phone_number_verified = undefined
       userInfo.email = undefined
       userInfo.email_verified = undefined
-    }
+    };
 
     return {
       tokenInfo,

@@ -28,7 +28,8 @@
           type="textarea" autosize name="description" placeholder="评估内容描述" :rules="formRules.description" />
       </van-cell-group>
       <van-row class="mt-10px">
-        <van-button block type="primary" native-type="submit" :loading="loading" v-permission="'Vote.EvaluationContents.Create'">
+        <van-button block type="primary" native-type="submit" :loading="loading"
+          v-permission="'Vote.EvaluationContents.Create'">
           提交
         </van-button>
       </van-row>
@@ -37,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { useEvlauationContentCreateForm } from "./hooks/useEvaluationContentCreateForm";
+import { useEvlauationContentCreateForm } from "../hooks/useEvaluationContentCreateForm";
 import { EvaluationCategory } from "/@/openapi";
 import { enum2arr } from "/@/utils/app";
 import pageHeader from "/@/components/PageHeader/index.vue";

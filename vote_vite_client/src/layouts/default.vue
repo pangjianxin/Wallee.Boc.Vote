@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import useCachedViewStore from '/@/store/modules/cachedView'
+import useCachedViewStore from '/@/store/modules/useCachedView'
 import useDarkModeStore from '/@/store/modules/useDarkModeStore'
 import { storeToRefs } from 'pinia'
 

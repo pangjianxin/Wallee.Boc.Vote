@@ -8,7 +8,10 @@
         创建或者更新评估内容请点击相关按钮继续
       </template>
       <template #action>
-        <van-button type="primary" @click="gotoCreate" icon="plus" plain size="mini">创建内容</van-button>
+        <van-button type="primary" @click="gotoCreate" icon="plus" plain size="mini"
+          v-permission="'Vote.EvaluationContents.Create'">
+          创建内容
+        </van-button>
       </template>
     </peageHeader>
     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" :offset="0" class="h-100%"
@@ -31,15 +34,18 @@
           class="mt-5px text-12px c-gray-500 w-100%">
         </van-text-ellipsis>
         <div class="self-end">
-          <van-button type="danger" plain size="mini" @click="(_$event: any) => deleteEvaluation(item)">
+          <van-button type="danger" plain size="mini" @click="(_$event: any) => deleteEvaluation(item)"
+            v-permission="'Vote.EvaluationContents.Delete'">
             删除
           </van-button>
-          <van-button type="primary" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)">
+          <van-button type="primary" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)"
+            v-permission="'Vote.EvaluationContents.Update'">
             修改
           </van-button>
         </div>
       </div>
     </van-list>
+
   </div>
 </template>
 
@@ -86,13 +92,13 @@ const deleteEvaluation = async (content: EvaluationContentDto) => {
 <style scoped lang="scss"></style>
 
 <route lang="yaml">
-name: evaluationContent.index
+name: evaluationContent.index 
 meta: 
-  title: 评估内容
-  icon: column
-  visible: true
-  keepAlive: false
-  order: 4
-  requiredAuth: true
-  permission: Vote.EvaluationContents
-</route>
+  title: 评估内容 
+  icon: column 
+  visible: true 
+  keepAlive: false 
+  order: 4 
+  requiredAuth: true 
+  permission: Vote.EvaluationContents 
+</route> 

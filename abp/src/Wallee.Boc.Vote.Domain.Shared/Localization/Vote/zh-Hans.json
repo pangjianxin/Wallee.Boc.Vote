@@ -12,6 +12,7 @@
     "Permission:Appraisement": "评价活动",
     "Permission:AppraisementResults": "评价结果",
     "Permission:CandidateOrgUnits": "待评价部门",
+    "Permission:CandidateOrgUnits:Appraisement": "部门评价",
     "Permission:EvaluationContents": "评价内容",
     "Permission:RulesEngines": "规则引擎",
     "Permission:Create": "创建",

@@ -8,7 +8,6 @@ const useAvailableAppraisementList = () => {
     try {
       loading.value = true;
       list.value = await AppraisementService.appraisementGetAllAvailable();
-      console.log(list.value);
     } catch (err) {
       toast(err as string);
     } finally {

@@ -8,6 +8,8 @@
       </van-icon>
       <van-icon size="24" class="i-mdi-logout-variant ml-10px" @click="logout" v-if="isTokenValid">
       </van-icon>
+      <van-icon size="24" class="i-mdi-login-variant ml-10px" @click="logout" v-else>
+      </van-icon>
       <van-icon size="24" :class="{
         'i-mdi-weather-sunny': darkMode,
         'i-mdi-weather-night': !darkMode,

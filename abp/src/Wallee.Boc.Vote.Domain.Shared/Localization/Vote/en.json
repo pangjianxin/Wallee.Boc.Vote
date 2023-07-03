@@ -11,6 +11,7 @@
     "Permission:Appraisement": "Appraisement",
     "Permission:AppraisementResults": "AppraisementResults",
     "Permission:CandidateOrgUnits": "CandidateOrgUnits",
+    "Permission:CandidateOrgUnits:Appraisement": "Appraisement",
     "Permission:EvaluationContents": "EvaluationContents",
     "Permission:RulesEngines": "RulesEngines",
     "Menu:RulesEngine_CandidtaeOrgUnit": "RulesEngine_CandidateOrgUnit",

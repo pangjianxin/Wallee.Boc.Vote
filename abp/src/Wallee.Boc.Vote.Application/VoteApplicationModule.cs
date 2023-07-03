@@ -41,7 +41,8 @@ public class VoteApplicationModule : AbpModule
                 //});
                 container.UseFileSystem(fileSystem =>
                 {
-                    fileSystem.BasePath = "C:\\Users\\jianxin\\Desktop\\tmep\\blobs";
+                    //fileSystem.BasePath = "C:\\Users\\jianxin\\Desktop\\tmep\\blobs";
+                    fileSystem.BasePath = "C:\\Users\\walle\\Desktop\\temp\\blobs";
                 });
             });
         });

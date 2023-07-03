@@ -5,7 +5,7 @@ import generatedRoutes from "~pages";
 import useOidcStore from "/@/store/modules/useOidcStore";
 import useApplicationConfigStore from "/@/store/modules/useApplicationConfigStore";
 import { toast } from "../utils/app";
-import useCachedViewStore from "/@/store/modules/cachedView";
+import useCachedViewStore from "../store/modules/useCachedView";
 
 export const routes = setupLayouts(generatedRoutes);
 export const router = createRouter({

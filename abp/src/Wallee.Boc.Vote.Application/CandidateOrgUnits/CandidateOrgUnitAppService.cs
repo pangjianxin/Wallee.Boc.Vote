@@ -3,20 +3,16 @@ using RulesEngine.Extensions;
 using RulesEngine.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
-using Volo.Abp.BlobStoring;
-using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
 using Volo.Abp.Json;
 using Wallee.Boc.Vote.Blobs;
 using Wallee.Boc.Vote.Identity;
 using Wallee.Boc.Vote.RulesEngines;
-using Wallee.Boc.Vote.StringExtensions;
 
 namespace Wallee.Boc.Vote.CandidateOrgUnits
 {
@@ -28,17 +24,18 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         private readonly IOrganizationUnitRepository _organizationUnitRepository;
         public readonly ICandidateOrgUnitRepository _candidateOrgUnitRepository;
         public IIdentityUserAppService _userAppService;
-        public IBlobContainer<CandidateOrgUnitEvaContainer> _candidateOrgUnitEvaContainer;
+        private readonly IRulesEngineProvider _rulesEngineProvider;
 
-        public CandidateOrgUnitAppService(ICandidateOrgUnitRepository candidateOrgUnitRepository,
+        public CandidateOrgUnitAppService(
+            ICandidateOrgUnitRepository candidateOrgUnitRepository,
             IIdentityUserAppService userAppService,
-            IBlobContainer<CandidateOrgUnitEvaContainer> candidateOrgUnitEvaContainer,
+            IRulesEngineProvider rulesEngineProvider,
             IJsonSerializer jsonSerializer,
             IOrganizationUnitRepository organizationUnitRepository) : base(candidateOrgUnitRepository)
         {
             _candidateOrgUnitRepository = candidateOrgUnitRepository;
             _userAppService = userAppService;
-            _candidateOrgUnitEvaContainer = candidateOrgUnitEvaContainer;
+            _rulesEngineProvider = rulesEngineProvider;
             _jsonSerializer = jsonSerializer;
             _organizationUnitRepository = organizationUnitRepository;
         }
@@ -108,70 +105,47 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
 
         public async Task UpdateRulesEngine(string workflowDef)
         {
-            if (!workflowDef.IsWorkflowValid(_jsonSerializer))
-            {
-                throw new UserFriendlyException("json格式不正确，请重新输入");
-            }
-            var bytes = workflowDef.GetBytes();
-
-            await _candidateOrgUnitEvaContainer.SaveAsync(BlobFileConsts.CandidateOrgUnitEvaFile, bytes, true);
+            await _rulesEngineProvider.UpdateWorkflow(BlobConsts.CandidateOrgUnitEva, workflowDef);
         }
 
         public async Task<string> GetRulesEngine()
         {
-            if (await _candidateOrgUnitEvaContainer.ExistsAsync(BlobFileConsts.CandidateOrgUnitEvaFile))
-            {
-                var stream = await _candidateOrgUnitEvaContainer.GetOrNullAsync(BlobFileConsts.CandidateOrgUnitEvaFile);
-                stream.Position = 0;
-                using (var reader = new StreamReader(stream))
-                {
-                    return await reader.ReadToEndAsync();
-                }
-            }
-            return string.Empty;
+            return await _rulesEngineProvider.GetWorkflow(BlobConsts.CandidateOrgUnitEva);
         }
 
         public async Task<List<CandidateOrgUnitDto>> GetCandidateOrgUnitEvaList()
         {
             PredicateResult? predicateResult = null;
 
-            var stream = await _candidateOrgUnitEvaContainer.GetAsync(BlobFileConsts.CandidateOrgUnitEvaFile);
+            var workflow = await _rulesEngineProvider.GetWorkflow(BlobConsts.CandidateOrgUnitEva);
 
-            stream.Position = 0;
+            var workflows = _jsonSerializer.Deserialize<List<Workflow>>(workflow);
 
-            using (var reader = new StreamReader(stream))
+            //resettings 用户将system命名空间以外的类型带入规则引擎
+            var rulesEngineResetting = new ReSettings()
             {
-                var content = await reader.ReadToEndAsync();
-
-                var workflows = _jsonSerializer.Deserialize<List<Workflow>>(content);
-
-                //resettings 用户将system命名空间以外的类型带入规则引擎
-                var rulesEngineResetting = new ReSettings()
+                CustomTypes = new Type[]
                 {
-                    CustomTypes = new Type[]
-                    {
                       typeof(PredicateResult)
-                    }
-                };
+                }
+            };
 
-                var rulesEngine = new RulesEngine.RulesEngine(workflows.ToArray(), rulesEngineResetting);
+            var rulesEngine = new RulesEngine.RulesEngine(workflows.ToArray(), rulesEngineResetting);
 
-                //rule parameter用于规则引擎计算时传入的参数，还有另外一种local params，在规则引擎中进行定义
-                var ruleParameter = new RuleParameter("user", new
-                {
-                    role = CurrentUser.Roles.FirstOrDefault(),
-                    ehr = CurrentUser.SurName,
-                    brNo = CurrentUser.FindOrganizationUnits().First()
-                });
+            //rule parameter用于规则引擎计算时传入的参数，还有另外一种local params，在规则引擎中进行定义
+            var ruleParameter = new RuleParameter("user", new
+            {
+                roles = CurrentUser.Roles,
+                brNo = CurrentUser.FindOrganizationUnits().FirstOrDefault()
+            });
 
-                var results = await rulesEngine.ExecuteAllRulesAsync("DepartmentEvaAnalysis", ruleParameter);
+            var results = await rulesEngine.ExecuteAllRulesAsync(BlobConsts.CandidateOrgUnitEva, ruleParameter);
 
-                results.OnSuccess(successEvent =>
-                {
-                    predicateResult = results.First(it => it.Rule.SuccessEvent == successEvent).ActionResult.Output as PredicateResult;
-                });
+            results.OnSuccess(successEvent =>
+            {
+                predicateResult = results.First(it => it.Rule.SuccessEvent == successEvent).ActionResult.Output as PredicateResult;
+            });
 
-            }
             if (predicateResult != null)
             {
                 var list = await _candidateOrgUnitRepository.GetListDynamicallyAsync(predicateResult.Predicate, predicateResult.Parameters);

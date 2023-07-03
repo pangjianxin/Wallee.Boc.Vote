@@ -17,7 +17,7 @@
             class="text-13px c-gray-400 my-5px w-100%">
         </van-text-ellipsis>
         <div class="flex flex-row justify-end">
-            <van-button round type="primary" size="mini">
+            <van-button round type="primary" size="mini" @click="_$event => gotoAppraisement(item.category!, item.id!)">
                 开始评价
             </van-button>
         </div>
@@ -27,12 +27,26 @@
 <script setup lang="ts">
 import { AppraisementDto, AppraisementCategory } from '/@/openapi';
 import dayjs from 'dayjs';
+const router = useRouter();
+
 defineProps({
     item: {
         type: Object as PropType<AppraisementDto>,
         required: true
     }
 });
+
+const gotoAppraisement = async (category: AppraisementCategory, appraisementId: string) => {
+    switch (category) {
+        case AppraisementCategory.部门评价:
+            await router.push({
+                name: "candidateOrgUnit.appraisement",
+                params: {
+                    appraisementId: appraisementId
+                }
+            })
+    }
+}
 </script>
 
 <style scoped></style>

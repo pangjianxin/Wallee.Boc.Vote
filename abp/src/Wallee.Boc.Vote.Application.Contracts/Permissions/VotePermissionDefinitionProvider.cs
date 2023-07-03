@@ -37,6 +37,7 @@ public class VotePermissionDefinitionProvider : PermissionDefinitionProvider
         candidateOrgUnitPermittion.AddChild(VotePermissions.CandidateOrgUnits.Create, L("Permission:Create"));
         candidateOrgUnitPermittion.AddChild(VotePermissions.CandidateOrgUnits.Update, L("Permission:Update"));
         candidateOrgUnitPermittion.AddChild(VotePermissions.CandidateOrgUnits.Delete, L("Permission:Delete"));
+        candidateOrgUnitPermittion.AddChild(VotePermissions.CandidateOrgUnits.Appraisement, L("Permission:CandidateOrgUnits:Appraisement"));
 
         var evaluationContentPermission = myGroup.AddPermission(VotePermissions.EvaluationContents.Default, L("Permission:EvaluationContents"));
         evaluationContentPermission.AddChild(VotePermissions.EvaluationContents.Create, L("Permission:Create"));

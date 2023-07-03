@@ -49,9 +49,9 @@
 </template>
 <script setup lang="ts">
 import pageHeader from '/@/components/PageHeader/index.vue';
-import { useCandidateOrgUnitCreateForm } from './hooks/useCandidateOrgUnitCreateForm'
-import userLookup from './components/userLookup.vue';
-import organizationUnitLookup from './components/orgUnitLookup.vue';
+import { useCandidateOrgUnitCreateForm } from '../hooks/useCandidateOrgUnitCreateForm'
+import userLookup from '../components/userLookup.vue';
+import organizationUnitLookup from '../components/orgUnitLookup.vue';
 import { enum2arr } from '/@/utils/app'
 import { CandidateOrgUnitCategory } from '/@/openapi'
 

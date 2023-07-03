@@ -33,9 +33,15 @@ async function passwordLoginF() {
     storeUserInfo(userRes)
     await appCofigStore.initConfig()
     if (props.returnUrl) {
-      await router.push({
-        name: props.returnUrl,
-      })
+      try {
+        await router.push({
+          name: props.returnUrl,
+        })
+      } catch {
+        await router.push({
+          name: "index"
+        })
+      }
     }
   }
 }
@@ -49,11 +55,9 @@ function togglePasswordVisible() {
   <van-form ref="formRef" @submit="passwordLoginF">
     <van-cell-group inset>
       <van-field v-model="form.username" name="用户名" left-icon="user-o" placeholder="用户名" :rules="formRules.username" />
-      <van-field
-        v-model="form.password" :type="passwordVisible ? 'text' : 'password'" name="密码" left-icon="shield-o"
+      <van-field v-model="form.password" :type="passwordVisible ? 'text' : 'password'" name="密码" left-icon="shield-o"
         :right-icon="passwordVisible ? 'eye-o' : 'closed-eye'" placeholder="密码" :rules="formRules.password"
-        @click-right-icon="togglePasswordVisible"
-      />
+        @click-right-icon="togglePasswordVisible" />
     </van-cell-group>
     <div style="margin: 16px;">
       <van-button round block type="primary" native-type="submit" :loading="loading">
