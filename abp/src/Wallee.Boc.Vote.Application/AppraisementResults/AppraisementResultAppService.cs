@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Application.Services;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Domain.Repositories;
 using Wallee.Boc.Vote.Appraisements;
 
 namespace Wallee.Boc.Vote.AppraisementResults
@@ -26,27 +28,32 @@ namespace Wallee.Boc.Vote.AppraisementResults
 
         public async override Task<AppraisementResultDto> CreateAsync(AppraisementResultCreateDto input)
         {
+            if (await AppraisementResultRepository.AnyAsync(
+                it => it.CreatorId == CurrentUser.Id &&
+                it.AppraisementId == input.AppraisementId &&
+                it.CandidateId == input.CandidateId))
+            {
+                throw new UserFriendlyException("你已评价过该主体");
+
+            }
+
             var result = new AppraisementResult(
                 GuidGenerator.Create(),
                 input.AppraisementId,
-                input.Evaluator,
                 input.CandidateId,
-                input.ClientIpAddress,
                 input.Category);
 
             var scoreLst = new List<AppraisementResultScoreDetail>();
 
             foreach (var item in input.ContentScores)
             {
-                scoreLst.Add(new AppraisementResultScoreDetail(result.Id, item.EvaluationContentId, item.Content, item.Score));
+                scoreLst.Add(new AppraisementResultScoreDetail(result.Id, item.EvaluationContentId, item.Content, item.Score, item.Comment));
             }
 
             result = AppraisementResultManager.SetDetails(result, scoreLst);
 
-            await AppraisementResultManager.CheckAsync(result);
-
             await AppraisementResultRepository.InsertAsync(result);
-            await CurrentUnitOfWork.SaveChangesAsync();
+
             return ObjectMapper.Map<AppraisementResult, AppraisementResultDto>(result);
         }
         protected override async Task<IQueryable<AppraisementResult>> CreateFilteredQueryAsync(GetAppraisementResultsInputDto input)

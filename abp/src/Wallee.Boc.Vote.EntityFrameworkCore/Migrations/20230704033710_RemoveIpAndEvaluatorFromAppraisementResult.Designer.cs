@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 using Wallee.Boc.Vote.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using Wallee.Boc.Vote.EntityFrameworkCore;
 namespace Wallee.Boc.Vote.Migrations
 {
     [DbContext(typeof(VoteDbContext))]
-    partial class VoteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230704033710_RemoveIpAndEvaluatorFromAppraisementResult")]
+    partial class RemoveIpAndEvaluatorFromAppraisementResult
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

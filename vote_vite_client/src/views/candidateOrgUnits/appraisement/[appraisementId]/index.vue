@@ -14,7 +14,8 @@
         <template v-if="list && list.length > 0">
             <candidateOrgUnitVue v-for="item in unAppraisedList" :org-unit="item" :key="item.id">
                 <template #action>
-                    <van-button type="primary" size="mini" round icon="setting-o">
+                    <van-button type="primary" size="mini" round icon="setting-o"
+                        @click="_$event => gotoAppraisement(item.id!)">
                         评价
                     </van-button>
                 </template>
@@ -28,14 +29,15 @@
 <script setup lang="ts">
 import pageHeader from '/@/components/PageHeader/index.vue';
 import { AppraisementDto, AppraisementService, CandidateOrgUnitDto, CandidateOrgUnitService } from '/@/openapi';
-import candidateOrgUnitVue from '../components/candidateOrgUnit.vue';
-import useOrgUnitAppraisementStore from '../store/useOrgUnitAppraisementStore';
+import candidateOrgUnitVue from '../../components/candidateOrgUnit.vue';
+import useOrgUnitAppraisementStore from '../../store/useOrgUnitAppraisementStore';
 import { storeToRefs } from 'pinia';
 const orgUnitApprasisementStore = useOrgUnitAppraisementStore();
 const { state } = storeToRefs(orgUnitApprasisementStore);
 const route = useRoute();
 const router = useRouter();
 let appraisementInfo = ref<AppraisementDto>();
+
 let list = ref<CandidateOrgUnitDto[]>([]);
 
 const unAppraisedList = computed(() => {
@@ -51,6 +53,16 @@ const getAppraisementInfo = async (appraisementId: string) => {
     appraisementInfo.value = await AppraisementService.appraisementGet({ id: appraisementId });
 };
 
+const gotoAppraisement = async (candidateOrgUnitId: string) => {
+    await router.push({
+        name: "candidateOrgUnit.appraisement.create",
+        params: {
+            appraisementId: appraisementInfo.value?.id!,
+            candidateOrgUnitId: candidateOrgUnitId
+        }
+    })
+}
+
 onMounted(async () => {
     let appraisementId = route.params.appraisementId as string;
     if (state.value[appraisementId] == undefined) {
@@ -63,7 +75,7 @@ onMounted(async () => {
 
 <style scoped></style>
 <route lang="yaml">
-name: candidateOrgUnit.appraisement
+name: candidateOrgUnit.appraisement.index
 meta: 
   title: 部门评测
   visible: false

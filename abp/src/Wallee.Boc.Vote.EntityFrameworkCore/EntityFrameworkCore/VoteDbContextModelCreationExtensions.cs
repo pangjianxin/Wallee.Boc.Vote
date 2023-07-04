@@ -43,7 +43,6 @@ namespace Wallee.Boc.Vote.EntityFrameworkCore
                 it.ToTable(VoteConsts.DbTablePrefix + "AppraisementResults", VoteConsts.DbSchema);
                 it.ConfigureByConvention();
                 it.Property(it => it.Score).HasColumnType("decimal(18,2)").IsRequired();
-                it.Property(it => it.ClientIpAddress).IsRequired();
                 it.HasMany(it => it.Details).WithOne().HasForeignKey(it => it.AppraisementResultId);
             });
 
@@ -53,6 +52,7 @@ namespace Wallee.Boc.Vote.EntityFrameworkCore
                 it.HasKey(it => new { it.AppraisementResultId, it.EvaluationContentId });
                 it.ConfigureByConvention();
 
+                it.Property(it => it.Comment).IsRequired(false).HasMaxLength(256);
                 it.Property(it => it.Content).HasMaxLength(50).IsRequired();
                 it.Property(it => it.Score).HasColumnType("decimal(18,2)").IsRequired();
                 it.HasOne<AppraisementResult>().WithMany(it => it.Details).HasForeignKey(it => it.AppraisementResultId);

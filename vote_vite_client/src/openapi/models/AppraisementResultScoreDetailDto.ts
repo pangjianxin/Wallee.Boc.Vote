@@ -6,4 +6,5 @@ export type AppraisementResultScoreDetailDto = {
     evaluationContentId?: string;
     content?: string | null;
     score?: number;
+    comment?: string | null;
 };

@@ -10,12 +10,12 @@
         <div class="text-16px fw-600">
           <slot name="title"></slot>
         </div>
-        <div class="text-12px fw-100 c-gray-400">
+        <div class="text-12px fw-100 c-gray-400 mt-5px">
           <slot name="sub-title"></slot>
         </div>
       </div>
     </div>
-    <div class="flex flex-col justify-center">
+    <div class="flex flex-col justify-end mt-5px">
       <slot name="action"></slot>
     </div>
   </div>

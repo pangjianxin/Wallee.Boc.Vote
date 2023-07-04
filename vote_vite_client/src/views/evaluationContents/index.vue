@@ -16,24 +16,8 @@
     </peageHeader>
     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" :offset="0" class="h-100%"
       @load="onLoad">
-      <div v-for="item in cachedList" :key="item.id" class="flex flex-col justify-center items-center mt-5px p-10px shadow-sm shadow-warmgray b-rd-5px  bg-gradient-linear shape-[100deg] bg-gradient-from-red bg-gradient-via-orange bg-gradient-to-rose
-        dark:bg-gradient-from-gray dark:bg-gradient-via-red dark:bg-gradient-to-black">
-        <div class="flex flex-col ml-3px w-100%">
-          <div class="flex flex-row items-center">
-            <span class="i-mdi-file-cog-outline text-20px mr-5px fw-600"></span>
-            <span class="text-16px fw-600">{{ item.name }}</span>
-          </div>
-          <div class="text-12px c-gray-400 mt-5px">
-            <van-tag type="success">
-              {{ EvaluationCategory[item.category!] }}
-            </van-tag>
-            <van-tag class="ml-5px">{{ dayjs(item.creationTime).format('YYYY-MM-DD') }}</van-tag>
-          </div>
-        </div>
-        <van-text-ellipsis :rows="2" expand-text="展开" collapse-text="收起" :content="item.description!"
-          class="mt-5px text-12px c-gray-500 w-100%">
-        </van-text-ellipsis>
-        <div class="self-end">
+      <evaluationContentVue v-for="item in cachedList" :key="item.id" :content="item">
+        <template #action>
           <van-button type="danger" plain size="mini" @click="(_$event: any) => deleteEvaluation(item)"
             v-permission="'Vote.EvaluationContents.Delete'">
             删除
@@ -42,8 +26,8 @@
             v-permission="'Vote.EvaluationContents.Update'">
             修改
           </van-button>
-        </div>
-      </div>
+        </template>
+      </evaluationContentVue>
     </van-list>
 
   </div>
@@ -52,11 +36,11 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { useEvaluationContentList } from './hooks/useEvaluationContentList';
-const { loading, finished, cachedList, getList, pageable } = useEvaluationContentList();
-import dayjs from 'dayjs';
-import { EvaluationCategory, EvaluationContentDto, EvaluationContentService } from '/@/openapi';
+import { EvaluationContentDto, EvaluationContentService } from '/@/openapi';
 import peageHeader from '/@/components/PageHeader/index.vue';
 import { confirmDialog } from '/@/utils/app';
+import evaluationContentVue from './components/evaluationContent.vue';
+const { loading, finished, cachedList, getList, pageable } = useEvaluationContentList();
 const router = useRouter();
 
 const onLoad = async () => {

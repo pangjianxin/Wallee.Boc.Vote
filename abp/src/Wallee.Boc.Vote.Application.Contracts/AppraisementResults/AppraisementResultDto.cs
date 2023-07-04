@@ -4,12 +4,8 @@ using Wallee.Boc.Vote.Appraisements;
 
 namespace Wallee.Boc.Vote.AppraisementResults
 {
-    public class AppraisementResultDto : EntityDto<Guid>
+    public class AppraisementResultDto : AuditedEntityDto<Guid>
     {
-        /// <summary>
-        /// 评测人
-        /// </summary>
-        public Guid Evaluator { get; set; }
         /// <summary>
         /// 被评测对象
         /// </summary>
@@ -22,7 +18,6 @@ namespace Wallee.Boc.Vote.AppraisementResults
         /// 相关得分
         /// </summary>
         public decimal Score { get; set; }
-        public string ClientIpAddress { get; set; } = null!;
         /// <summary>
         /// 评测分类
         /// </summary>

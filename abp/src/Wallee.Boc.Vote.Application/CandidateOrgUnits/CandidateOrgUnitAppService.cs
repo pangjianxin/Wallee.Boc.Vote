@@ -126,7 +126,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
             {
                 CustomTypes = new Type[]
                 {
-                      typeof(PredicateResult)
+                   typeof(PredicateResult)
                 }
             };
 
@@ -136,7 +136,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
             var ruleParameter = new RuleParameter("user", new
             {
                 roles = CurrentUser.Roles,
-                brNo = CurrentUser.FindOrganizationUnits().FirstOrDefault()
+                orgUnits = CurrentUser.FindOrganizationUnits()
             });
 
             var results = await rulesEngine.ExecuteAllRulesAsync(BlobConsts.CandidateOrgUnitEva, ruleParameter);
