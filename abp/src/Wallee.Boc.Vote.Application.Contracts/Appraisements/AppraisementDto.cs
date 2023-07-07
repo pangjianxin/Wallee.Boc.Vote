@@ -4,7 +4,7 @@ using Volo.Abp.Domain.Entities;
 
 namespace Wallee.Boc.Vote.Appraisements
 {
-    public class AppraisementDto : EntityDto<Guid>, IHasConcurrencyStamp
+    public class AppraisementDto : AuditedEntityDto<Guid>, IHasConcurrencyStamp
     {
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;

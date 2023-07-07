@@ -50,7 +50,7 @@ namespace Wallee.Boc.Vote.AppraisementResults
                 scoreLst.Add(new AppraisementResultScoreDetail(result.Id, item.EvaluationContentId, item.Content, item.Score, item.Comment));
             }
 
-            result = AppraisementResultManager.SetDetails(result, scoreLst);
+            result.SetDetails(scoreLst);
 
             await AppraisementResultRepository.InsertAsync(result);
 
