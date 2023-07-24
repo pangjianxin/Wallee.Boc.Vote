@@ -108,7 +108,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
             await _rulesEngineProvider.UpdateWorkflow(BlobConsts.CandidateOrgUnitEva, workflowDef);
         }
 
-        public async Task<string> GetRulesEngine()
+        public async Task<string?> GetRulesEngine()
         {
             return await _rulesEngineProvider.GetWorkflow(BlobConsts.CandidateOrgUnitEva);
         }

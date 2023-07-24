@@ -42,7 +42,7 @@ import appraisementVue from './components/appraisement.vue';
 import { useAppraisementList } from './hooks/useAppraisementList';
 import { AppraisementDto, AppraisementService } from '/@/openapi';
 import { confirmDialog } from '/@/utils/app';
-import dayjs from 'dayjs';
+
 const router = useRouter();
 const {
   loading,
@@ -88,9 +88,7 @@ const gotoEdit = async (id: string) => {
   })
 }
 
-const isNotExpired = (end: string) => {
-  return dayjs(end).isAfter(dayjs());
-}
+
 </script>
 <style scoped></style>
 

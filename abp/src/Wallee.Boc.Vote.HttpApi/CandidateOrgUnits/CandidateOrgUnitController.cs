@@ -64,7 +64,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
 
         [HttpGet]
         [Route("rules-engine")]
-        public Task<string> GetRulesEngine()
+        public Task<string?> GetRulesEngine()
         {
             return _candidateOrgUnitAppService.GetRulesEngine();
         }

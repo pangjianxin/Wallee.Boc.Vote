@@ -25,7 +25,7 @@ namespace Wallee.Boc.Vote.Web.Pages.RulesEngines.CandidateOrgUnits
 
         public async Task OnPostAsync()
         {
-            await _candidateOrgUnitAppService.UpdateRulesEngine(ViewModel.RulesEngine);
+            await _candidateOrgUnitAppService.UpdateRulesEngine(ViewModel.RulesEngine!);
             Alerts.Add(Volo.Abp.AspNetCore.Mvc.UI.Alerts.AlertType.Success, "更新成功");
         }
     }
@@ -34,6 +34,6 @@ namespace Wallee.Boc.Vote.Web.Pages.RulesEngines.CandidateOrgUnits
         [Display(Name = "请输入规则引擎")]
         [Required]
         [TextArea(Rows = 20)]
-        public string RulesEngine { get; set; } = null!;
+        public string? RulesEngine { get; set; }
     }
 }

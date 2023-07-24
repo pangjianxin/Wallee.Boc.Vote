@@ -28,7 +28,7 @@ namespace Wallee.Boc.Vote.RulesEngines
             _rulesEngineWorkflowCache = rulesEngineWorkflowCache;
             _jsonSerializer = jsonSerializer;
         }
-        public async Task<string> GetWorkflow(string workflowName)
+        public async Task<string?> GetWorkflow(string workflowName)
         {
             return await _rulesEngineWorkflowCache.GetOrAddAsync(
                 workflowName,
