@@ -1,6 +1,6 @@
 <template>
     <van-image :src="my_info" class="relative mb--30px"></van-image>
-    <van-row justify="space-around" class="relative p-10px m-5px bg-transparent b-white b-rd-5px">
+    <van-row justify="space-between" class="relative p-10px m-5px bg-transparent b-white b-rd-5px">
         <van-col>
             <router-link :to="{ name: 'candidateOrgUnit.index' }">
                 <div class="flex flex-col items-center">
@@ -10,14 +10,6 @@
                     </span>
                 </div>
             </router-link>
-        </van-col>
-        <van-col>
-            <div class="flex flex-col items-center">
-                <van-icon size="30" name="friends-o"></van-icon>
-                <span class="text-13px c-gray fw-600">
-                    待评人员
-                </span>
-            </div>
         </van-col>
         <van-col>
             <router-link :to="{ name: 'evaluationContent.index' }">
