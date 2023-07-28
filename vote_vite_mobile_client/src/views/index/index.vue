@@ -31,7 +31,7 @@ const gotoAppraisement = async (category: AppraisementCategory, appraisementId: 
   switch (category) {
     case AppraisementCategory.部门评价:
       await router.push({
-        name: "candidateOrgUnit.appraisement.index",
+        name: "appraisement.xxx",
         params: {
           appraisementId: appraisementId
         }
