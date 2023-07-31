@@ -1,4 +1,5 @@
-﻿using Volo.Abp.Account;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Volo.Abp.Account;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.FileSystem;
@@ -26,6 +27,8 @@ public class VoteApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        var config = context.Services.GetConfiguration();
+
         Configure<AbpAutoMapperOptions>(options =>
         {
             options.AddMaps<VoteApplicationModule>();
@@ -35,14 +38,9 @@ public class VoteApplicationModule : AbpModule
         {
             options.Containers.ConfigureDefault(container =>
             {
-                //container.UseFileSystem(fileSystem =>
-                //{
-                //    fileSystem.BasePath = "/app/files";
-                //});
                 container.UseFileSystem(fileSystem =>
-                {
-                    //fileSystem.BasePath = "C:\\Users\\jianxin\\Desktop\\tmep\\blobs";
-                    fileSystem.BasePath = "C:\\Users\\walle\\Desktop\\temp\\blobs";
+                {                 
+                    fileSystem.BasePath = config["Blobs:Base"];
                 });
             });
         });

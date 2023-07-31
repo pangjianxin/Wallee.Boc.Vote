@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import { ResponseType } from "axios";
 export type ApiRequestOptions = {
     readonly method: 'GET' | 'PUT' | 'POST' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';
     readonly url: string;
@@ -11,6 +12,7 @@ export type ApiRequestOptions = {
     readonly formData?: Record<string, any>;
     readonly body?: any;
     readonly mediaType?: string;
+    readonly responseType?: ResponseType;
     readonly responseHeader?: string;
     readonly errors?: Record<number, string>;
 };

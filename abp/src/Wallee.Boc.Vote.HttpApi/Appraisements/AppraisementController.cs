@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Content;
 using Volo.Abp.DependencyInjection;
 using Wallee.Boc.Vote.Permissions;
 
@@ -68,6 +69,18 @@ namespace Wallee.Boc.Vote.Appraisements
             return await _appraisementAppService.GetAsync(id);
         }
         /// <summary>
+        /// 根据评价活动和相关角色下载二维码
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("download/qr-code")]
+        public async Task<IRemoteStreamContent> GetDownloadAppraisementQrcode(GetAppraisementQrcodeDto input)
+        {
+            return await _appraisementAppService.GetDownloadAppraisementQrcode(input);
+        }
+
+        /// <summary>
         /// 评价活动的分页数据
         /// </summary>
         /// <param name="input"></param>
@@ -89,6 +102,17 @@ namespace Wallee.Boc.Vote.Appraisements
         public async Task<AppraisementDto> UpdateAsync(Guid id, AppraisementUpdateDto input)
         {
             return await _appraisementAppService.UpdateAsync(id, input);
+        }
+        /// <summary>
+        /// 上传二维码的背景图片
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("upload/qrcode-bg")]
+        public async Task UploadQrcodeBackgroundImageAsync(UploadQrcodeBackgroundDto input)
+        {
+            await _appraisementAppService.UploadQrcodeBackgroundImageAsync(input);
         }
     }
 }

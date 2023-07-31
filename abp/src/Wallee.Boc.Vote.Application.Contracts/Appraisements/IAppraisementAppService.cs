@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Content;
 using Volo.Abp.DependencyInjection;
 
 namespace Wallee.Boc.Vote.Appraisements
@@ -11,5 +12,7 @@ namespace Wallee.Boc.Vote.Appraisements
         ITransientDependency
     {
         Task<List<AppraisementDto>> GetAllAvailableAsync();
+        Task<IRemoteStreamContent> GetDownloadAppraisementQrcode(GetAppraisementQrcodeDto input);
+        Task UploadQrcodeBackgroundImageAsync(UploadQrcodeBackgroundDto input);
     }
 }

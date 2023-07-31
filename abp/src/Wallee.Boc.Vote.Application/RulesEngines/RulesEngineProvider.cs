@@ -9,7 +9,7 @@ using Volo.Abp.BlobStoring;
 using Volo.Abp.Caching;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Json;
-using Wallee.Boc.Vote.RulesEngines.Blobs;
+using Wallee.Boc.Vote.Blobs;
 
 namespace Wallee.Boc.Vote.RulesEngines
 {

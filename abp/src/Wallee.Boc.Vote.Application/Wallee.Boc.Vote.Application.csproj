@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="RulesEngine" Version="4.0.0" />
+    <PackageReference Include="SkiaSharp.QrCode" Version="0.6.0" />
     <PackageReference Include="Volo.Abp.Account.Application" Version="7.3.0" />
     <PackageReference Include="Volo.Abp.BlobStoring.FileSystem" Version="7.3.0" />
     <PackageReference Include="Volo.Abp.Identity.Application" Version="7.3.0" />

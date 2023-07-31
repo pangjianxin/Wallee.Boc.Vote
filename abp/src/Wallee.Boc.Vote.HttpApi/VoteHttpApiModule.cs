@@ -8,6 +8,8 @@ using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement.HttpApi;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
+using Volo.Abp.AspNetCore.Mvc;
+using Wallee.Boc.Vote.Appraisements;
 
 namespace Wallee.Boc.Vote;
 
@@ -25,6 +27,8 @@ public class VoteHttpApiModule : AbpModule
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         ConfigureLocalization();
+
+        ConfigureAutoApiControllers();
     }
 
     private void ConfigureLocalization()
@@ -36,6 +40,15 @@ public class VoteHttpApiModule : AbpModule
                 .AddBaseTypes(
                     typeof(AbpUiResource)
                 );
+        });
+    }
+
+    private void ConfigureAutoApiControllers()
+    {
+
+        Configure<AbpAspNetCoreMvcOptions>(options =>
+        {
+            options.ConventionalControllers.FormBodyBindingIgnoredTypes.Add(typeof(UploadQrcodeBackgroundDto));
         });
     }
 }

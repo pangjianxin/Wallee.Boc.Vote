@@ -33,12 +33,16 @@
         </van-col>
     </van-row>
     <van-cell-group inset>
-        <van-cell title="单元格" value="内容" />
-        <van-cell title="单元格" value="内容" label="描述信息" />
+        <van-cell title="评价活动" is-link value="设置二维码背景" @click="gotoAppraisementQrcodeUpload" />
     </van-cell-group>
 </template>
 <script setup lang="ts">
 import my_info from '/@/assets/images/my_info.png';
+const router = useRouter();
+
+const gotoAppraisementQrcodeUpload = () => {
+    router.push({ name: 'appraisement.qrcode.upload' });
+};
 </script>
 
 <style scoped></style>

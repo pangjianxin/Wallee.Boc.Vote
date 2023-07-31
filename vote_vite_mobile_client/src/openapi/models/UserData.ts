@@ -13,4 +13,5 @@ export type UserData = {
     emailConfirmed?: boolean;
     phoneNumber?: string | null;
     phoneNumberConfirmed?: boolean;
+    readonly extraProperties?: Record<string, any> | null;
 };
