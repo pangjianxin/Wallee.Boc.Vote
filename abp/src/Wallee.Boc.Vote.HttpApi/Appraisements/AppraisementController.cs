@@ -75,6 +75,7 @@ namespace Wallee.Boc.Vote.Appraisements
         /// <returns></returns>
         [HttpGet]
         [Route("download/qr-code")]
+        [AllowAnonymous]
         public async Task<IRemoteStreamContent> GetDownloadAppraisementQrcode(GetAppraisementQrcodeDto input)
         {
             return await _appraisementAppService.GetDownloadAppraisementQrcode(input);

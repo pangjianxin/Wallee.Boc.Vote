@@ -6,17 +6,16 @@
             </template>
         </van-uploader>
         <van-button @click="console.log(fileList)">1</van-button>
+        <van-button @click="downloadQrcodeAsync">2</van-button>
     </div>
 </template>
 
 <script setup lang="ts">
 import { UploaderFileListItem } from 'vant';
 import { toast } from '/@/utils/app';
-import { useUploadQrcodeBackgroundImageForm } from '/@/views/appraisements/hooks/useUploadQrcodeBackgroundImageForm';
+import { AppraisementService } from '/@/openapi'
 let fileList = ref<UploaderFileListItem[]>([
 ]);
-
-const { form, formRef, formRules, uploadQrcodeBackgroundImage } = useUploadQrcodeBackgroundImageForm();
 
 const asyncBeforeRead = (file: File | File[], _detail: { name: string | number; index: number; }): Promise<File | File[] | undefined> =>
     new Promise((resolve, reject) => {
@@ -31,29 +30,25 @@ const asyncBeforeRead = (file: File | File[], _detail: { name: string | number; 
         }
     });
 
-const asyncAfterRead = (file: UploaderFileListItem | UploaderFileListItem[], _detail: {
-    name: string | number;
-    index: number;
-}) => {
-    //处理为字节流参数
-    if(file instanceof UploaderFileListItem){
-        
-    }
-    var imgUrl = file.content;
-    var img = file.file;
-    var reader = new FileReader();
-    reader.readAsDataURL(img);
-    reader.onloadend = function (e) {
-        var file = img;
-        var param = new FormData();
-        param.append("file", file, file.name);
-        //此处写ajax请求上传到服务器方法
-
-    };
+const asyncAfterRead = async (file: any) => {
+    console.log(file);
+    let formData = new FormData();
+    formData.append('file', file.file);
+    await AppraisementService.appraisementUploadQrcodeBackgroundImage({ formData: { File: file.file } });
 }
-watch(() => fileList.value, (newVal) => {
-    form.File = newVal[0];
-})
+
+const downloadQrcodeAsync = async () => {
+    let blob = await AppraisementService.appraisementGetDownloadAppraisementQrcode({ ruleName: 'test' });
+    console.log(blob);
+    const link = document.createElement('a')
+    link.style.display = 'none'
+    link.href = URL.createObjectURL(blob)
+    link.download="1.png"
+    document.body.appendChild(link);
+    link.click()
+    document.body.removeChild(link);
+}
+
 </script>
 
 <style scoped></style>
