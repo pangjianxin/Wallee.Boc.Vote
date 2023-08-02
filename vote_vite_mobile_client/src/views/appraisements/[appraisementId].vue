@@ -15,12 +15,14 @@
             </div>
         </template>
         <template #thumb>
-            <van-image :src="bgImg" :fit="'cover'"></van-image>
+            <van-image :src="bgImg" :fit="'scale-down'"></van-image>
         </template>
         <template #desc>
-            <div class="text-10px fw-600 c-gray">
-                {{ appraisement?.description }}
+            <div class="text-10px fw-600 c-gray w-100%">
+                <van-text-ellipsis :content="appraisement?.description!" :rows="1" expand-text="展开" collapse-text="收起" />
             </div>
+        </template>
+        <template #tags>
             <div class="flex flex-row justify-between my-10px w-auto">
                 <div class="flex flex-col items-center">
                     <div class="text-13px fw-1000 c-red-700">
@@ -30,7 +32,6 @@
                         开始日期
                     </div>
                 </div>
-
                 <div class="flex flex-col items-center">
                     <div class="text-13px fw-1000 c-red-700">
                         {{ dayjs(appraisement?.end).format("YYYY-MM-DD") }}
@@ -42,10 +43,7 @@
             </div>
         </template>
         <template #footer>
-            <van-button plain type="primary" size="mini" class="mt-20px" @click="router.back">
-                返回
-            </van-button>
-
+            
         </template>
     </van-card>
     <van-divider content-position="left">二维码信息生成</van-divider>
@@ -74,7 +72,8 @@
         </van-cell-group>
     </van-radio-group>
     <van-row justify="end" class="m-10px">
-        <van-button type="primary" size="small" block @click="downloadQrcodeAsync" :disabled="!selectedRadioValue">生成二维码</van-button>
+        <van-button type="primary" size="small" block @click="downloadQrcodeAsync"
+            :disabled="!selectedRadioValue">生成二维码</van-button>
     </van-row>
 </template>
 
@@ -84,7 +83,7 @@ import bgImg from '/@/assets/images/appraisement.png';
 import pageHeader from '/@/components/PageHeader/index.vue';
 import dayjs from 'dayjs';
 const route = useRoute();
-const router = useRouter();
+
 let appraisementId = ref("");
 let appraisement = ref<AppraisementDto>();
 let selectedRadioValue = ref("");
