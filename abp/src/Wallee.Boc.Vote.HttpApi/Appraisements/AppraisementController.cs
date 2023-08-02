@@ -104,6 +104,19 @@ namespace Wallee.Boc.Vote.Appraisements
         {
             return await _appraisementAppService.UpdateAsync(id, input);
         }
+
+        /// <summary>
+        /// 上传二维码字体文件
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("upload/qrcode-font")]
+        public async Task UploadQrcdoeBgImgFontAsync(UploadQrcodeBgImgFontDto input)
+        {
+            await _appraisementAppService.UploadQrcdoeBgImgFontAsync(input);
+        }
+
         /// <summary>
         /// 上传二维码的背景图片
         /// </summary>
@@ -111,9 +124,9 @@ namespace Wallee.Boc.Vote.Appraisements
         /// <returns></returns>
         [HttpPost]
         [Route("upload/qrcode-bg")]
-        public async Task UploadQrcodeBackgroundImageAsync(UploadQrcodeBackgroundDto input)
+        public async Task UploadQrcodeBgImgAsync(UploadQrcodeBgImgDto input)
         {
-            await _appraisementAppService.UploadQrcodeBackgroundImageAsync(input);
+            await _appraisementAppService.UploadQrcodeBgImgAsync(input);
         }
     }
 }

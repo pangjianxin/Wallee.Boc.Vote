@@ -26,9 +26,13 @@
             v-permission="'Vote.Appraisements.Delete'">
             删除
           </van-button>
-          <van-button type="primary" icon="setting" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)"
+          <van-button type="warning" icon="setting" plain size="mini" @click="(_$event: any) => gotoEdit(item.id!)"
             v-permission="'Vote.Appraisements.Update'">
             修改
+          </van-button>
+          <van-button type="primary" icon="tv-o" plain size="mini" @click="(_$event: any) => gotoView(item.id!)"
+            v-permission="'Vote.Appraisements.Update'">
+            查看
           </van-button>
         </template>
       </appraisementVue>
@@ -87,7 +91,14 @@ const gotoEdit = async (id: string) => {
     }
   })
 }
-
+const gotoView = async (id: string) => {
+  await router.push({
+    name: "appraisement.detail",
+    params: {
+      appraisementId: id
+    }
+  })
+}
 
 </script>
 <style scoped></style>

@@ -193,17 +193,48 @@ export class AppraisementService {
    * @throws ApiError
    */
   public static appraisementGetDownloadAppraisementQrcode({
+    appraisementId,
     ruleName,
   }: {
+    appraisementId?: string;
     ruleName?: string;
   }): CancelablePromise<Blob> {
     return __request(OpenAPI, {
       method: "GET",
       url: "/api/vote/appraisement/download/qr-code",
-      responseType: "blob",
       query: {
+        AppraisementId: appraisementId,
         RuleName: ruleName,
       },
+      responseType: "blob",
+      errors: {
+        400: `Bad Request`,
+        401: `Unauthorized`,
+        403: `Forbidden`,
+        404: `Not Found`,
+        500: `Server Error`,
+        501: `Server Error`,
+      },
+    });
+  }
+
+  /**
+   * 上传二维码字体文件
+   * @returns any Success
+   * @throws ApiError
+   */
+  public static appraisementUploadQrcdoeBgImgFont({
+    formData,
+  }: {
+    formData?: {
+      File?: Blob;
+    };
+  }): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/vote/appraisement/upload/qrcode-font",
+      formData: formData,
+      mediaType: "multipart/form-data",
       errors: {
         400: `Bad Request`,
         401: `Unauthorized`,
@@ -220,7 +251,7 @@ export class AppraisementService {
    * @returns any Success
    * @throws ApiError
    */
-  public static appraisementUploadQrcodeBackgroundImage({
+  public static appraisementUploadQrcodeBgImg({
     formData,
   }: {
     formData?: {

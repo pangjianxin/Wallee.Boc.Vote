@@ -48,7 +48,8 @@ public class VoteHttpApiModule : AbpModule
 
         Configure<AbpAspNetCoreMvcOptions>(options =>
         {
-            options.ConventionalControllers.FormBodyBindingIgnoredTypes.Add(typeof(UploadQrcodeBackgroundDto));
+            options.ConventionalControllers.FormBodyBindingIgnoredTypes.Add(typeof(UploadQrcodeBgImgDto));
+            options.ConventionalControllers.FormBodyBindingIgnoredTypes.Add(typeof(UploadQrcodeBgImgFontDto));
         });
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Wallee.Boc.Vote.Appraisements
 {
-    public class UploadQrcodeBackgroundDto
+    public class UploadQrcodeBgImgDto
     {
         public IRemoteStreamContent File { get; set; } = default!;
     }

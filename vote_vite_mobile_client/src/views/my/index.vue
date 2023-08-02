@@ -33,15 +33,20 @@
         </van-col>
     </van-row>
     <van-cell-group inset>
-        <van-cell title="评价活动" is-link value="设置二维码背景" @click="gotoAppraisementQrcodeUpload" />
+        <van-cell title="评价活动" is-link value="设置二维码背景" icon="shop-o" @click="redirectTo('appraisement.qrcode.upload')">
+        </van-cell>
+        <van-cell title="评价活动" is-link value="设置二维码字体" icon="shop-o" @click="redirectTo('appraisement.qrcode.upload')">
+        </van-cell>
+        <van-cell title="账户管理" is-link value="更新账户资料" icon="user-o" @click="redirectTo('account')">
+        </van-cell>
     </van-cell-group>
 </template>
 <script setup lang="ts">
 import my_info from '/@/assets/images/my_info.png';
 const router = useRouter();
 
-const gotoAppraisementQrcodeUpload = () => {
-    router.push({ name: 'appraisement.qrcode.upload' });
+const redirectTo = (routeName: string) => {
+    router.push({ name: routeName });
 };
 </script>
 

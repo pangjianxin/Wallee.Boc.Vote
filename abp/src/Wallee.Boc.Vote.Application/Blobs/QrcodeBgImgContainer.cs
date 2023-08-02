@@ -3,7 +3,7 @@
 namespace Wallee.Boc.Vote.Blobs
 {
     [BlobContainerName("qrcode-bg")]
-    public class QrcodeBackgroundImageContainer
+    public class QrcodeBgImgContainer
     {
         
     }

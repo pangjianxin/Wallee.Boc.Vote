@@ -71,7 +71,7 @@ import {
     AppraisementDto, CandidateOrgUnitDto, CandidateOrgUnitService,
     AppraisementService, EvaluationContentDto, EvaluationContentService, EvaluationCategory
 } from '/@/openapi';
-import { useOrgUnitAppraisementForm } from '../../hooks/useOrgUnitAppraisementForm';
+import { useOrgUnitAppraisementForm } from '../hooks/useOrgUnitAppraisementForm';
 
 
 const router = useRouter();
