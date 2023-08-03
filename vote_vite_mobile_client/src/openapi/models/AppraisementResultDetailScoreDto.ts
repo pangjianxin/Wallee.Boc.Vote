@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type AppraisementResultScoreDetailDto = {
+export type AppraisementResultDetailScoreDto = {
     evaluationContentId?: string;
     content?: string | null;
     score?: number;

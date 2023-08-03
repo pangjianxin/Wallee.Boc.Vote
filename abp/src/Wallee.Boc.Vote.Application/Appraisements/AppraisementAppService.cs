@@ -83,8 +83,8 @@ namespace Wallee.Boc.Vote.Appraisements
 
         public async Task<IRemoteStreamContent> GetDownloadAppraisementQrcode(GetAppraisementQrcodeDto input)
         {
-            var url = $"{_appUrlOptions.Applications["MVC"].RootUrl}/api/vote/appraisement/{input.AppraisementId}/{input.RuleName}";
-            using var bgStream = await _bgImgContainer.GetAsync(AppraisementQrcodeConsts.QrcodeBgImgBlobName);
+            var url = $"{_appUrlOptions.Applications["MVC"].RootUrl}/{AppraisementConsts.Route}?appraisementId={input.AppraisementId}&ruleName={input.RuleName}";
+            using var bgStream = await _bgImgContainer.GetAsync(AppraisementConsts.QrcodeBgImgBlobName);
             using var qrcodeStream = GenerateQrcodeAsync(url);
             SKBitmap backgroundBitmap = SKBitmap.Decode(bgStream);
             // 加载二维码图片
@@ -101,7 +101,7 @@ namespace Wallee.Boc.Vote.Appraisements
                 // 在背景图片上绘制二维码图片
                 canvas.DrawBitmap(qrCodeBitmap, new SKPoint(198, 558));
                 //书写标题
-                await DrawSingleLineText(canvas, $"{input.RuleName}评价入口", 115, 250, 436, 52);
+                await DrawSingleLineText(canvas, $"{input.RuleName}评价入口", 115, 245, 436, 52);
 
                 // 保存绘制结果
                 using (SKImage image = surface.Snapshot())
@@ -127,7 +127,7 @@ namespace Wallee.Boc.Vote.Appraisements
         {
             using (var stream = input.File.GetStream())
             {
-                await _bgImgContainer.SaveAsync(AppraisementQrcodeConsts.QrcodeBgImgBlobName, stream, overrideExisting: true);
+                await _bgImgContainer.SaveAsync(AppraisementConsts.QrcodeBgImgBlobName, stream, overrideExisting: true);
             }
         }
 
@@ -135,7 +135,7 @@ namespace Wallee.Boc.Vote.Appraisements
         {
             using (var stream = input.File.GetStream())
             {
-                await _bgImgFontContainer.SaveAsync(AppraisementQrcodeConsts.QrcodeBgImgFontBlobName, stream, overrideExisting: true);
+                await _bgImgFontContainer.SaveAsync(AppraisementConsts.QrcodeBgImgFontBlobName, stream, overrideExisting: true);
             }
         }
 
@@ -144,11 +144,11 @@ namespace Wallee.Boc.Vote.Appraisements
             //定义画笔
             using (var paint = new SKPaint()
             {
-                Color = SKColor.Parse("d03b3e"),
+                Color = SKColor.Parse("b43837"),
                 TextSize = 32,
                 IsAntialias = true,
                 TextAlign = SKTextAlign.Center,
-                Typeface = SKTypeface.FromStream(await _bgImgFontContainer.GetAsync(AppraisementQrcodeConsts.QrcodeBgImgFontBlobName))
+                Typeface = SKTypeface.FromStream(await _bgImgFontContainer.GetAsync(AppraisementConsts.QrcodeBgImgFontBlobName))
             })
             {
                 //定义一个矩形，此矩形为计算文字区域的结果

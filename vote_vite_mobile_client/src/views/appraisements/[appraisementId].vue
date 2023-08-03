@@ -10,12 +10,12 @@
                 <span class="text-15px fw-1000">{{ appraisement?.name }}</span>
                 <span class="w-5px"></span>
                 <van-tag type="primary">
-                    {{ AppraisementCategory[appraisement?.category!] }}
+                    {{ EvaluationCategory[appraisement?.category!] }}
                 </van-tag>
             </div>
         </template>
         <template #thumb>
-            <van-image :src="bgImg" :fit="'scale-down'"></van-image>
+            <van-image :src="bgImg" :fit="'cover'"></van-image>
         </template>
         <template #desc>
             <div class="text-10px fw-600 c-gray w-100%">
@@ -43,7 +43,6 @@
             </div>
         </template>
         <template #footer>
-            
         </template>
     </van-card>
     <van-divider content-position="left">二维码信息生成</van-divider>
@@ -72,13 +71,14 @@
         </van-cell-group>
     </van-radio-group>
     <van-row justify="end" class="m-10px">
-        <van-button type="primary" size="small" block @click="downloadQrcodeAsync"
-            :disabled="!selectedRadioValue">生成二维码</van-button>
+        <van-button type="primary" size="small" icon="qr" block @click="downloadQrcodeAsync"
+            :disabled="!selectedRadioValue">生成二维码
+        </van-button>
     </van-row>
 </template>
 
 <script setup lang="ts">
-import { AppraisementDto, AppraisementService, AppraisementCategory } from '/@/openapi';
+import { AppraisementDto, AppraisementService, EvaluationCategory } from '/@/openapi';
 import bgImg from '/@/assets/images/appraisement.png';
 import pageHeader from '/@/components/PageHeader/index.vue';
 import dayjs from 'dayjs';

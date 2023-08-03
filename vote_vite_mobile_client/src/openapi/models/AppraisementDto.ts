@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { AppraisementCategory } from './AppraisementCategory';
+import type { EvaluationCategory } from './EvaluationCategory';
 
 export type AppraisementDto = {
     id?: string;
@@ -12,7 +12,7 @@ export type AppraisementDto = {
     lastModifierId?: string | null;
     name?: string | null;
     description?: string | null;
-    category?: AppraisementCategory;
+    category?: EvaluationCategory;
     start?: string;
     end?: string;
     concurrencyStamp?: string | null;

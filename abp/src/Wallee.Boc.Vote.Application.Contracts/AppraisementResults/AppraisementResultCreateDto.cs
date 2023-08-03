@@ -8,14 +8,12 @@ namespace Wallee.Boc.Vote.AppraisementResults
     public class AppraisementResultCreateDto : IValidatableObject
     {
         public Guid AppraisementId { get; set; }
-        /// <summary>
-        /// 被评测对象
-        /// </summary>
-        public Guid CandidateId { get; set; }
+        public string? ClientIp { get; set; }
+        public string RuleName { get; set; } = default!;
         /// <summary>
         /// 分项评分结果
         /// </summary>
-        public List<AppraisementResultScoreDetailDto> ContentScores { get; set; } = null!;
+        public List<AppraisementResultDetailCreateDto> Details { get; set; } = null!;
         /// <summary>
         /// 评测分类
         /// </summary>
@@ -23,11 +21,14 @@ namespace Wallee.Boc.Vote.AppraisementResults
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            foreach (var item in ContentScores)
+            foreach (var detail in Details)
             {
-                if (item.Score < 60 || item.Score > 99)
+                foreach (var scoreDetail in detail.ScoreDetails)
                 {
-                    yield return new ValidationResult($"{item.Content}该项打分不合规,区间为(60,99)");
+                    if (scoreDetail.Score < 60 || scoreDetail.Score > 99)
+                    {
+                        yield return new ValidationResult($"{scoreDetail.Content}该项打分不合规,区间为(60,99)");
+                    }
                 }
             }
         }

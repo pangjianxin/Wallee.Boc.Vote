@@ -1,7 +1,7 @@
 import type { FormInstance, FieldRule } from "vant";
 import { notify, toast } from "/@/utils/app";
 import {
-  AppraisementCategory,
+  EvaluationCategory,
   AppraisementCreateDto,
   AppraisementService,
 } from "/@/openapi";
@@ -47,14 +47,14 @@ export const useAppraisementCreateForm = () => {
     ],
   });
   const clearForm = () => {
-    form.category = AppraisementCategory.部门评价;
+    form.category = EvaluationCategory.部门评价;
     form.name = undefined;
     form.description = undefined;
     form.start = undefined;
     form.end = undefined;
   };
   let form = reactive<AppraisementCreateDto>({
-    category: AppraisementCategory.部门评价,
+    category: EvaluationCategory.部门评价,
   });
 
   const createAppraisement = async () => {

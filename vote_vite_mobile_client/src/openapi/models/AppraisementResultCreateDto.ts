@@ -2,12 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { AppraisementResultScoreDetailDto } from './AppraisementResultScoreDetailDto';
+import type { AppraisementResultDetailCreateDto } from './AppraisementResultDetailCreateDto';
 import type { EvaluationCategory } from './EvaluationCategory';
 
 export type AppraisementResultCreateDto = {
     appraisementId?: string;
-    candidateId?: string;
-    contentScores?: Array<AppraisementResultScoreDetailDto> | null;
+    clientIp?: string | null;
+    ruleName?: string | null;
+    details?: Array<AppraisementResultDetailCreateDto> | null;
     category?: EvaluationCategory;
 };

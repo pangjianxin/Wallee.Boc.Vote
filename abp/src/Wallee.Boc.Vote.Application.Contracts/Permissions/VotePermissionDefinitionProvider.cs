@@ -9,7 +9,7 @@ public class VotePermissionDefinitionProvider : PermissionDefinitionProvider
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var myGroup = context.AddGroup(VotePermissions.GroupName);
+        var myGroup = context.AddGroup(VotePermissions.GroupName, L("Permission:Vote"));
 
         //添加用户查询的权限
         PermissionGroupDefinition identityGroup = context.GetGroup(IdentityPermissions.GroupName);
@@ -27,6 +27,7 @@ public class VotePermissionDefinitionProvider : PermissionDefinitionProvider
         appraisementPermission.AddChild(VotePermissions.Appraisements.Create, L("Permission:Create"));
         appraisementPermission.AddChild(VotePermissions.Appraisements.Update, L("Permission:Update"));
         appraisementPermission.AddChild(VotePermissions.Appraisements.Delete, L("Permission:Delete"));
+        appraisementPermission.AddChild(VotePermissions.Appraisements.QrcodeGeneration, L("Permission:Appraisement:QrcodeGeneration"));
 
         var appraisementResultPermission = myGroup.AddPermission(VotePermissions.AppraisementResults.Default, L("Permission:AppraisementResults"));
         appraisementResultPermission.AddChild(VotePermissions.AppraisementResults.Create, L("Permission:Create"));

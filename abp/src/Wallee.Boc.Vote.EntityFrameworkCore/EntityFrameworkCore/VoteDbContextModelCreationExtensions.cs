@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 using Wallee.Boc.Vote.AppraisementResults;
 using Wallee.Boc.Vote.Appraisements;
@@ -46,7 +41,7 @@ namespace Wallee.Boc.Vote.EntityFrameworkCore
                 it.HasMany(it => it.Details).WithOne().HasForeignKey(it => it.AppraisementResultId);
             });
 
-            builder.Entity<AppraisementResultScoreDetail>(it =>
+            builder.Entity<AppraisementResultDetail>(it =>
             {
                 it.ToTable(VoteConsts.DbTablePrefix + "AppraisementResultScoreDetails", VoteConsts.DbSchema);
                 it.HasKey(it => new { it.AppraisementResultId, it.EvaluationContentId });

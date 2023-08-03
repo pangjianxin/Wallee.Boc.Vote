@@ -7,6 +7,7 @@ using Volo.Abp;
 using Volo.Abp.Application.Services;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.ObjectMapping;
 using Wallee.Boc.Vote.Appraisements;
 
 namespace Wallee.Boc.Vote.AppraisementResults
@@ -28,33 +29,33 @@ namespace Wallee.Boc.Vote.AppraisementResults
 
         public async override Task<AppraisementResultDto> CreateAsync(AppraisementResultCreateDto input)
         {
-            if (await AppraisementResultRepository.AnyAsync(
-                it => it.CreatorId == CurrentUser.Id &&
-                it.AppraisementId == input.AppraisementId &&
-                it.CandidateId == input.CandidateId))
+            if (await AppraisementResultRepository.AnyAsync(it =>
+                it.AppraisementId == input.AppraisementId && it.ClientIp == input.ClientIp))
             {
                 throw new UserFriendlyException("你已评价过该主体");
-
             }
 
-            var result = new AppraisementResult(
-                GuidGenerator.Create(),
-                input.AppraisementId,
-                input.CandidateId,
-                input.Category);
+            var resultList = new List<AppraisementResult>();
 
-            var scoreLst = new List<AppraisementResultScoreDetail>();
-
-            foreach (var item in input.ContentScores)
+            foreach (var detail in input.Details)
             {
-                scoreLst.Add(new AppraisementResultScoreDetail(result.Id, item.EvaluationContentId, item.Content, item.Score, item.Comment));
+                var result = new AppraisementResult(
+                    GuidGenerator.Create(), 
+                    input.AppraisementId, 
+                    detail.CandidateId, 
+                    input.ClientIp!, 
+                    input.RuleName, 
+                    input.Category);
+
+                result.SetDetails(detail.ScoreDetails.Select(it => new AppraisementResultDetail(result.Id, it.EvaluationContentId, it.Content, it.Score, it.Comment)));
+
+                resultList.Add(result);
             }
 
-            result.SetDetails(scoreLst);
 
-            await AppraisementResultRepository.InsertAsync(result);
+            await AppraisementResultRepository.InsertManyAsync(resultList);
 
-            return ObjectMapper.Map<AppraisementResult, AppraisementResultDto>(result);
+            return ObjectMapper.Map<AppraisementResult, AppraisementResultDto>(resultList.First());
         }
         protected override async Task<IQueryable<AppraisementResult>> CreateFilteredQueryAsync(GetAppraisementResultsInputDto input)
         {

@@ -22,7 +22,7 @@
 
                 <div class="flex flex-col items-center">
                     <div class="text-13px fw-1000 c-red-700">
-                        {{ AppraisementCategory[appraisement.category!] }}
+                        {{ EvaluationCategory[appraisement.category!] }}
                     </div>
                     <div class="text-12px c-gray-400 mt-5px">
                         活动类别
@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import { PropType } from 'vue';
-import { AppraisementCategory, AppraisementDto } from '/@/openapi';
+import { EvaluationCategory, AppraisementDto } from '/@/openapi';
 import dayjs from 'dayjs';
 
 defineProps({

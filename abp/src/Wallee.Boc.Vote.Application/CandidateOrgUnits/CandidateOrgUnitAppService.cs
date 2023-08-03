@@ -115,46 +115,48 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
 
         public async Task<List<CandidateOrgUnitDto>> GetCandidateOrgUnitEvaList()
         {
-            PredicateResult? predicateResult = null;
+            //PredicateResult? predicateResult = null;
 
-            var workflow = await _rulesEngineProvider.GetWorkflow(BlobConsts.CandidateOrgUnitEva);
+            //var workflow = await _rulesEngineProvider.GetWorkflow(BlobConsts.CandidateOrgUnitEva);
 
-            var workflows = _jsonSerializer.Deserialize<List<Workflow>>(workflow);
+            //var workflows = _jsonSerializer.Deserialize<List<Workflow>>(workflow);
 
-            //resettings 用户将system命名空间以外的类型带入规则引擎
-            var rulesEngineResetting = new ReSettings()
-            {
-                CustomTypes = new Type[]
-                {
-                   typeof(PredicateResult)
-                }
-            };
+            ////resettings 用户将system命名空间以外的类型带入规则引擎
+            //var rulesEngineResetting = new ReSettings()
+            //{
+            //    CustomTypes = new Type[]
+            //    {
+            //       typeof(PredicateResult)
+            //    }
+            //};
 
-            var rulesEngine = new RulesEngine.RulesEngine(workflows.ToArray(), rulesEngineResetting);
+            //var rulesEngine = new RulesEngine.RulesEngine(workflows.ToArray(), rulesEngineResetting);
 
-            //rule parameter用于规则引擎计算时传入的参数，还有另外一种local params，在规则引擎中进行定义
-            var ruleParameter = new RuleParameter("user", new
-            {
-                roles = CurrentUser.Roles,
-                orgUnits = CurrentUser.FindOrganizationUnits()
-            });
+            ////rule parameter用于规则引擎计算时传入的参数，还有另外一种local params，在规则引擎中进行定义
+            //var ruleParameter = new RuleParameter("user", new
+            //{
+            //    roles = CurrentUser.Roles,
+            //    orgUnits = CurrentUser.FindOrganizationUnits()
+            //});
 
-            var results = await rulesEngine.ExecuteAllRulesAsync(BlobConsts.CandidateOrgUnitEva, ruleParameter);
+            //var results = await rulesEngine.ExecuteAllRulesAsync(BlobConsts.CandidateOrgUnitEva, ruleParameter);
 
-            results.OnSuccess(successEvent =>
-            {
-                predicateResult = results.First(it => it.Rule.SuccessEvent == successEvent).ActionResult.Output as PredicateResult;
-            });
+            //results.OnSuccess(successEvent =>
+            //{
+            //    predicateResult = results.First(it => it.Rule.SuccessEvent == successEvent).ActionResult.Output as PredicateResult;
+            //});
 
-            if (predicateResult != null)
-            {
-                var list = await _candidateOrgUnitRepository.GetListDynamicallyAsync(predicateResult.Predicate, predicateResult.Parameters);
-                return ObjectMapper.Map<List<CandidateOrgUnit>, List<CandidateOrgUnitDto>>(list);
-            }
-            else
-            {
-                return new List<CandidateOrgUnitDto>();
-            }
+            //if (predicateResult != null)
+            //{
+            //    var list = await _candidateOrgUnitRepository.GetListDynamicallyAsync(predicateResult.Predicate, predicateResult.Parameters);
+            //    return ObjectMapper.Map<List<CandidateOrgUnit>, List<CandidateOrgUnitDto>>(list);
+            //}
+            //else
+            //{
+            //    return new List<CandidateOrgUnitDto>();
+            //}
+
+            return await MapToGetListOutputDtosAsync(await _candidateOrgUnitRepository.GetListAsync());
         }
 
         protected override async Task<IQueryable<CandidateOrgUnit>> CreateFilteredQueryAsync(GetCandidateOrgUnitsInputDto input)

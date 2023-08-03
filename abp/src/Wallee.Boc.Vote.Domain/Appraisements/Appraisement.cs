@@ -16,7 +16,7 @@ namespace Wallee.Boc.Vote.Appraisements
             Guid id,
             string name,
             string description,
-            AppraisementCategory category,
+            EvaluationCategory category,
             DateTime start,
             DateTime end) : base(id)
         {
@@ -29,7 +29,7 @@ namespace Wallee.Boc.Vote.Appraisements
         }
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public AppraisementCategory Category { get; private set; }
+        public EvaluationCategory Category { get; private set; }
         public DateTime Start { get; private set; }
         public DateTime End { get; private set; }
 
@@ -53,7 +53,7 @@ namespace Wallee.Boc.Vote.Appraisements
             End = end;
         }
 
-        public void SetCategory(AppraisementCategory category)
+        public void SetCategory(EvaluationCategory category)
         {
             Category = category;
         }

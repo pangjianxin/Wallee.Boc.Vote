@@ -47,14 +47,12 @@ filter,
 skipCount,
 maxResultCount,
 sorting,
-creatorId,
 combineWith,
 }: {
 filter?: string,
 skipCount?: number,
 maxResultCount?: number,
 sorting?: string,
-creatorId?: string,
 combineWith?: CombineType,
 }): CancelablePromise<PagedResultDtoOfAppraisementResultDto> {
         return __request(OpenAPI, {
@@ -65,7 +63,6 @@ combineWith?: CombineType,
                 'SkipCount': skipCount,
                 'MaxResultCount': maxResultCount,
                 'Sorting': sorting,
-                'CreatorId': creatorId,
                 'CombineWith': combineWith,
             },
             errors: {

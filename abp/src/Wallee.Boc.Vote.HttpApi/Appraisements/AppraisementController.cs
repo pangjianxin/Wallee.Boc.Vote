@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,7 +15,7 @@ namespace Wallee.Boc.Vote.Appraisements
     /// 评价活动接口
     /// </summary>
     [RemoteService(Name = VoteRemoteServiceConsts.RemoteServiceName)]
-    [Route("api/vote/appraisement")]
+    [Route(AppraisementConsts.Route)]
     [Authorize(VotePermissions.Appraisements.Default)]
     public class AppraisementController : VoteController, IAppraisementAppService, ITransientDependency
     {
@@ -87,7 +86,6 @@ namespace Wallee.Boc.Vote.Appraisements
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpGet]
-        [EnableRateLimiting("UserBasedRateLimiting")]
         public async Task<PagedResultDto<AppraisementDto>> GetListAsync(GetAppraisementsInputDto input)
         {
             return await _appraisementAppService.GetListAsync(input);

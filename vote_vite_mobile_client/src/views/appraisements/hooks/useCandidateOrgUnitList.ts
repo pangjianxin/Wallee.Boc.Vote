@@ -1,10 +1,10 @@
 import { CandidateOrgUnitDto, CandidateOrgUnitService } from "/@/openapi";
 
 export const useCandidateOrgUnitList = () => {
-  let list = ref<CandidateOrgUnitDto[]>([]);
-  const getList = async () => {
-    list.value =
+  let orgUnitCandidateList = ref<CandidateOrgUnitDto[]>([]);
+  const getOrgUnitCandidateList = async () => {
+    orgUnitCandidateList.value =
       await CandidateOrgUnitService.candidateOrgUnitGetCandidateOrgUnitEvaList();
   };
-  return { list, getList };
+  return { orgUnitCandidateList, getOrgUnitCandidateList };
 };

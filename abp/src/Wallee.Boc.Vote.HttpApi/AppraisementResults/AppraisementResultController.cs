@@ -2,11 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.AspNetCore.WebClientInfo;
 using Volo.Abp.DependencyInjection;
-using Volo.Abp.Identity;
 using Wallee.Boc.Vote.Permissions;
 
 namespace Wallee.Boc.Vote.AppraisementResults
@@ -17,15 +16,20 @@ namespace Wallee.Boc.Vote.AppraisementResults
     public class AppraisementResultController : VoteController, IAppraisementResultAppService, ITransientDependency
     {
         private readonly IAppraisementResultAppService _appraisementResultAppService;
+        private readonly IWebClientInfoProvider _webClientInfoProvider;
 
-        public AppraisementResultController(IAppraisementResultAppService appraisementResultAppService)
+        public AppraisementResultController(
+            IAppraisementResultAppService appraisementResultAppService,
+            IWebClientInfoProvider webClientInfoProvider)
         {
             _appraisementResultAppService = appraisementResultAppService;
+            _webClientInfoProvider = webClientInfoProvider;
         }
 
         [HttpPost]
         public async Task<AppraisementResultDto> CreateAsync(AppraisementResultCreateDto input)
         {
+            input.ClientIp = _webClientInfoProvider.ClientIpAddress;
             return await _appraisementResultAppService.CreateAsync(input);
         }
 

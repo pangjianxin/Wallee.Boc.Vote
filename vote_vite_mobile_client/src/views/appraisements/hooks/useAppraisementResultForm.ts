@@ -3,45 +3,25 @@ import { toast, notify } from "/@/utils/app";
 import {
   AppraisementResultService,
   AppraisementResultCreateDto,
+  EvaluationCategory,
 } from "/@/openapi";
 
-export const useOrgUnitAppraisementForm = () => {
+export const useAppraisementResultForm = () => {
   let loading = ref(false);
 
   let form = reactive<AppraisementResultCreateDto>({
     appraisementId: undefined,
-    candidateId: undefined,
-    contentScores: null,
-    category: undefined,
+    ruleName: null,
+    category: EvaluationCategory.部门评价,
+    details: [],
   });
 
   let formRules = reactive<Record<string, FieldRule[]>>({
     appraisementId: [
       { required: true, message: "请输入评价id", trigger: "onBlur" },
     ],
-    candidateId: [
-      {
-        required: true,
-        message: "请输入候选人id",
-        trigger: "onBlur",
-      },
-    ],
-    contentScores: [
-      {
-        required: true,
-        message: "请输入内容分数",
-        trigger: "onBlur",
-      },
-      {
-        validator: async (value, _rule) => {
-          if (value < 60 || value > 99) {
-            return false;
-          }
-          return true;
-        },
-        message: "内容分数区间为[60,99]",
-        trigger: "onChange",
-      },
+    ruleName: [
+      { required: true, message: "请输入评价者角色", trigger: "onBlur" },
     ],
     category: [
       {

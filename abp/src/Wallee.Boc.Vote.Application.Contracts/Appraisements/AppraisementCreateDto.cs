@@ -7,7 +7,7 @@ namespace Wallee.Boc.Vote.Appraisements
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
 
-        public AppraisementCategory Category { get; set; }
+        public EvaluationCategory Category { get; set; }
 
         public DateTime Start { get; set; }
         public DateTime End { get; set; }

@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { AppraisementResultDetailDto } from './AppraisementResultDetailDto';
 import type { EvaluationCategory } from './EvaluationCategory';
 
 export type AppraisementResultDto = {
@@ -10,8 +11,11 @@ export type AppraisementResultDto = {
     creatorId?: string | null;
     lastModificationTime?: string | null;
     lastModifierId?: string | null;
-    candidateId?: string;
-    content?: string | null;
-    score?: number;
+    readonly clientIp?: string | null;
+    readonly ruleName?: string | null;
+    readonly appraisementId?: string;
+    readonly candidateId?: string;
+    readonly details?: Array<AppraisementResultDetailDto> | null;
+    readonly score?: number;
     category?: EvaluationCategory;
 };

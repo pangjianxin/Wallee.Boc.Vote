@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { AppraisementCategory } from './AppraisementCategory';
+import type { EvaluationCategory } from './EvaluationCategory';
 
 export type AppraisementCreateDto = {
     name?: string | null;
     description?: string | null;
-    category?: AppraisementCategory;
+    category?: EvaluationCategory;
     start?: string;
     end?: string;
 };

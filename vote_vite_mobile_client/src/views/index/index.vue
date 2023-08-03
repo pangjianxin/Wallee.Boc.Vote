@@ -23,17 +23,18 @@
 <script setup lang="ts">
 import appraisementVue from './components/appraisement.vue';
 import useAvailableAppraisementList from './hooks/useAvailableAppraisementList';
-import { AppraisementCategory } from '/@/openapi';
+import { EvaluationCategory } from '/@/openapi';
 const router = useRouter();
 const { loading, list, getAvailableAppraisements } = useAvailableAppraisementList();
 
-const gotoAppraisement = async (category: AppraisementCategory, appraisementId: string) => {
+const gotoAppraisement = async (category: EvaluationCategory, appraisementId: string) => {
   switch (category) {
-    case AppraisementCategory.部门评价:
+    case EvaluationCategory.部门评价:
       await router.push({
-        name: "appraisement.xxx",
+        name: "appraisement.eva",
         params: {
-          appraisementId: appraisementId
+          appraisementId: appraisementId,
+          ruleName: "分行正职"
         }
       })
   }

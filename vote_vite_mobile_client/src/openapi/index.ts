@@ -13,12 +13,13 @@ export type { ApplicationLocalizationConfigurationDto } from './models/Applicati
 export type { ApplicationLocalizationDto } from './models/ApplicationLocalizationDto';
 export type { ApplicationLocalizationResourceDto } from './models/ApplicationLocalizationResourceDto';
 export type { ApplicationSettingConfigurationDto } from './models/ApplicationSettingConfigurationDto';
-export { AppraisementCategory } from './models/AppraisementCategory';
 export type { AppraisementCreateDto } from './models/AppraisementCreateDto';
 export type { AppraisementDto } from './models/AppraisementDto';
 export type { AppraisementResultCreateDto } from './models/AppraisementResultCreateDto';
+export type { AppraisementResultDetailCreateDto } from './models/AppraisementResultDetailCreateDto';
+export type { AppraisementResultDetailDto } from './models/AppraisementResultDetailDto';
+export type { AppraisementResultDetailScoreDto } from './models/AppraisementResultDetailScoreDto';
 export type { AppraisementResultDto } from './models/AppraisementResultDto';
-export type { AppraisementResultScoreDetailDto } from './models/AppraisementResultScoreDetailDto';
 export type { AppraisementResultUpdateDto } from './models/AppraisementResultUpdateDto';
 export type { AppraisementUpdateDto } from './models/AppraisementUpdateDto';
 export { CandidateOrgUnitCategory } from './models/CandidateOrgUnitCategory';

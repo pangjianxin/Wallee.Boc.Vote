@@ -15,13 +15,19 @@ namespace Wallee.Boc.Vote.AppraisementResults
             Guid id,
             Guid appraisementId,
             Guid candidateId,
+            string clientIp,
+            string ruleName,
             EvaluationCategory category) : base(id)
         {
             AppraisementId = appraisementId;
             CandidateId = candidateId;
+            ClientIp = clientIp;
+            RuleName = ruleName;
             Category = category;
-            Details = new List<AppraisementResultScoreDetail>();
+            Details = new List<AppraisementResultDetail>();
         }
+        public string ClientIp { get; private set; }
+        public string RuleName { get; private set; }
         /// <summary>
         /// 评测活动Id
         /// </summary>
@@ -33,7 +39,7 @@ namespace Wallee.Boc.Vote.AppraisementResults
         /// <summary>
         /// 明细
         /// </summary>
-        public ICollection<AppraisementResultScoreDetail> Details { get; private set; }
+        public ICollection<AppraisementResultDetail> Details { get; private set; }
         /// <summary>
         /// 相关得分
         /// </summary>
@@ -43,7 +49,7 @@ namespace Wallee.Boc.Vote.AppraisementResults
         /// </summary>
         public EvaluationCategory Category { get; private set; }
 
-        public void SetDetails(IEnumerable<AppraisementResultScoreDetail> details)
+        public void SetDetails(IEnumerable<AppraisementResultDetail> details)
         {
             if (Details.Count > 0)
             {
