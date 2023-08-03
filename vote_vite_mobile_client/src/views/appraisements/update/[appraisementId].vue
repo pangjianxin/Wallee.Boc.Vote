@@ -23,8 +23,8 @@
                 <van-field input-align="right" name="category" left-icon="description" label="活动类别">
                     <template #input>
                         <van-radio-group v-model="form.category" direction="horizontal">
-                            <van-radio v-for="item in enum2arr(AppraisementCategory)" label-position="right" :name="item">
-                                {{ AppraisementCategory[item] }}
+                            <van-radio v-for="item in enum2arr(EvaluationCategory)" label-position="right" :name="item">
+                                {{ EvaluationCategory[item] }}
                             </van-radio>
                         </van-radio-group>
                     </template>
@@ -65,7 +65,7 @@ import pageHeader from '/@/components/PageHeader/index.vue';
 import { useAppraisementUpdateForm } from '../hooks/useAppraisementUpdateForm';
 import { enum2arr, toast } from '/@/utils/app';
 import dayjs from 'dayjs';
-import { AppraisementCategory, AppraisementService } from '/@/openapi';
+import { EvaluationCategory, AppraisementService } from '/@/openapi';
 
 let showCalendar = ref(false);
 const { id, loading, form, formRef, formRules, updateAppraisement } = useAppraisementUpdateForm();

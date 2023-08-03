@@ -1,6 +1,6 @@
 import type { FormInstance, FieldRule } from "vant";
 import {
-  AppraisementCategory,
+  EvaluationCategory,
   AppraisementUpdateDto,
   AppraisementService,
 } from "/@/openapi";
@@ -47,7 +47,7 @@ export const useAppraisementUpdateForm = () => {
     ],
   });
   const clearForm = () => {
-    form.category = AppraisementCategory.部门评价;
+    form.category = EvaluationCategory.部门评价;
     form.name = undefined;
     form.description = undefined;
     form.start = undefined;

@@ -1,20 +1,24 @@
 <template>
-    <div v-if="appraisementConfirmed" class="h-100%">
+    <div v-if="appraisementConfirmed" class="m-5px">
         <div class="w-100%">
-            <pageHeader>
-                <template #title>{{ appraisement?.name }}</template>
-                <template #sub-title>
-                    <van-text-ellipsis :content="appraisement?.description!" :row="1" expand-text="展开" collapse-text="收起"
-                        style="width:100%;">
-                    </van-text-ellipsis>
+            <appraisementVue v-if="appraisement" :appraisement="appraisement!">
+                <template #tags>
+                    <div class="flex flex-row items-center">
+                        <span>
+                            当前角色：
+                        </span>
+                        <van-tag type="primary">
+                            {{ ruleName }}
+                        </van-tag>
+                    </div>
                 </template>
-            </pageHeader>
+            </appraisementVue>
             <van-form ref="formRef" @submit="createAppraisementResult" class="mt-10px">
                 <van-collapse v-for="(item, index) in form.details" v-model="currCollapseName">
                     <van-collapse-item :name=index>
                         <template #title>
-                            <div>
-                                <span>
+                            <div class="flex flex-row items-center">
+                                <span class="text-1rem fw-700 c-black">
                                     {{ orgUnitCandidateList?.find(it => it.id === item.candidateId)!.organName }}
                                 </span>
                                 &nbsp;
@@ -24,7 +28,9 @@
                                 </van-tag>
                             </div>
                         </template>
-
+                        <template #value>
+                            展开/折叠
+                        </template>
                         <template v-for="(detail, detailIndex) in item.scoreDetails" :key="detailIndex">
                             <div class="flex flex-col">
                                 <span class="text-13px c-black fw-600">{{ detail.content }}</span>
@@ -65,13 +71,25 @@
                     </van-button>
                 </van-row>
             </van-form>
+            <van-back-top right="0" bottom="13vh" />
         </div>
     </div>
     <div v-else>
-        <div>
-            <van-button type="primary" @click="appraisementConfirmed = true">
-                开始评测
-            </van-button>
+        <div class="m-5px h-100% flex flex-col">
+            <van-image :src="appraisement_img" class="relative mb--30px"></van-image>
+            <appraisementVue v-if="appraisement" :appraisement="appraisement!">
+                <template #tags>
+                    <div class="flex flex-row">
+                        <span class="text-13px">当前角色:</span>
+                        <span>
+                            <van-tag type="primary">
+                                {{ ruleName }}
+                            </van-tag>
+                        </span>
+                    </div>
+                </template>
+            </appraisementVue>
+            <van-button type="primary" block class="mt-10px" @click="appraisementConfirmed = true">开始评价</van-button>
         </div>
     </div>
 </template>
@@ -82,8 +100,10 @@ import { useCandidateOrgUnitList } from '/@/views/appraisements/hooks/useCandida
 import { useEvaluationContentList } from '/@/views/appraisements/hooks/useEvaluationContentList';
 import { useAppraisementResultForm } from '/@/views/appraisements/hooks/useAppraisementResultForm';
 import { EvaluationCategory, AppraisementDto, AppraisementService, CandidateOrgUnitCategory } from '/@/openapi';
+import appraisementVue from '/@/views/appraisements/components/appraisement.vue';
+import appraisement_img from '/@/assets/images/appraisement.png';
+import dayjs from 'dayjs';
 const route = useRoute();
-const router = useRouter();
 let currCollapseName = ref([0]);
 let appraisementId = ref("");
 let ruleName = ref("");
@@ -101,31 +121,35 @@ const getAppraisementInfo = async () => {
 onMounted(async () => {
     appraisementId.value = route.params.appraisementId as string;
     ruleName.value = route.params.ruleName as string;
+    form.appraisementId = appraisementId.value;
+    form.ruleName = ruleName.value;
     await getAppraisementInfo();
     await getOrgUnitCandidateList();
     await getEvaContentList(appraisement.value?.category!);
 });
 
-watch([orgUnitCandidateList, evaContentList], ([newOrgUnits, newEvaContents], [_oldVal1, _oldVal2]) => {
-
-    if (newOrgUnits && newEvaContents) {
-        form.details = newOrgUnits.map(it => {
-            return {
-                candidateId: it.id,
-                scoreDetails: newEvaContents.map(eva => {
-                    return {
-                        content: eva.name,
-                        evaluationContentId: eva.id,
-                        score: 60,
-                        comment: ""
-                    }
-                })
-            }
-        })
-    }
-}, {
-    deep: true
-})
+watch(
+    [orgUnitCandidateList, evaContentList],
+    ([newOrgUnits, newEvaContents], [_oldVal1, _oldVal2]) => {
+        if (newOrgUnits && newEvaContents) {
+            form.details = newOrgUnits.map(it => {
+                return {
+                    candidateId: it.id,
+                    scoreDetails: newEvaContents.map(eva => {
+                        return {
+                            content: eva.name,
+                            evaluationContentId: eva.id,
+                            score: 99,
+                            comment: ""
+                        }
+                    })
+                }
+            })
+        }
+    },
+    {
+        deep: true
+    })
 </script>
 
 <style scoped></style>
