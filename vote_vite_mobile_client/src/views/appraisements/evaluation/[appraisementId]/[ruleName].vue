@@ -95,14 +95,12 @@
 </template>
 
 <script setup lang="ts">
-import pageHeader from '/@/components/PageHeader/index.vue';
 import { useCandidateOrgUnitList } from '/@/views/appraisements/hooks/useCandidateOrgUnitList';
 import { useEvaluationContentList } from '/@/views/appraisements/hooks/useEvaluationContentList';
 import { useAppraisementResultForm } from '/@/views/appraisements/hooks/useAppraisementResultForm';
-import { EvaluationCategory, AppraisementDto, AppraisementService, CandidateOrgUnitCategory } from '/@/openapi';
+import { AppraisementDto, AppraisementService, CandidateOrgUnitCategory } from '/@/openapi';
 import appraisementVue from '/@/views/appraisements/components/appraisement.vue';
 import appraisement_img from '/@/assets/images/appraisement.png';
-import dayjs from 'dayjs';
 const route = useRoute();
 let currCollapseName = ref([0]);
 let appraisementId = ref("");

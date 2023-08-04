@@ -8,5 +8,7 @@ public class VoteSettingDefinitionProvider : SettingDefinitionProvider
     {
         //Define your own settings here. Example:
         //context.Add(new SettingDefinition(VoteSettings.MySetting1));
+
+        context.Add(new SettingDefinition(VoteSettings.AppraisementQrcodeUrl, isVisibleToClients: true));
     }
 }

@@ -1,6 +1,4 @@
 ﻿using AutoFilterer.Extensions;
-using RulesEngine.Extensions;
-using RulesEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +9,6 @@ using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
 using Volo.Abp.Json;
 using Wallee.Boc.Vote.Blobs;
-using Wallee.Boc.Vote.Identity;
 using Wallee.Boc.Vote.RulesEngines;
 
 namespace Wallee.Boc.Vote.CandidateOrgUnits

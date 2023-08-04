@@ -25,6 +25,7 @@ using Volo.Abp.AutoMapper;
 using Volo.Abp.Identity.Web;
 using Volo.Abp.Modularity;
 using Volo.Abp.SettingManagement.Web;
+using Volo.Abp.SettingManagement.Web.Pages.SettingManagement;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.TenantManagement.Web;
 using Volo.Abp.Timing;
@@ -36,6 +37,7 @@ using Wallee.Boc.Vote.Localization;
 using Wallee.Boc.Vote.MultiTenancy;
 using Wallee.Boc.Vote.Web.Extensions;
 using Wallee.Boc.Vote.Web.Menus;
+using Wallee.Boc.Vote.Web.Settings;
 
 namespace Wallee.Boc.Vote.Web;
 
@@ -99,10 +101,11 @@ public class VoteWebModule : AbpModule
         ConfigureVirtualFileSystem(hostingEnvironment);
         ConfigureNavigationServices();
         ConfigureAutoApiControllers();
-        ConfigureSwaggerServices(context.Services);      
+        ConfigureSwaggerServices(context.Services);
         ConfigureClock();
         context.ConfigureCors(configuration);
         context.ConfigureRateLimiters();
+        ConfigureSettingManagementPageOptions();
     }
 
     private void ConfigureClock()
@@ -116,6 +119,14 @@ public class VoteWebModule : AbpModule
     private void ConfigureAuthentication(ServiceConfigurationContext context)
     {
         context.Services.ForwardIdentityAuthenticationForBearer(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
+    }
+
+    private void ConfigureSettingManagementPageOptions()
+    {
+        Configure<SettingManagementPageOptions>(options =>
+        {
+            options.Contributors.Add(new VoteSettingPageContributor());
+        });
     }
 
     private void ConfigureUrls(IConfiguration configuration)

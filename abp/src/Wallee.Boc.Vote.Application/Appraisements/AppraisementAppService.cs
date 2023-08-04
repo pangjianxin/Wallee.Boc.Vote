@@ -11,8 +11,10 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.Content;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Settings;
 using Volo.Abp.UI.Navigation.Urls;
 using Wallee.Boc.Vote.Blobs;
+using Wallee.Boc.Vote.Settings;
 
 namespace Wallee.Boc.Vote.Appraisements
 {
@@ -22,18 +24,18 @@ namespace Wallee.Boc.Vote.Appraisements
     {
         private readonly IBlobContainer<QrcodeBgImgContainer> _bgImgContainer;
         private readonly IBlobContainer<QrcodeBgImgFontContainer> _bgImgFontContainer;
+        private readonly ISettingProvider _settingProvider;
         public readonly IAppraisementRepository _appraisementRepository;
-        private readonly AppUrlOptions _appUrlOptions;
         public AppraisementAppService(
             IAppraisementRepository appraisementRepository,
             IBlobContainer<QrcodeBgImgContainer> bgImgContainer,
             IBlobContainer<QrcodeBgImgFontContainer> bgImgFontContainer,
-            IOptions<AppUrlOptions> appUrlOptions) : base(appraisementRepository)
+            ISettingProvider settingProvider) : base(appraisementRepository)
         {
             _appraisementRepository = appraisementRepository;
             _bgImgContainer = bgImgContainer;
             _bgImgFontContainer = bgImgFontContainer;
-            _appUrlOptions = appUrlOptions.Value;
+            _settingProvider = settingProvider;
         }
 
 
@@ -83,9 +85,10 @@ namespace Wallee.Boc.Vote.Appraisements
 
         public async Task<IRemoteStreamContent> GetDownloadAppraisementQrcode(GetAppraisementQrcodeDto input)
         {
-            var url = $"{_appUrlOptions.Applications["MVC"].RootUrl}/{AppraisementConsts.Route}?appraisementId={input.AppraisementId}&ruleName={input.RuleName}";
+            var urlTemplate = string.Format(await _settingProvider.GetOrNullAsync(VoteSettings.AppraisementQrcodeUrl), input.AppraisementId, input.RuleName);
+
             using var bgStream = await _bgImgContainer.GetAsync(AppraisementConsts.QrcodeBgImgBlobName);
-            using var qrcodeStream = GenerateQrcodeAsync(url);
+            using var qrcodeStream = GenerateQrcodeAsync(urlTemplate);
             SKBitmap backgroundBitmap = SKBitmap.Decode(bgStream);
             // 加载二维码图片
             SKBitmap qrCodeBitmap = SKBitmap.Decode(qrcodeStream);

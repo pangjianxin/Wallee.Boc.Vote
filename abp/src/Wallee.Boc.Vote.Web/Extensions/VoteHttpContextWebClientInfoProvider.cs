@@ -6,6 +6,8 @@ using Volo.Abp.DependencyInjection;
 
 namespace Wallee.Boc.Vote.Web.Extensions
 {
+    [ExposeServices(typeof(IWebClientInfoProvider))]
+    [Dependency(ReplaceServices = true)]
     public class VoteHttpContextWebClientInfoProvider : IWebClientInfoProvider, ITransientDependency
     {
         protected ILogger<HttpContextWebClientInfoProvider> Logger { get; }
@@ -32,7 +34,8 @@ namespace Wallee.Boc.Vote.Web.Extensions
         {
             try
             {
-                var clientIp = HttpContextAccessor.HttpContext?.Request.Headers["X-Real-IP"];
+                //X-Real-IP
+                var clientIp = HttpContextAccessor.HttpContext?.Request.Headers["X-Forwarded-For"];
 
                 if (clientIp.HasValue)
                 {
