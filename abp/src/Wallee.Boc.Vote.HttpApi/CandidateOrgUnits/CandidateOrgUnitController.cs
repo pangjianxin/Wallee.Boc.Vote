@@ -62,20 +62,6 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
             return await _candidateOrgUnitAppService.UpdateAsync(id, input);
         }
 
-        [HttpGet]
-        [Route("rules-engine")]
-        public Task<string?> GetRulesEngine()
-        {
-            return _candidateOrgUnitAppService.GetRulesEngine();
-        }
-
-        [HttpPost]
-        [Route("rules-engine")]
-        public async Task UpdateRulesEngine(string workflowDef)
-        {
-            await _candidateOrgUnitAppService.UpdateRulesEngine(workflowDef);
-        }
-
         [HttpPut]
         [Route("supervior/{id}")]
         public async Task<CandidateOrgUnitDto> UpdateSuperiorAsync(Guid id, CandidateOrgUnitUpdateSuperiorDto input)

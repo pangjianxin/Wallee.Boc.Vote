@@ -124,9 +124,11 @@ export type { UpdateFeaturesDto } from './models/UpdateFeaturesDto';
 export type { UpdatePermissionDto } from './models/UpdatePermissionDto';
 export type { UpdatePermissionsDto } from './models/UpdatePermissionsDto';
 export type { UpdateProfileDto } from './models/UpdateProfileDto';
+export type { UpdateVoteSettingsDto } from './models/UpdateVoteSettingsDto';
 export type { UserData } from './models/UserData';
 export type { UserLoginInfo } from './models/UserLoginInfo';
 export type { VerifyPasswordResetTokenInput } from './models/VerifyPasswordResetTokenInput';
+export type { VoteSettingsDto } from './models/VoteSettingsDto';
 export type { WindowsTimeZone } from './models/WindowsTimeZone';
 
 export { AbpApiDefinitionService } from './services/AbpApiDefinitionService';
@@ -148,3 +150,4 @@ export { RoleService } from './services/RoleService';
 export { TenantService } from './services/TenantService';
 export { UserService } from './services/UserService';
 export { UserLookupService } from './services/UserLookupService';
+export { VoteSettingsService } from './services/VoteSettingsService';

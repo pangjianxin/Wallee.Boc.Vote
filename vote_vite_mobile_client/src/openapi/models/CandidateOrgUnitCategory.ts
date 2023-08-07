@@ -3,7 +3,6 @@
 /* eslint-disable */
 
 export enum CandidateOrgUnitCategory {
-    前台部门 = 1,
-    综合管理 = 2,
-    支持保障 = 3,
+    业务部门 = 1,
+    非业务部门 = 2,
 }

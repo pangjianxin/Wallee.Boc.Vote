@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
-using Wallee.Boc.Vote.Localization;
-using Wallee.Boc.Vote.MultiTenancy;
 using Volo.Abp.Identity.Web.Navigation;
 using Volo.Abp.SettingManagement.Web.Navigation;
 using Volo.Abp.TenantManagement.Web.Navigation;
 using Volo.Abp.UI.Navigation;
+using Wallee.Boc.Vote.Localization;
+using Wallee.Boc.Vote.MultiTenancy;
 using Wallee.Boc.Vote.Permissions;
-using Volo.Abp.Authorization.Permissions;
 
 namespace Wallee.Boc.Vote.Web.Menus;
 
@@ -59,7 +58,8 @@ public class VoteMenuContributor : IMenuContributor
         administration.Icon = "fas fa-user-cog";
         administration.DisplayName = "系统管理";
         var rulesEngineMenu = new ApplicationMenuItem(VoteMenus.RulesEngine, l["Menu:RulesEngine"], url: "/RulesEngines", icon: "fas fa-cogs", order: 4);
-        rulesEngineMenu.AddItem(new ApplicationMenuItem(VoteMenus.RulesEngine_CandidtaeOrgUnit, l["Menu:RulesEngine_CandidtaeOrgUnit"], url: "/RulesEngines/CandidateOrgUnits", icon: "fas fa-cogs", order: 1));
+        rulesEngineMenu.AddItem(new ApplicationMenuItem(VoteMenus.RulesEngine_Appraisement_RuleNames, l["Menu:RulesEnging_Appraisement_Rulenames"], url: "/RulesEngines/Appraisements/RuleNames", icon: "fas fa-cogs", order: 1));
+        rulesEngineMenu.AddItem(new ApplicationMenuItem(VoteMenus.RulesEngine_AppraisementResult_Rule_Weight, l["Menu:RulesEnging_AppraisementResult_Rule_Weight"], url: "/RulesEngines/AppraisementResults/RuleWeight", icon: "fas fa-cogs", order: 2));
         administration.AddItem(rulesEngineMenu);
     }
 }

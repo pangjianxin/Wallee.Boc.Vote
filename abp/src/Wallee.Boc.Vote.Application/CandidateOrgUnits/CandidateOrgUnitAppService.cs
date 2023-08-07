@@ -7,9 +7,6 @@ using Volo.Abp;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
-using Volo.Abp.Json;
-using Wallee.Boc.Vote.Blobs;
-using Wallee.Boc.Vote.RulesEngines;
 
 namespace Wallee.Boc.Vote.CandidateOrgUnits
 {
@@ -17,28 +14,19 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         CrudAppService<CandidateOrgUnit, CandidateOrgUnitDto, Guid, GetCandidateOrgUnitsInputDto, CandidateOrgUnitCreateDto, CandidateOrgUnitUpdateDto>,
         ICandidateOrgUnitAppService
     {
-        private readonly IJsonSerializer _jsonSerializer;
         private readonly IOrganizationUnitRepository _organizationUnitRepository;
         public readonly ICandidateOrgUnitRepository _candidateOrgUnitRepository;
         public IIdentityUserAppService _userAppService;
-        private readonly IRulesEngineProvider _rulesEngineProvider;
 
         public CandidateOrgUnitAppService(
             ICandidateOrgUnitRepository candidateOrgUnitRepository,
             IIdentityUserAppService userAppService,
-            IRulesEngineProvider rulesEngineProvider,
-            IJsonSerializer jsonSerializer,
             IOrganizationUnitRepository organizationUnitRepository) : base(candidateOrgUnitRepository)
         {
             _candidateOrgUnitRepository = candidateOrgUnitRepository;
             _userAppService = userAppService;
-            _rulesEngineProvider = rulesEngineProvider;
-            _jsonSerializer = jsonSerializer;
             _organizationUnitRepository = organizationUnitRepository;
         }
-
-
-
 
         public async override Task<CandidateOrgUnitDto> CreateAsync(CandidateOrgUnitCreateDto input)
         {
@@ -100,59 +88,9 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
             return ObjectMapper.Map<CandidateOrgUnit, CandidateOrgUnitDto>(department);
         }
 
-        public async Task UpdateRulesEngine(string workflowDef)
-        {
-            await _rulesEngineProvider.UpdateWorkflow(BlobConsts.CandidateOrgUnitEva, workflowDef);
-        }
-
-        public async Task<string?> GetRulesEngine()
-        {
-            return await _rulesEngineProvider.GetWorkflow(BlobConsts.CandidateOrgUnitEva);
-        }
 
         public async Task<List<CandidateOrgUnitDto>> GetCandidateOrgUnitEvaList()
         {
-            //PredicateResult? predicateResult = null;
-
-            //var workflow = await _rulesEngineProvider.GetWorkflow(BlobConsts.CandidateOrgUnitEva);
-
-            //var workflows = _jsonSerializer.Deserialize<List<Workflow>>(workflow);
-
-            ////resettings 用户将system命名空间以外的类型带入规则引擎
-            //var rulesEngineResetting = new ReSettings()
-            //{
-            //    CustomTypes = new Type[]
-            //    {
-            //       typeof(PredicateResult)
-            //    }
-            //};
-
-            //var rulesEngine = new RulesEngine.RulesEngine(workflows.ToArray(), rulesEngineResetting);
-
-            ////rule parameter用于规则引擎计算时传入的参数，还有另外一种local params，在规则引擎中进行定义
-            //var ruleParameter = new RuleParameter("user", new
-            //{
-            //    roles = CurrentUser.Roles,
-            //    orgUnits = CurrentUser.FindOrganizationUnits()
-            //});
-
-            //var results = await rulesEngine.ExecuteAllRulesAsync(BlobConsts.CandidateOrgUnitEva, ruleParameter);
-
-            //results.OnSuccess(successEvent =>
-            //{
-            //    predicateResult = results.First(it => it.Rule.SuccessEvent == successEvent).ActionResult.Output as PredicateResult;
-            //});
-
-            //if (predicateResult != null)
-            //{
-            //    var list = await _candidateOrgUnitRepository.GetListDynamicallyAsync(predicateResult.Predicate, predicateResult.Parameters);
-            //    return ObjectMapper.Map<List<CandidateOrgUnit>, List<CandidateOrgUnitDto>>(list);
-            //}
-            //else
-            //{
-            //    return new List<CandidateOrgUnitDto>();
-            //}
-
             return await MapToGetListOutputDtosAsync(await _candidateOrgUnitRepository.GetListAsync());
         }
 

@@ -1,0 +1,26 @@
+﻿@page
+@model Wallee.Boc.Vote.Web.Pages.RulesEngines.AppraisementResults.RuleWeight.IndexModel
+@{
+}
+
+
+<div class="container-fluid">
+    <abp-dynamic-form abp-model="ViewModel" asp-page-handler="onPost">
+        <abp-card>
+            <abp-card-header class="card-header ui-sortable-handle">
+                <abp-card-title>
+                    评价角色过滤引擎
+                </abp-card-title>
+                <abp-card-subtitle>
+                    用于获取评价活动的角色清单
+                </abp-card-subtitle>
+            </abp-card-header>
+            <abp-card-body>
+                <abp-form-content />
+            </abp-card-body>
+            <abp-card-footer class="d-flex justify-content-end">
+                <abp-button type="submit" icon="fas fa-user" button-type="Primary" text="提交"></abp-button>
+            </abp-card-footer>
+        </abp-card>
+    </abp-dynamic-form>
+</div>

@@ -44,7 +44,8 @@ namespace Wallee.Boc.Vote.RulesEngines
                 {
                     using var stream = await _rulesEngineFileContainer.GetOrNullAsync(workflowName);
                     using var reader = new StreamReader(stream);
-                    return await reader.ReadToEndAsync();
+                    var rulesEngine = await reader.ReadToEndAsync();
+                    return rulesEngine;
                 }
                 return string.Empty;
             }

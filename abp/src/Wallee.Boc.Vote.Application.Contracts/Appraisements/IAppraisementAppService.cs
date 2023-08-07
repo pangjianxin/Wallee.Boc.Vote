@@ -13,6 +13,7 @@ namespace Wallee.Boc.Vote.Appraisements
     {
         Task<List<AppraisementDto>> GetAllAvailableAsync();
         Task<IRemoteStreamContent> GetDownloadAppraisementQrcode(GetAppraisementQrcodeDto input);
+        Task<string[]> GetRuleNamesAsync();
         Task UploadQrcdoeBgImgFontAsync(UploadQrcodeBgImgFontDto input);
         Task UploadQrcodeBgImgAsync(UploadQrcodeBgImgDto input);
     }

@@ -2,10 +2,7 @@
 {
     public class BlobConsts
     {
-        public const string DutyEvaAnalysisFile = "dutyeva-analysis.json";
-        public const string SatisfactionAnalysisFile = "satisfactioneva-analysis.json";
-        public const string AppraisementWeightAnalysisFile = "appraisement-weight-analysis.json";
-
-        public const string CandidateOrgUnitEva = "candidate-org-unit-filter";
+        public const string AppraisementRuleNames = "appraisement-rule-names";
+        public const string AppraisementResultRuleWeight = "appraisement-result-rule-weight";
     }
 }

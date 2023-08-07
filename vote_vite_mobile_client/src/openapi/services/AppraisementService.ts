@@ -219,6 +219,25 @@ export class AppraisementService {
   }
 
   /**
+   * @returns string Success
+   * @throws ApiError
+   */
+  public static appraisementGetRuleNames(): CancelablePromise<Array<string>> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/vote/appraisement/rule-names",
+      errors: {
+        400: `Bad Request`,
+        401: `Unauthorized`,
+        403: `Forbidden`,
+        404: `Not Found`,
+        500: `Server Error`,
+        501: `Server Error`,
+      },
+    });
+  }
+
+  /**
    * 上传二维码字体文件
    * @returns any Success
    * @throws ApiError

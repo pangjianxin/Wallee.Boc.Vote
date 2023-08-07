@@ -90,6 +90,14 @@ namespace Wallee.Boc.Vote.Appraisements
         {
             return await _appraisementAppService.GetListAsync(input);
         }
+
+        [HttpGet]
+        [Route("rule-names")]
+        public async Task<string[]> GetRuleNamesAsync()
+        {
+            return await _appraisementAppService.GetRuleNamesAsync();
+        }
+
         /// <summary>
         /// 更新评价活动
         /// </summary>

@@ -16,7 +16,8 @@
     "Permission:CandidateOrgUnits:Appraisement": "Appraisement",
     "Permission:EvaluationContents": "EvaluationContents",
     "Permission:RulesEngines": "RulesEngines",
-    "Menu:RulesEngine_CandidtaeOrgUnit": "RulesEngine_CandidateOrgUnit",
+    "Menu:RulesEnging_Appraisement_Rulenames": "AppraisementRuleNamesFilter",
+    "Menu:RulesEnging_AppraisementResult_Rule_Weight": "AppraisementResultWeight",
     "Permission:Create": "Create",
     "Permission:Update": "Update",
     "Permission:Delete": "Delete"

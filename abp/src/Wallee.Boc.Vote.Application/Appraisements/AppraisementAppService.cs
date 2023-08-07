@@ -1,5 +1,6 @@
 ﻿using AutoFilterer.Extensions;
-using Microsoft.Extensions.Options;
+using RulesEngine.Extensions;
+using RulesEngine.Models;
 using SkiaSharp;
 using SkiaSharp.QrCode;
 using System;
@@ -11,9 +12,10 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.Content;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Json;
 using Volo.Abp.Settings;
-using Volo.Abp.UI.Navigation.Urls;
 using Wallee.Boc.Vote.Blobs;
+using Wallee.Boc.Vote.RulesEngines;
 using Wallee.Boc.Vote.Settings;
 
 namespace Wallee.Boc.Vote.Appraisements
@@ -25,17 +27,23 @@ namespace Wallee.Boc.Vote.Appraisements
         private readonly IBlobContainer<QrcodeBgImgContainer> _bgImgContainer;
         private readonly IBlobContainer<QrcodeBgImgFontContainer> _bgImgFontContainer;
         private readonly ISettingProvider _settingProvider;
+        private readonly IRulesEngineProvider _rulesEngineProvider;
+        private readonly IJsonSerializer _jsonSerializer;
         public readonly IAppraisementRepository _appraisementRepository;
         public AppraisementAppService(
             IAppraisementRepository appraisementRepository,
             IBlobContainer<QrcodeBgImgContainer> bgImgContainer,
             IBlobContainer<QrcodeBgImgFontContainer> bgImgFontContainer,
-            ISettingProvider settingProvider) : base(appraisementRepository)
+            ISettingProvider settingProvider,
+            IRulesEngineProvider rulesEngineProvider,
+            IJsonSerializer jsonSerializer) : base(appraisementRepository)
         {
             _appraisementRepository = appraisementRepository;
             _bgImgContainer = bgImgContainer;
             _bgImgFontContainer = bgImgFontContainer;
             _settingProvider = settingProvider;
+            _rulesEngineProvider = rulesEngineProvider;
+            _jsonSerializer = jsonSerializer;
         }
 
 
@@ -53,6 +61,27 @@ namespace Wallee.Boc.Vote.Appraisements
             await CurrentUnitOfWork.SaveChangesAsync();
             return ObjectMapper.Map<Appraisement, AppraisementDto>(appraisement);
 
+        }
+
+        public async Task<string[]> GetRuleNamesAsync()
+        {
+            var workflow = await _rulesEngineProvider.GetWorkflow(BlobConsts.AppraisementRuleNames);
+
+            var workflows = _jsonSerializer.Deserialize<List<Workflow>>(workflow);
+
+            var rulesEngine = new RulesEngine.RulesEngine(workflows.ToArray());
+
+            var results = await rulesEngine.ExecuteAllRulesAsync(BlobConsts.AppraisementRuleNames, new object[] { });
+
+            var evaResult = Array.Empty<string>();
+
+            results.OnSuccess(successEvent =>
+            {
+                var successResult = results.First(it => it.Rule.SuccessEvent == successEvent).ActionResult.Output;
+                evaResult = successResult as string[];
+            });
+
+            return evaResult;
         }
 
         /// <summary>

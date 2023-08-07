@@ -1,25 +1,23 @@
 ﻿@page
-@using Microsoft.AspNetCore.Authorization;
-@using Wallee.Boc.Vote.Permissions;
-@inject IAuthorizationService AuthorizationService;
-@model Wallee.Boc.Vote.Web.Pages.RulesEngines.CandidateOrgUnits.IndexModel
+@model Wallee.Boc.Vote.Web.Pages.RulesEngines.Appraisements.RuleNames.IndexModel
 
 @section scripts{
-    <abp-script src="/Pages/RulesEngines/CandidateOrgUnits/Index.js"></abp-script>
+    <abp-script src="/Pages/RulesEngines/Appraisements/RuleNames/Index.js"></abp-script>
 }
 
 @section styles{
-    <abp-style src="/Pages/RulesEngines/CandidateOrgUnits/Index.css"></abp-style>
+    <abp-style src="/Pages/RulesEngines/Appraisements/RuleNames/Index.css"></abp-style>
 }
+
 <div class="container-fluid">
     <abp-dynamic-form abp-model="ViewModel" asp-page-handler="onPost">
         <abp-card>
             <abp-card-header class="card-header ui-sortable-handle">
                 <abp-card-title>
-                    部门评价过滤引擎
+                    评价角色过滤引擎
                 </abp-card-title>
                 <abp-card-subtitle>
-                    用于过滤不同角色进行部门评价时的候选部门名单的规则引擎
+                    用于获取评价活动的角色清单
                 </abp-card-subtitle>
             </abp-card-header>
             <abp-card-body>

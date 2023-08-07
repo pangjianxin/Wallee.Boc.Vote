@@ -48,24 +48,10 @@
     <van-divider content-position="left">二维码信息生成</van-divider>
     <van-radio-group v-model="selectedRadioValue">
         <van-cell-group inset>
-            <van-cell title="行长" clickable @click="selectedRadioValue = '行长'">
+            <van-cell v-for="ruleName in ruleNames" :title="ruleName" clickable @click="selectedRadioValue = ruleName"
+                :key="ruleName">
                 <template #right-icon>
-                    <van-radio name="行长" />
-                </template>
-            </van-cell>
-            <van-cell title="分管行长" clickable @click="selectedRadioValue = '分管行长'">
-                <template #right-icon>
-                    <van-radio name="分管行长" />
-                </template>
-            </van-cell>
-            <van-cell title="部门主任" clickable @click="selectedRadioValue = '部门主任'">
-                <template #right-icon>
-                    <van-radio name="部门主任" />
-                </template>
-            </van-cell>
-            <van-cell title="员工代表" clickable @click="selectedRadioValue = '员工代表'">
-                <template #right-icon>
-                    <van-radio name="员工代表" />
+                    <van-radio :name="ruleName" />
                 </template>
             </van-cell>
         </van-cell-group>
@@ -87,9 +73,11 @@ const route = useRoute();
 let appraisementId = ref("");
 let appraisement = ref<AppraisementDto>();
 let selectedRadioValue = ref("");
+let ruleNames = ref<string[]>([]);
 onMounted(async () => {
     appraisementId.value = route.params.appraisementId as string;
     appraisement.value = await AppraisementService.appraisementGet({ id: appraisementId.value });
+    await getQrcodeRuleNames();
 })
 
 const downloadQrcodeAsync = async () => {
@@ -102,6 +90,11 @@ const downloadQrcodeAsync = async () => {
     document.body.appendChild(link);
     link.click()
     document.body.removeChild(link);
+}
+
+const getQrcodeRuleNames = async () => {
+    ruleNames.value = await AppraisementService.appraisementGetRuleNames();
+
 }
 </script>
 
