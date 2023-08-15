@@ -83,5 +83,5 @@ meta:
   visible: false
   keepAlive: false
   requiredAuth: true
-  permission: Vote.EvaluationContent.Update
+  permission: Vote.EvaluationContents.Update
 </route>
