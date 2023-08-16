@@ -10,7 +10,6 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Json;
-using Volo.Abp.ObjectMapping;
 using Wallee.Boc.Vote.Appraisements;
 using Wallee.Boc.Vote.Blobs;
 using Wallee.Boc.Vote.RulesEngines;
