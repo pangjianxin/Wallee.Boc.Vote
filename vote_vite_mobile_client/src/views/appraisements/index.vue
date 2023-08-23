@@ -36,7 +36,6 @@
           </van-button>
         </template>
       </appraisementVue>
-
     </van-list>
   </div>
 </template>

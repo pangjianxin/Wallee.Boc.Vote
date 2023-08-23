@@ -21,15 +21,13 @@
                                 <span class="text-1rem fw-700 c-black">
                                     {{ orgUnitCandidateList?.find(it => it.id === item.candidateId)!.organName }}
                                 </span>
-                                &nbsp;
-                                <van-tag type="success">
-                                    {{ CandidateOrgUnitCategory[orgUnitCandidateList?.find(it => it.id ===
-                                        item.candidateId)!.category!] }}
-                                </van-tag>
                             </div>
                         </template>
                         <template #value>
-                            展开/折叠
+                            <van-tag type="success">
+                                {{ CandidateOrgUnitCategory[orgUnitCandidateList?.find(it => it.id ===
+                                    item.candidateId)!.category!] }}
+                            </van-tag>
                         </template>
                         <template v-for="(detail, detailIndex) in item.scoreDetails" :key="detailIndex">
                             <div class="flex flex-col">
@@ -66,7 +64,7 @@
                     </van-collapse-item>
                 </van-collapse>
                 <van-row class="my-10px">
-                    <van-button block type="primary" native-type="submit" :loading="loading">
+                    <van-button block type="primary" native-type="submit" :loading="loading" class="mb-5px">
                         提交
                     </van-button>
                 </van-row>
@@ -156,5 +154,6 @@ name: appraisement.eva
 meta: 
   title: 评价详情
   requiredAuth: false
+  layout: no-tabbar
   visible: false
 </route>

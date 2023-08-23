@@ -14,9 +14,9 @@
                 </van-button>
             </template>
         </pageHeader>
-        <van-form ref="formRef" @submit="updateAppraisement" class="mt-10px">
+        <van-form ref="formRef" @submit="updateAppraisement" label-align="top" class="mt-10px">
             <van-cell-group inset>
-                <van-field input-align="right" label="活动名称" left-icon="description" v-model="(form.name as string)"
+                <van-field input-align="left" label="活动名称" left-icon="description" v-model="(form.name as string)"
                     placeholder="请输入评价活动名称" name="name" :rules="formRules.name">
                 </van-field>
 

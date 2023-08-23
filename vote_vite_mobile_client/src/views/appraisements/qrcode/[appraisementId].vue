@@ -86,7 +86,7 @@ const downloadQrcodeAsync = async () => {
     const link = document.createElement('a')
     link.style.display = 'none'
     link.href = URL.createObjectURL(blob)
-    link.download = "1.png"
+    link.download = `${appraisement.value?.name}-${selectedRadioValue.value}.png`;
     document.body.appendChild(link);
     link.click()
     document.body.removeChild(link);

@@ -71,7 +71,7 @@ namespace Wallee.Boc.Vote.Appraisements
 
             var rulesEngine = new RulesEngine.RulesEngine(workflows.ToArray());
 
-            var results = await rulesEngine.ExecuteAllRulesAsync(BlobConsts.AppraisementRuleNames, new object[] { });
+            var results = await rulesEngine.ExecuteAllRulesAsync(BlobConsts.AppraisementRuleNames, Array.Empty<object>());
 
             var evaResult = Array.Empty<string>();
 
@@ -145,7 +145,7 @@ namespace Wallee.Boc.Vote.Appraisements
                     }
                 }
                 stream.Seek(0, SeekOrigin.Begin);
-                return new RemoteStreamContent(stream, "xxx.png", "image/png");
+                return new RemoteStreamContent(stream, $"{input.RuleName}.png", "image/png");
             }
 
         }

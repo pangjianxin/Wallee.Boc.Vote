@@ -51,7 +51,9 @@ namespace Wallee.Boc.Vote.AppraisementResults
 
             var rulesEngine = new RulesEngine.RulesEngine(workflows.ToArray());
 
-            var results = await rulesEngine.ExecuteAllRulesAsync(BlobConsts.AppraisementRuleNames, new object[] { });
+            var ruleParameters = new RuleParameter("roleName", input.RuleName);
+
+            var results = await rulesEngine.ExecuteAllRulesAsync(BlobConsts.AppraisementResultRuleWeight, ruleParameters);
 
             var weight = default(decimal);
 

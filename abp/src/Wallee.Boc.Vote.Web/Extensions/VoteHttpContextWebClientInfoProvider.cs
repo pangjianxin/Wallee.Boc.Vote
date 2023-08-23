@@ -39,7 +39,7 @@ namespace Wallee.Boc.Vote.Web.Extensions
 
                 if (clientIp.HasValue)
                 {
-                    return clientIp.Value!;
+                    return clientIp.Value.ToString();
                 }
 
                 return HttpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString()!;

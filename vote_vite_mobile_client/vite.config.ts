@@ -53,7 +53,7 @@ export default defineConfig(({ mode }) => {
         exclude: ["**/components/*", "**/hooks/*"],
       }),
       Layouts({
-        defaultLayout: "home",
+        defaultLayout: "default",
         layoutsDirs: ["src/layouts"],
         exclude: [],
       }),
