@@ -173,6 +173,7 @@ namespace Wallee.Boc.Vote.Appraisements
 
         private async Task DrawSingleLineText(SKCanvas canvas, string text, float x, float y, float recWidth, float recHeight)
         {
+
             //定义画笔
             using (var paint = new SKPaint()
             {
