@@ -75,7 +75,8 @@ namespace Wallee.Boc.Vote.AppraisementResults
                     input.RuleName,
                     input.Category);
 
-                result.SetDetails(detail.ScoreDetails.Select(it => new AppraisementResultDetail(result.Id, it.EvaluationContentId, it.Content, it.Score * weight, it.Comment)));
+                result.SetDetails(detail.ScoreDetails.Select(it =>
+                new AppraisementResultDetail(result.Id, it.EvaluationContentId, it.Content, it.Score * weight, it.Comment)));
 
                 resultList.Add(result);
             }

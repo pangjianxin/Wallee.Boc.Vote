@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Wallee.Boc.Vote.Web.Extensions
 {
-    public class FinancingSwaggerSchemaFilter : ISchemaFilter
+    public class VoteSwaggerSchemaFilter : ISchemaFilter
     {
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {

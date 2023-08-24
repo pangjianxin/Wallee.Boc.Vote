@@ -44,6 +44,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
 
         [HttpGet]
         [Route("candidate-org-units")]
+        [AllowAnonymous]
         public async Task<List<CandidateOrgUnitDto>> GetCandidateOrgUnitEvaList()
         {
             return await _candidateOrgUnitAppService.GetCandidateOrgUnitEvaList();

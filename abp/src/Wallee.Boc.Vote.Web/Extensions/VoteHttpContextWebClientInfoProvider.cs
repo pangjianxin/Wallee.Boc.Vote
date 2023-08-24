@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 using System;
+using System.Linq;
 using Volo.Abp.AspNetCore.WebClientInfo;
 using Volo.Abp.DependencyInjection;
 
@@ -34,12 +36,13 @@ namespace Wallee.Boc.Vote.Web.Extensions
         {
             try
             {
+                StringValues clientIp = StringValues.Empty;
                 //X-Real-IP
-                var clientIp = HttpContextAccessor.HttpContext?.Request.Headers["X-Forwarded-For"];
+                var hasValue = HttpContextAccessor.HttpContext?.Request.Headers.TryGetValue("X-Forwarded-For", out clientIp);
 
-                if (clientIp.HasValue)
+                if (hasValue == true)
                 {
-                    return clientIp.Value.ToString();
+                    return clientIp.ToString().Split(new char[] { ',' }).DefaultIfEmpty().FirstOrDefault()!;
                 }
 
                 return HttpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString()!;

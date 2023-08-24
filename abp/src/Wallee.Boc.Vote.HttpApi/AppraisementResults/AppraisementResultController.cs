@@ -27,6 +27,7 @@ namespace Wallee.Boc.Vote.AppraisementResults
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<AppraisementResultDto> CreateAsync(AppraisementResultCreateDto input)
         {
             input.ClientIp = _webClientInfoProvider.ClientIpAddress;

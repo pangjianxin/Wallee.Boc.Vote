@@ -29,13 +29,13 @@ namespace Wallee.Boc.Vote.Web.Pages.RulesEngines.Appraisements.RuleNames
         public async Task OnPostAsync()
         {
             await _rulesEngineProvider.UpdateWorkflow(BlobConsts.AppraisementRuleNames, ViewModel.RulesEngine!);
-            Alerts.Add(Volo.Abp.AspNetCore.Mvc.UI.Alerts.AlertType.Success, "¸üĞÂ³É¹¦");
+            Alerts.Add(Volo.Abp.AspNetCore.Mvc.UI.Alerts.AlertType.Success, "æ›´æ–°æˆåŠŸ");
         }
     }
 
     public class UpdateAppraisementQrcodeRuleNamesViewModel
     {
-        [Display(Name = "ÇëÊäÈë¹æÔòÒıÇæ")]
+        [Display(Name = "è¯·è¾“å…¥è§„åˆ™å¼•æ“")]
         [Required]
         [TextArea(Rows = 20)]
         public string? RulesEngine { get; set; }

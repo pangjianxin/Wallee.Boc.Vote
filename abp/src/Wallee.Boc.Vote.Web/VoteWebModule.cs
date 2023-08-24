@@ -195,7 +195,7 @@ public class VoteWebModule : AbpModule
         services.AddAbpSwaggerGen(
             options =>
             {
-                options.SchemaFilter<FinancingSwaggerSchemaFilter>();
+                options.SchemaFilter<VoteSwaggerSchemaFilter>();
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Vote API", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FriendlyId().Replace("[", "Of").Replace("]", ""));

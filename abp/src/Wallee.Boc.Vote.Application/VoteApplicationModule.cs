@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Account;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.BlobStoring;
-using Volo.Abp.BlobStoring.FileSystem;
+using Volo.Abp.BlobStoring.Minio;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
 using Volo.Abp.Modularity;
@@ -21,7 +22,7 @@ namespace Wallee.Boc.Vote;
     typeof(AbpTenantManagementApplicationModule),
     typeof(AbpFeatureManagementApplicationModule),
     typeof(AbpSettingManagementApplicationModule),
-    typeof(AbpBlobStoringFileSystemModule)
+    typeof(AbpBlobStoringMinioModule)
     )]
 public class VoteApplicationModule : AbpModule
 {
@@ -34,13 +35,21 @@ public class VoteApplicationModule : AbpModule
             options.AddMaps<VoteApplicationModule>();
         });
 
+        ConfigureMinio(config);
+    }
+
+    private void ConfigureMinio(IConfiguration configuration)
+    {
         Configure<AbpBlobStoringOptions>(options =>
         {
-            options.Containers.ConfigureDefault(container =>
+            options.Containers.ConfigureDefault(config =>
             {
-                container.UseFileSystem(fileSystem =>
-                {                 
-                    fileSystem.BasePath = config["Blobs:Base"];
+                config.UseMinio(option =>
+                {
+                    option.EndPoint = configuration["Blob:Minio:EndPoint"];
+                    option.AccessKey = configuration["Blob:Minio:AccessKey"];
+                    option.SecretKey = configuration["Blob:Minio:SecretKey"];
+                    option.CreateBucketIfNotExists = true;
                 });
             });
         });

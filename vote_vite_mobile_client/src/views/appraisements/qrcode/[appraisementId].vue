@@ -57,7 +57,7 @@
         </van-cell-group>
     </van-radio-group>
     <van-row justify="end" class="m-10px">
-        <van-button type="primary" size="small" icon="qr" block @click="downloadQrcodeAsync"
+        <van-button type="primary" size="small" icon="qr" block @click="downloadQrcodeAsync" :loading="downloadLoading"
             :disabled="!selectedRadioValue">生成二维码
         </van-button>
     </van-row>
@@ -68,12 +68,15 @@ import { AppraisementDto, AppraisementService, EvaluationCategory } from '/@/ope
 import bgImg from '/@/assets/images/appraisement.png';
 import pageHeader from '/@/components/PageHeader/index.vue';
 import dayjs from 'dayjs';
+import { toast } from '/@/utils/app';
 const route = useRoute();
 
 let appraisementId = ref("");
 let appraisement = ref<AppraisementDto>();
 let selectedRadioValue = ref("");
 let ruleNames = ref<string[]>([]);
+let downloadLoading = ref(false);
+
 onMounted(async () => {
     appraisementId.value = route.params.appraisementId as string;
     appraisement.value = await AppraisementService.appraisementGet({ id: appraisementId.value });
@@ -81,20 +84,31 @@ onMounted(async () => {
 })
 
 const downloadQrcodeAsync = async () => {
-    let blob = await AppraisementService.appraisementGetDownloadAppraisementQrcode({ appraisementId: appraisementId.value, ruleName: selectedRadioValue.value });
-    console.log(blob);
-    const link = document.createElement('a')
-    link.style.display = 'none'
-    link.href = URL.createObjectURL(blob)
-    link.download = `${appraisement.value?.name}-${selectedRadioValue.value}.png`;
-    document.body.appendChild(link);
-    link.click()
-    document.body.removeChild(link);
+    try {
+        downloadLoading.value = true;
+        let blob = await AppraisementService.appraisementGetDownloadAppraisementQrcode({ appraisementId: appraisementId.value, ruleName: selectedRadioValue.value });
+        console.log(blob);
+        const link = document.createElement('a')
+        link.style.display = 'none'
+        link.href = URL.createObjectURL(blob)
+        link.download = `${appraisement.value?.name}-${selectedRadioValue.value}.png`;
+        document.body.appendChild(link);
+        link.click()
+        document.body.removeChild(link);
+    } catch (err) {
+        toast(err as string);
+    } finally {
+        downloadLoading.value = false;
+    }
+
 }
 
 const getQrcodeRuleNames = async () => {
-    ruleNames.value = await AppraisementService.appraisementGetRuleNames();
-
+    try {
+        ruleNames.value = await AppraisementService.appraisementGetRuleNames();
+    } catch (err) {
+        toast(err as string);
+    }
 }
 </script>
 

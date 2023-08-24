@@ -63,6 +63,7 @@ namespace Wallee.Boc.Vote.Appraisements
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
+        [AllowAnonymous]
         public async Task<AppraisementDto> GetAsync(Guid id)
         {
             return await _appraisementAppService.GetAsync(id);
