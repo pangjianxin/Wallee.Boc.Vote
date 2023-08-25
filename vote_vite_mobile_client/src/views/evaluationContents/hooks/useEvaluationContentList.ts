@@ -26,12 +26,20 @@ export function useEvaluationContentList() {
       list.value = res.items ?? [];
       cachedList.value.push(...(res.items ?? []));
       pageable.total = res.totalCount!;
-      if (res.items?.length === 0) finished.value = true;
+      if (pageable.pageNum * pageable.pageSize >= pageable.total) {
+        finished.value = true;
+      }
     } catch {
       finished.value = true;
     } finally {
       loading.value = false;
     }
+  };
+
+  const clear = () => {
+    cachedList.value = [];
+    list.value = [];
+    pageable.pageNum = 1;
   };
 
   return {
@@ -42,6 +50,7 @@ export function useEvaluationContentList() {
     sorting,
     pageable,
     list,
+    clear,
     getList,
   };
 }

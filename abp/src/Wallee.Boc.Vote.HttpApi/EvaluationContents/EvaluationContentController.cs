@@ -51,6 +51,7 @@ namespace Wallee.Boc.Vote.EvaluationContents
 
         [HttpGet]
         [Route("category/{category}")]
+        [AllowAnonymous]
         public async Task<List<EvaluationContentDto>> GetListByCategory(EvaluationCategory category)
         {
             return await _evaluationContentAppService.GetListByCategory(category);

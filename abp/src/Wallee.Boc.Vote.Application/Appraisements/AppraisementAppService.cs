@@ -26,6 +26,7 @@ namespace Wallee.Boc.Vote.Appraisements
     {
         private readonly IBlobContainer<QrcodeBgImgContainer> _bgImgContainer;
         private readonly IBlobContainer<QrcodeBgImgFontContainer> _bgImgFontContainer;
+        private readonly IBlobContainer<QrcodeContainer> _qrcodeContainer;
         private readonly ISettingProvider _settingProvider;
         private readonly IRulesEngineProvider _rulesEngineProvider;
         private readonly IJsonSerializer _jsonSerializer;
@@ -34,6 +35,7 @@ namespace Wallee.Boc.Vote.Appraisements
             IAppraisementRepository appraisementRepository,
             IBlobContainer<QrcodeBgImgContainer> bgImgContainer,
             IBlobContainer<QrcodeBgImgFontContainer> bgImgFontContainer,
+            IBlobContainer<QrcodeContainer> qrcodeContainer,
             ISettingProvider settingProvider,
             IRulesEngineProvider rulesEngineProvider,
             IJsonSerializer jsonSerializer) : base(appraisementRepository)
@@ -41,6 +43,7 @@ namespace Wallee.Boc.Vote.Appraisements
             _appraisementRepository = appraisementRepository;
             _bgImgContainer = bgImgContainer;
             _bgImgFontContainer = bgImgFontContainer;
+            _qrcodeContainer = qrcodeContainer;
             _settingProvider = settingProvider;
             _rulesEngineProvider = rulesEngineProvider;
             _jsonSerializer = jsonSerializer;
@@ -114,18 +117,23 @@ namespace Wallee.Boc.Vote.Appraisements
 
         public async Task<IRemoteStreamContent> GetDownloadAppraisementQrcode(GetAppraisementQrcodeDto input)
         {
-            var urlTemplate = string.Format(await _settingProvider.GetOrNullAsync(VoteSettings.AppraisementQrcodeUrl), input.AppraisementId, input.RuleName);
-
-            using var bgStream = await _bgImgContainer.GetAsync(AppraisementConsts.QrcodeBgImgBlobName);
-            using var qrcodeStream = GenerateQrcodeAsync(urlTemplate);
-            SKBitmap backgroundBitmap = SKBitmap.Decode(bgStream);
-            // 加载二维码图片
-            SKBitmap qrCodeBitmap = SKBitmap.Decode(qrcodeStream);
-            //用于装载合并后的图片
-            var stream = new MemoryStream();
-            //创建一个新的画布对象
-            using (SKSurface surface = SKSurface.Create(new SKImageInfo(backgroundBitmap.Width, backgroundBitmap.Height)))
+            var blobName = $"{input.AppraisementId:N}-{input.RuleName}";
+            if (await _qrcodeContainer.ExistsAsync(blobName))
             {
+                return new RemoteStreamContent(await _qrcodeContainer.GetAsync(blobName), $"{input.RuleName}.png", "image/png");
+            }
+            else
+            {
+                var urlTemplate = string.Format(await _settingProvider.GetOrNullAsync(VoteSettings.AppraisementQrcodeUrl), input.AppraisementId, input.RuleName);
+                using var bgStream = await _bgImgContainer.GetAsync(AppraisementConsts.QrcodeBgImgBlobName);
+                using var qrcodeStream = GenerateQrcodeAsync(urlTemplate);
+                SKBitmap backgroundBitmap = SKBitmap.Decode(bgStream);
+                // 加载二维码图片
+                SKBitmap qrCodeBitmap = SKBitmap.Decode(qrcodeStream);
+                //用于装载合并后的图片
+                var stream = new MemoryStream();
+                //创建一个新的画布对象
+                using SKSurface surface = SKSurface.Create(new SKImageInfo(backgroundBitmap.Width, backgroundBitmap.Height));
                 // 获取画布对象
                 SKCanvas canvas = surface.Canvas;
                 // 绘制背景图片
@@ -139,15 +147,14 @@ namespace Wallee.Boc.Vote.Appraisements
                 using (SKImage image = surface.Snapshot())
                 {
                     // 将绘制结果保存到文件
-                    using (SKData data = image.Encode())
-                    {
-                        data.SaveTo(stream);
-                    }
+                    using SKData data = image.Encode();
+                    data.SaveTo(stream);
                 }
+                stream.Seek(0, SeekOrigin.Begin);
+                await _qrcodeContainer.SaveAsync(blobName, stream);
                 stream.Seek(0, SeekOrigin.Begin);
                 return new RemoteStreamContent(stream, $"{input.RuleName}.png", "image/png");
             }
-
         }
 
         protected override async Task<IQueryable<Appraisement>> CreateFilteredQueryAsync(GetAppraisementsInputDto input)

@@ -39,7 +39,7 @@ namespace Wallee.Boc.Vote.Web.Pages.Identity.OrganizationUnits
     }
     public class OrganizationUnitUpdateViewModel
     {
-        [Display(Name = "»ú¹¹Ãû³Æ")]
+        [Display(Name = "æœºæ„åç§°")]
         [Required]
         [DynamicStringLength(typeof(OrganizationUnitConsts), nameof(OrganizationUnitConsts.MaxDisplayNameLength))]
         public string DisplayName { get; set; } = null!;

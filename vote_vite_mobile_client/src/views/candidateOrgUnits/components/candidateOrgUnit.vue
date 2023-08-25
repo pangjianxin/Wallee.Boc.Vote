@@ -1,9 +1,9 @@
 <template>
     <van-card>
         <template #title>
-            <div class="flex flex-row justify-start items-center w-100%">
+            <div class="flex flex-row justify-between items-center w-100%">
                 <span class="text-15px fw-1000">{{ orgUnit.organName }}</span>
-                <span class="w-5px"></span>
+                
                 <van-tag type="primary">
                     {{ CandidateOrgUnitCategory[orgUnit.category!] }}
                 </van-tag>

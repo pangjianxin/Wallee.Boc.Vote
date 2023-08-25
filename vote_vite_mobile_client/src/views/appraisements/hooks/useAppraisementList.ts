@@ -17,6 +17,7 @@ export function useAppraisementList() {
 
   const getList = async () => {
     try {
+      loading.value = true;
       const res = await AppraisementService.appraisementGetList({
         filter: filter.value,
         sorting: sorting.value,
@@ -26,7 +27,7 @@ export function useAppraisementList() {
       list.value = res.items ?? [];
       cachedList.value.push(...(res.items ?? []));
       pageable.total = res.totalCount!;
-      if (res.items?.length === 0) {
+      if (pageable.pageNum * pageable.pageSize >= pageable.total) {
         finished.value = true;
       }
     } catch {
@@ -34,6 +35,12 @@ export function useAppraisementList() {
     } finally {
       loading.value = false;
     }
+  };
+
+  const clear = () => {
+    cachedList.value = [];
+    list.value = [];
+    pageable.pageNum = 1;
   };
 
   return {
@@ -44,6 +51,7 @@ export function useAppraisementList() {
     sorting,
     pageable,
     list,
+    clear,
     getList,
   };
 }

@@ -4,18 +4,18 @@
       <template #title>
         评价活动列表
       </template>
-      <template #sub-title?>
+      <template #sub-title>
         点击新增按钮进入创建评价活动页面
       </template>
       <template #action>
-        <van-row justify="end">
+        <div>
           <van-button type="primary" plain size="mini" icon="plus" @click="gotoCreate"
             v-permission="'Vote.Appraisements.Create'">
             创建</van-button>
-          <van-button type="primary" plain size="mini" icon="replay" @click="refresh">
+          <van-button type="warning" plain size="mini" icon="replay" @click="refresh">
             刷新
           </van-button>
-        </van-row>
+        </div>
       </template>
     </pageHeader>
     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" :offset="0" class="h-100%"
@@ -52,6 +52,7 @@ const {
   cachedList,
   finished,
   pageable,
+  clear,
   getList } = useAppraisementList();
 
 const onLoad = async () => {
@@ -60,9 +61,8 @@ const onLoad = async () => {
 };
 
 const refresh = async () => {
-  pageable.pageNum = 1;
-  cachedList.value = [];
-  await onLoad();
+  clear();
+  await getList();
 }
 
 const deleteAppraisement = async (item: AppraisementDto) => {

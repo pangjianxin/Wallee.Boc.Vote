@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import generatedRoutes from '~pages'
-import type { MenuItem } from '/#/menu'
+import generatedRoutes from '~pages';
+import type { MenuItem } from '/#/menu';
 
-const active = ref(0)
-const menus: MenuItem[] = reactive<MenuItem[]>([])
+const active = ref(0);
+const menus: MenuItem[] = reactive<MenuItem[]>([]);
 
 watchEffect(() => {
   generatedRoutes
@@ -19,7 +19,7 @@ watchEffect(() => {
         title: item.meta?.title as string,
       })
     })
-})
+});
 </script>
 
 <template>

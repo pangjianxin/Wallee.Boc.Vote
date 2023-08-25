@@ -5,13 +5,19 @@
         评测内容列表
       </template>
       <template #sub-title>
-        创建或者更新评估内容请点击相关按钮继续
+        评测内容增、删、改、查的管理
       </template>
       <template #action>
-        <van-button type="primary" @click="gotoCreate" icon="plus" plain size="mini"
-          v-permission="'Vote.EvaluationContents.Create'">
-          创建内容
-        </van-button>
+        <div>
+          <van-button type="primary" @click="gotoCreate" icon="plus" plain size="mini"
+            v-permission="'Vote.EvaluationContents.Create'">
+            添加
+          </van-button>
+          <van-button type="warning" @click="refresh" icon="replay" plain size="mini"
+            v-permission="'Vote.EvaluationContents'">
+            刷新
+          </van-button>
+        </div>
       </template>
     </peageHeader>
     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" :offset="0" class="h-100%"
@@ -40,8 +46,9 @@ import { EvaluationContentDto, EvaluationContentService } from '/@/openapi';
 import peageHeader from '/@/components/PageHeader/index.vue';
 import { confirmDialog } from '/@/utils/app';
 import evaluationContentVue from './components/evaluationContent.vue';
-const { loading, finished, cachedList, getList, pageable } = useEvaluationContentList();
+const { loading, finished, cachedList, getList, pageable,clear } = useEvaluationContentList();
 const router = useRouter();
+
 
 const onLoad = async () => {
   await getList();
@@ -71,6 +78,11 @@ const deleteEvaluation = async (content: EvaluationContentDto) => {
     cachedList.value.splice(index, 1);
   }
 }
+
+const refresh=async()=>{
+  clear();
+  await getList();  
+}
 </script>
 
 <style scoped lang="scss"></style>
@@ -81,7 +93,7 @@ meta:
   title: 评估内容 
   icon: column 
   visible: false 
-  keepAlive: false 
+  keepAlive: true 
   order: 4 
   requiredAuth: true 
   permission: Vote.EvaluationContents 

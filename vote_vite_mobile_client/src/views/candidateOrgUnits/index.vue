@@ -8,10 +8,16 @@
         该页面可通向编辑、新增和删除等功能页面
       </template>
       <template #action>
-        <van-button type="primary" size="mini" plain @click="gotoCreate" icon="plus"
-          v-permission="'Vote.CandidateOrgUnits.Create'">
-          创建部门
-        </van-button>
+        <div>
+          <van-button type="primary" size="mini" plain @click="gotoCreate" icon="plus"
+            v-permission="'Vote.CandidateOrgUnits.Create'">
+            创建
+          </van-button>
+          <van-button type="warning" @click="refresh" icon="replay" plain size="mini"
+            v-permission="'Vote.CandidateOrgUnits'">
+            刷新
+          </van-button>
+        </div>
       </template>
     </pageHeader>
     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" :offset="0" class="h-100%"
@@ -38,8 +44,8 @@ import candidateOrgUnitVue from './components/candidateOrgUnit.vue';
 import { useCandidateOrgUnitList } from './hooks/useCandidateOrgUnitList';
 import { CandidateOrgUnitDto, CandidateOrgUnitService } from '/@/openapi';
 import { confirmDialog } from '/@/utils/app';
-const { loading, finished, cachedList, getList, pageable } = useCandidateOrgUnitList();
-const router = useRouter()
+const { loading, finished, cachedList, getList, pageable, clear } = useCandidateOrgUnitList();
+const router = useRouter();
 
 const onLoad = async () => {
   await getList();
@@ -71,6 +77,11 @@ const gotoCreate = async () => {
     name: 'candidateOrgUnit.create',
   })
 }
+
+const refresh = async () => {
+  clear();
+  await getList();
+}
 </script>
 
 <style scoped></style>
@@ -81,7 +92,7 @@ meta:
   title: 待评部门 
   icon: records 
   visible: false 
-  keepAlive: false 
+  keepAlive: true 
   order: 1 
   requiredAuth: true 
   permission: Vote.CandidateOrgUnits 

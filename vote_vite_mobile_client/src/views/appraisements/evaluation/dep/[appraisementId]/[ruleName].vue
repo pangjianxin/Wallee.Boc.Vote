@@ -87,7 +87,10 @@
                     </div>
                 </template>
             </appraisementVue>
-            <van-button type="primary" block class="mt-10px" @click="appraisementConfirmed = true">开始评价</van-button>
+            <van-button type="primary" block class="mt-10px" @click="appraisementConfirmed = true"
+                :loading="evaInfoLoading">
+                开始评价
+            </van-button>
         </div>
     </div>
 </template>
@@ -99,12 +102,14 @@ import { useAppraisementResultForm } from '/@/views/appraisements/hooks/useAppra
 import { AppraisementDto, AppraisementService, CandidateOrgUnitCategory } from '/@/openapi';
 import appraisementVue from '/@/views/appraisements/components/appraisement.vue';
 import appraisement_img from '/@/assets/images/appraisement.png';
+import { toast } from '/@/utils/app';
 const route = useRoute();
 let currCollapseName = ref([0]);
 let appraisementId = ref("");
 let ruleName = ref("");
 let appraisement = ref<AppraisementDto>();
 let appraisementConfirmed = ref(false);
+let evaInfoLoading = ref(false);
 
 const { orgUnitCandidateList, getOrgUnitCandidateList } = useCandidateOrgUnitList();
 const { evaContentList, getEvaContentList } = useEvaluationContentList();
@@ -115,13 +120,20 @@ const getAppraisementInfo = async () => {
 }
 
 onMounted(async () => {
-    appraisementId.value = route.params.appraisementId as string;
-    ruleName.value = route.params.ruleName as string;
-    form.appraisementId = appraisementId.value;
-    form.ruleName = ruleName.value;
-    await getAppraisementInfo();
-    await getOrgUnitCandidateList();
-    await getEvaContentList(appraisement.value?.category!);
+    try {
+        evaInfoLoading.value = true;
+        appraisementId.value = route.params.appraisementId as string;
+        ruleName.value = route.params.ruleName as string;
+        form.appraisementId = appraisementId.value;
+        form.ruleName = ruleName.value;
+        await getAppraisementInfo();
+        await getOrgUnitCandidateList();
+        await getEvaContentList(appraisement.value?.category!);
+    } catch (err) {
+        toast(err as string);
+    } finally {
+        evaInfoLoading.value = false;
+    }
 });
 
 watch(

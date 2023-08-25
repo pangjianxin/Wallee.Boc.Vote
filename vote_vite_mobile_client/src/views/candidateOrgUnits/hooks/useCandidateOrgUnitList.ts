@@ -26,7 +26,7 @@ export function useCandidateOrgUnitList() {
       list.value = res.items ?? [];
       cachedList.value.push(...(res.items ?? []));
       pageable.total = res.totalCount!;
-      if (res.items?.length === 0) {
+      if (pageable.pageNum * pageable.pageSize >= pageable.total) {
         finished.value = true;
       }
     } catch {
@@ -34,6 +34,12 @@ export function useCandidateOrgUnitList() {
     } finally {
       loading.value = false;
     }
+  };
+
+  const clear = () => {
+    cachedList.value = [];
+    list.value = [];
+    pageable.pageNum = 1;
   };
 
   return {
@@ -44,6 +50,7 @@ export function useCandidateOrgUnitList() {
     sorting,
     pageable,
     list,
+    clear,
     getList,
   };
 }

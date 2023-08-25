@@ -55,7 +55,7 @@ const redirectTo = (routeName: string) => {
 <route lang="yaml">
 name: my.index
 meta: 
-  title: 我的
+  title: 管理中心
   icon: setting-o
   visible: true 
   keepAlive: true
