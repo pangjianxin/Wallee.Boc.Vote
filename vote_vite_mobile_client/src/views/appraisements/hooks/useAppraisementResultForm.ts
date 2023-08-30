@@ -11,7 +11,7 @@ export const useAppraisementResultForm = () => {
 
   let form = reactive<AppraisementResultCreateDto>({
     appraisementId: undefined,
-    ruleName: null,
+    roleName: null,
     category: EvaluationCategory.部门评价,
     details: [],
   });
@@ -20,7 +20,7 @@ export const useAppraisementResultForm = () => {
     appraisementId: [
       { required: true, message: "请输入评价id", trigger: "onBlur" },
     ],
-    ruleName: [
+    roleName: [
       { required: true, message: "请输入评价者角色", trigger: "onBlur" },
     ],
     category: [

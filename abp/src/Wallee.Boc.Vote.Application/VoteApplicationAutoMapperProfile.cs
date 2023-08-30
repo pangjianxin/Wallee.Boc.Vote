@@ -19,7 +19,7 @@ public class VoteApplicationAutoMapperProfile : Profile
         CreateMap<EvaluationContent, EvaluationContentDto>();
         CreateMap<Appraisement, AppraisementDto>();
         CreateMap<AppraisementResult, AppraisementResultDto>();
-        CreateMap<AppraisementResultDetail, AppraisementResultDetailDto>();
+        CreateMap<AppraisementResultDetail, AppraisementResultDetailDto>().ForMember(it => it.FinalScore, config => config.MapFrom(it => it.FinalScore));
         CreateMap<CandidateOrgUnit, CandidateOrgUnitDto>();
     }
 }

@@ -17,22 +17,32 @@ namespace Wallee.Boc.Vote.AppraisementResults
             Guid evaluationContentId,
             string content,
             decimal score,
-            string? comment)
+            string? comment,
+            decimal weight = 1M)
         {
             AppraisementResultId = appraisementReusltId;
             EvaluationContentId = evaluationContentId;
             Content = content;
             Score = score;
+            Weight = weight;
             Comment = comment;
         }
         public Guid AppraisementResultId { get; private set; }
         public Guid EvaluationContentId { get; private set; }
         public string Content { get; private set; }
         public decimal Score { get; private set; }
+        public decimal Weight { get; private set; }
         /// <summary>
         /// 备注/建议等
         /// </summary>
         public string? Comment { get; private set; }
+        public decimal FinalScore
+        {
+            get
+            {
+                return Score * Weight;
+            }
+        }
 
         public override object[] GetKeys()
         {

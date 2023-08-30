@@ -20,16 +20,19 @@ namespace Wallee.Boc.Vote.AppraisementResults
         CrudAppService<AppraisementResult, AppraisementResultDto, Guid, GetAppraisementResultsInputDto, AppraisementResultCreateDto, AppraisementResultUpdateDto>,
         IAppraisementResultAppService, ITransientDependency
     {
+        private readonly IAppraisementRepository _appraisementRepository;
         private readonly IRulesEngineProvider _rulesEngineProvider;
         private readonly IJsonSerializer _jsonSerializer;
 
         public AppraisementResultAppService(
             IAppraisementResultRepository appraisementResultRepository,
+            IAppraisementRepository appraisementRepository,
             AppraisementResultManager appraisementResultManager,
             IRulesEngineProvider rulesEngineProvider,
             IJsonSerializer jsonSerializer) : base(appraisementResultRepository)
         {
             AppraisementResultRepository = appraisementResultRepository;
+            _appraisementRepository = appraisementRepository;
             AppraisementResultManager = appraisementResultManager;
             _rulesEngineProvider = rulesEngineProvider;
             _jsonSerializer = jsonSerializer;
@@ -40,9 +43,16 @@ namespace Wallee.Boc.Vote.AppraisementResults
 
         public async override Task<AppraisementResultDto> CreateAsync(AppraisementResultCreateDto input)
         {
+            var appraisement = await _appraisementRepository.GetAsync(input.AppraisementId);
+
             if (await AppraisementResultRepository.AnyAsync(it => it.AppraisementId == input.AppraisementId && it.ClientIp == input.ClientIp))
             {
                 throw new UserFriendlyException("你已评价过该主体");
+            }
+
+            if (Clock.Now < appraisement.Start || Clock.Now > appraisement.End)
+            {
+                throw new UserFriendlyException("不在该评价活动时效内");
             }
 
             var workflow = await _rulesEngineProvider.GetWorkflow(BlobConsts.AppraisementResultRuleWeight);
@@ -51,11 +61,11 @@ namespace Wallee.Boc.Vote.AppraisementResults
 
             var rulesEngine = new RulesEngine.RulesEngine(workflows.ToArray());
 
-            var ruleParameters = new RuleParameter("roleName", input.RuleName);
+            var ruleParameters = new RuleParameter("roleName", input.RoleName);
 
             var results = await rulesEngine.ExecuteAllRulesAsync(BlobConsts.AppraisementResultRuleWeight, ruleParameters);
 
-            var weight = default(decimal);
+            decimal weight = 1M;
 
             results.OnSuccess(successEvent =>
             {
@@ -72,15 +82,14 @@ namespace Wallee.Boc.Vote.AppraisementResults
                     input.AppraisementId,
                     detail.CandidateId,
                     input.ClientIp!,
-                    input.RuleName,
+                    input.RoleName,
                     input.Category);
 
                 result.SetDetails(detail.ScoreDetails.Select(it =>
-                new AppraisementResultDetail(result.Id, it.EvaluationContentId, it.Content, it.Score * weight, it.Comment)));
+                new AppraisementResultDetail(result.Id, it.EvaluationContentId, it.Content, it.Score, it.Comment, weight: weight)));
 
                 resultList.Add(result);
             }
-
 
             await AppraisementResultRepository.InsertManyAsync(resultList);
 

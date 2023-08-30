@@ -61,7 +61,7 @@ namespace Wallee.Boc.Vote.AppraisementResults
                 Details.Add(item);
             }
 
-            var score = details.Sum(it => it.Score);
+            var score = details.Sum(it => it.Score * it.Weight);
 
             Score = score;
         }

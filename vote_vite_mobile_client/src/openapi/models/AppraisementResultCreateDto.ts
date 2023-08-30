@@ -8,7 +8,7 @@ import type { EvaluationCategory } from './EvaluationCategory';
 export type AppraisementResultCreateDto = {
     appraisementId?: string;
     clientIp?: string | null;
-    ruleName?: string | null;
+    roleName?: string | null;
     details?: Array<AppraisementResultDetailCreateDto> | null;
     category?: EvaluationCategory;
 };

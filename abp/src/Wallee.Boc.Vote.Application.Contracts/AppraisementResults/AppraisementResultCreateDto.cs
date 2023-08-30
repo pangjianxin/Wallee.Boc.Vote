@@ -9,7 +9,7 @@ namespace Wallee.Boc.Vote.AppraisementResults
     {
         public Guid AppraisementId { get; set; }
         public string? ClientIp { get; set; }
-        public string RuleName { get; set; } = default!;
+        public string RoleName { get; set; } = default!;
         /// <summary>
         /// 分项评分结果
         /// </summary>

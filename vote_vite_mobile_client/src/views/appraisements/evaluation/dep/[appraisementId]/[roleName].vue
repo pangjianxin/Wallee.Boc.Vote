@@ -8,7 +8,7 @@
                             当前角色：
                         </span>
                         <van-tag type="primary">
-                            {{ ruleName }}
+                            {{ roleName }}
                         </van-tag>
                     </div>
                 </template>
@@ -81,7 +81,7 @@
                         <span class="text-13px">当前角色:</span>
                         <span>
                             <van-tag type="primary">
-                                {{ ruleName }}
+                                {{ roleName }}
                             </van-tag>
                         </span>
                     </div>
@@ -106,7 +106,7 @@ import { toast } from '/@/utils/app';
 const route = useRoute();
 let currCollapseName = ref([0]);
 let appraisementId = ref("");
-let ruleName = ref("");
+let roleName = ref("");
 let appraisement = ref<AppraisementDto>();
 let appraisementConfirmed = ref(false);
 let evaInfoLoading = ref(false);
@@ -123,9 +123,9 @@ onMounted(async () => {
     try {
         evaInfoLoading.value = true;
         appraisementId.value = route.params.appraisementId as string;
-        ruleName.value = route.params.ruleName as string;
+        roleName.value = route.params.roleName as string;
         form.appraisementId = appraisementId.value;
-        form.ruleName = ruleName.value;
+        form.roleName = roleName.value;
         await getAppraisementInfo();
         await getOrgUnitCandidateList();
         await getEvaContentList(appraisement.value?.category!);

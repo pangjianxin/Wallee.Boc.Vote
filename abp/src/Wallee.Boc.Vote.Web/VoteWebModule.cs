@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -241,6 +242,12 @@ public class VoteWebModule : AbpModule
         {
             app.UseErrorPage();
         }
+
+        //app.UseForwardedHeaders(new ForwardedHeadersOptions
+        //{
+        //    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+        //});
+
         app.UseCookiePolicy();// added this, Before UseAuthentication or anything else that writes cookies.
         app.UseCorrelationId();
         app.UseStaticFiles();
