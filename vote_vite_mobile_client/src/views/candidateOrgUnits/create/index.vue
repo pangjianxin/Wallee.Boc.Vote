@@ -23,6 +23,10 @@
         <organizationUnitLookup :show-popup="showOrgUnitLookupPopup" @update:organization-unit="onOrgUnitLookupConfirmed">
         </organizationUnitLookup>
 
+        <van-field label-align="top" label="部门描述" left-icon="description" type="textarea"
+          v-model="(form.description as string)" placeholder="请添加部门描述" name="description" :rules="formRules.description">
+        </van-field>
+
 
         <van-field label-align="top" label="分管领导" left-icon="records" v-model="selectedUser" placeholder="点击选择用户"
           name="superiorId" :rules="formRules.superiorId" @click="showUserLookupPopup = true">

@@ -179,51 +179,6 @@ requestBody?: CandidateOrgUnitUpdateDto,
     }
 
     /**
-     * @returns string Success
-     * @throws ApiError
-     */
-    public static candidateOrgUnitGetRulesEngine(): CancelablePromise<string> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/vote/candidate-org-unit/rules-engine',
-            errors: {
-                400: `Bad Request`,
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-                500: `Server Error`,
-                501: `Server Error`,
-            },
-        });
-    }
-
-    /**
-     * @returns any Success
-     * @throws ApiError
-     */
-    public static candidateOrgUnitUpdateRulesEngine({
-workflowDef,
-}: {
-workflowDef?: string,
-}): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/vote/candidate-org-unit/rules-engine',
-            query: {
-                'workflowDef': workflowDef,
-            },
-            errors: {
-                400: `Bad Request`,
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-                500: `Server Error`,
-                501: `Server Error`,
-            },
-        });
-    }
-
-    /**
      * @returns CandidateOrgUnitDto Success
      * @throws ApiError
      */

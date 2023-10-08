@@ -13,11 +13,11 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         /// <summary>
         /// 部门名称
         /// </summary>
-        public string OrganName { get; set; } = null!;
+        public string OrganName { get; set; } = default!;
         /// <summary>
         /// 部门号
         /// </summary>
-        public string OrganCode { get; set; } = null!;
+        public string OrganCode { get; set; } = default!;
         /// <summary>
         /// 部门类别
         /// </summary>
@@ -29,8 +29,9 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         /// <summary>
         /// 分管领导名称
         /// </summary>
-        public string SuperiorName { get; set; } = null!;
+        public string SuperiorName { get; set; } = default!;
         public bool IsActive { get; set; }
-        public string ConcurrencyStamp { get; set; } = null!;
+        public string ConcurrencyStamp { get; set; } = default!;
+        public string Description { get; set; } = default!;
     }
 }

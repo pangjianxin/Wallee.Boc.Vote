@@ -2,7 +2,7 @@
 
 namespace Wallee.Boc.Vote.CandidateOrgUnits
 {
-    public class CandidateOrgUnitCreateDto 
+    public class CandidateOrgUnitCreateDto
     {
         /// <summary>
         /// 组织机构号
@@ -14,5 +14,6 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         public CandidateOrgUnitCategory Category { get; set; }
 
         public Guid SuperiorId { get; set; }
+        public string Description { get; set; } = default!;
     }
 }

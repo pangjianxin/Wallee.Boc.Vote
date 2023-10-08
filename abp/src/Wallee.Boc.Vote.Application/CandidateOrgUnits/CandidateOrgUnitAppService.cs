@@ -39,7 +39,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
 
             var orgUnit = await _organizationUnitRepository.GetAsync(input.OrganizationUnitId) ?? throw new UserFriendlyException("未找到相关机构信息,请核对");
 
-            var candidateOrgUnit = new CandidateOrgUnit(GuidGenerator.Create(), orgUnit.Id, orgUnit.Code, orgUnit.DisplayName, superior.Id, superior.Name, input.Category);
+            var candidateOrgUnit = new CandidateOrgUnit(GuidGenerator.Create(), orgUnit.Id, orgUnit.Code, orgUnit.DisplayName, input.Description, superior.Id, superior.Name, input.Category);
 
             await _candidateOrgUnitRepository.InsertAsync(candidateOrgUnit);
 
@@ -59,7 +59,7 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
                 }
             }
             var organizationUnit = await _organizationUnitRepository.GetAsync(input.OrganizationUnitId);
-            candidateOrgUnit.SetOrgUnitInfo(organizationUnit.Id, organizationUnit.Code, organizationUnit.DisplayName);
+            candidateOrgUnit.SetOrgUnitInfo(organizationUnit.Id, organizationUnit.Code, organizationUnit.DisplayName, input.Description);
 
             var user = await _userAppService.GetAsync(input.SuperiorId);
             candidateOrgUnit.SetSuperior(user.Id, user.Name);

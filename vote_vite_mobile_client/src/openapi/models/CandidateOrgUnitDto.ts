@@ -18,4 +18,5 @@ export type CandidateOrgUnitDto = {
     superiorName?: string | null;
     isActive?: boolean;
     concurrencyStamp?: string | null;
+    description?: string | null;
 };

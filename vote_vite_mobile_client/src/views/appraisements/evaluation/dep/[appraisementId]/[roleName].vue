@@ -29,6 +29,11 @@
                                     item.candidateId)!.category!] }}
                             </van-tag>
                         </template>
+                        <van-text-ellipsis :rows="4" expand-text="展开" collapse-text="收起"
+                            :content="(orgUnitCandidateList?.find(it => it.id === item.candidateId)!.description!)"
+                            class="mt-5px text-13px w-100% c-black fw-600">
+                        </van-text-ellipsis>
+                        <van-divider />
                         <template v-for="(detail, detailIndex) in item.scoreDetails" :key="detailIndex">
                             <div class="flex flex-col">
                                 <span class="text-13px c-black fw-600">{{ detail.content }}</span>

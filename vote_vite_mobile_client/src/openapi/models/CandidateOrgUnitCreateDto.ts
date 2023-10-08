@@ -8,4 +8,5 @@ export type CandidateOrgUnitCreateDto = {
     organizationUnitId?: string;
     category?: CandidateOrgUnitCategory;
     superiorId?: string;
+    description?: string | null;
 };

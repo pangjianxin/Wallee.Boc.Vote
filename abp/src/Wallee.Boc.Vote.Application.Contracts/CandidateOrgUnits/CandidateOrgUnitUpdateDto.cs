@@ -13,5 +13,6 @@ namespace Wallee.Boc.Vote.CandidateOrgUnits
         public Guid OrganizationUnitId { get; set; }
         public string ConcurrencyStamp { get; set; } = null!;
         public bool IsActive { get; set; }
+        public string Description { get; set; } = default!;
     }
 }

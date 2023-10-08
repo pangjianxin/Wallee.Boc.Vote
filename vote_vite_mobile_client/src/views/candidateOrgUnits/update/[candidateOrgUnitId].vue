@@ -17,6 +17,10 @@
         <organizationUnitLookup :show-popup="showOrgUnitLookupPopup" @update:organization-unit="onOrgUnitLookupConfirmed">
         </organizationUnitLookup>
 
+        <van-field label-align="top" label="部门描述" left-icon="description" type="textarea"
+          v-model="(form.description as string)" placeholder="请添加部门描述" name="description" :rules="formRules.description">
+        </van-field>
+
         <van-field label-align="top" label="分管领导" left-icon="records" v-model="selectedUser" name="superiorId"
           placeholder="分管行领导" :rules="formRules.superiorId" @click="showUserLookupPopup = true">
         </van-field>
@@ -98,6 +102,7 @@ const getCandidateOrgUnit = async () => {
   form.concurrencyStamp = res.concurrencyStamp;
   selectedOrgUnit.value = res.organName!;
   selectedUser.value = res.superiorName!;
+  form.description = res.description;
 };
 
 onMounted(async () => {

@@ -28,16 +28,19 @@ export function useCandidateOrgUnitCreateForm() {
         trigger: "onBlur",
       },
     ],
+    description: [
+      { required: true, message: "请填写机构/部门描述", trigger: "onBlur" },
+    ],
   });
 
   const form = reactive<CandidateOrgUnitCreateDto>({
-    category: CandidateOrgUnitCategory.前台部门,
+    category: CandidateOrgUnitCategory.前台,
   });
 
   const clearForm = () => {
     form.organizationUnitId = undefined;
     form.superiorId = undefined;
-    form.category = CandidateOrgUnitCategory.前台部门;
+    form.category = CandidateOrgUnitCategory.前台;
   };
 
   const createCandidateOrgUnit = async () => {
