@@ -18,7 +18,7 @@
                     <van-collapse-item :name=index>
                         <template #title>
                             <div class="flex flex-row items-center">
-                                <span class="text-1rem fw-700 c-black">
+                                <span class="text-15px fw-700 c-black">
                                     {{ orgUnitCandidateList?.find(it => it.id === item.candidateId)!.organName }}
                                 </span>
                             </div>
@@ -108,6 +108,8 @@ import { AppraisementDto, AppraisementService, CandidateOrgUnitCategory } from '
 import appraisementVue from '/@/views/appraisements/components/appraisement.vue';
 import appraisement_img from '/@/assets/images/appraisement.png';
 import { toast } from '/@/utils/app';
+
+
 const route = useRoute();
 let currCollapseName = ref([0]);
 let appraisementId = ref("");
