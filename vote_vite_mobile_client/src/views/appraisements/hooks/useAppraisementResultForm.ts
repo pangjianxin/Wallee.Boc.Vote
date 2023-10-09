@@ -8,7 +8,7 @@ import {
 
 export const useAppraisementResultForm = () => {
   let loading = ref(false);
-
+  let formSubmited = ref(false);
   let form = reactive<AppraisementResultCreateDto>({
     appraisementId: undefined,
     roleName: null,
@@ -18,10 +18,18 @@ export const useAppraisementResultForm = () => {
 
   let formRules = reactive<Record<string, FieldRule[]>>({
     appraisementId: [
-      { required: true, message: "请输入评价id", trigger: "onBlur" },
+      {
+        required: true,
+        message: "请输入评价id",
+        trigger: "onBlur",
+      },
     ],
     roleName: [
-      { required: true, message: "请输入评价者角色", trigger: "onBlur" },
+      {
+        required: true,
+        message: "请输入评价者角色",
+        trigger: "onBlur",
+      },
     ],
     category: [
       {
@@ -38,11 +46,13 @@ export const useAppraisementResultForm = () => {
     try {
       await formRef.value?.validate();
       loading.value = true;
+      formSubmited.value = false;
       const res = await AppraisementResultService.appraisementResultCreate({
         requestBody: form,
       });
       notify("更新成功");
       clearForm();
+      formSubmited.value = true;
       return res;
     } catch (err: any) {
       if (err) toast(err);
@@ -52,5 +62,12 @@ export const useAppraisementResultForm = () => {
     }
   };
 
-  return { loading, form, formRef, formRules, createAppraisementResult };
+  return {
+    loading,
+    formSubmited,
+    form,
+    formRef,
+    formRules,
+    createAppraisementResult,
+  };
 };

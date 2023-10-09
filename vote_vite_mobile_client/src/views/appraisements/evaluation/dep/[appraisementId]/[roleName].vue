@@ -93,7 +93,7 @@
                 </template>
             </appraisementVue>
             <van-button type="primary" block class="mt-10px" @click="appraisementConfirmed = true"
-                :loading="evaInfoLoading">
+                :loading="evaluationInfoLoading">
                 开始评价
             </van-button>
         </div>
@@ -108,6 +108,8 @@ import { AppraisementDto, AppraisementService, CandidateOrgUnitCategory } from '
 import appraisementVue from '/@/views/appraisements/components/appraisement.vue';
 import appraisement_img from '/@/assets/images/appraisement.png';
 import { toast } from '/@/utils/app';
+import { RouteLocationNormalized } from 'vue-router';
+import { showConfirmDialog } from 'vant';
 
 
 const route = useRoute();
@@ -116,11 +118,11 @@ let appraisementId = ref("");
 let roleName = ref("");
 let appraisement = ref<AppraisementDto>();
 let appraisementConfirmed = ref(false);
-let evaInfoLoading = ref(false);
+let evaluationInfoLoading = ref(false);
 
 const { orgUnitCandidateList, getOrgUnitCandidateList } = useCandidateOrgUnitList();
 const { evaContentList, getEvaContentList } = useEvaluationContentList();
-const { loading, form, formRef, formRules, createAppraisementResult } = useAppraisementResultForm();
+const { loading, formSubmited, form, formRef, formRules, createAppraisementResult } = useAppraisementResultForm();
 
 const getAppraisementInfo = async () => {
     appraisement.value = await AppraisementService.appraisementGet({ id: appraisementId.value })
@@ -128,7 +130,7 @@ const getAppraisementInfo = async () => {
 
 onMounted(async () => {
     try {
-        evaInfoLoading.value = true;
+        evaluationInfoLoading.value = true;
         appraisementId.value = route.params.appraisementId as string;
         roleName.value = route.params.roleName as string;
         form.appraisementId = appraisementId.value;
@@ -139,7 +141,7 @@ onMounted(async () => {
     } catch (err) {
         toast(err as string);
     } finally {
-        evaInfoLoading.value = false;
+        evaluationInfoLoading.value = false;
     }
 });
 
@@ -164,7 +166,21 @@ watch(
     },
     {
         deep: true
-    })
+    });
+
+onBeforeRouteLeave(async (_to: RouteLocationNormalized, _from: RouteLocationNormalized) => {
+    if (formSubmited.value === true) {
+        return true;
+    } else {
+        try {
+            await showConfirmDialog({ title: "提示", message: "您的表单还未提交,继续退出吗?" });
+            return true;
+        }
+        catch {
+            return false
+        }
+    }
+});
 </script>
 
 <style scoped></style>
