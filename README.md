@@ -1,7 +1,10 @@
-/****** SSMS 的 SelectTopNRows 命令的脚本  ******/
-SELECT app.name,result.rulename,org.organcode,org.OrganName,details.Score,details.Weight,details.Comment
-  FROM [Vote].[dbo].[AppAppraisementResults] as result left join vote.dbo.AppAppraisementResultScoreDetails as details on result.id=details.AppraisementResultId 
-  left join vote.dbo.AppAppraisements as app on result.appraisementid=app.id
-  left join vote.dbo.appcandidateorgunits as org on result.CandidateId=org.Id
-  where result.Category=1 and org.OrganCode='00001.00012'
-  order by org.OrganCode
+--计算总分排名
+WITH TEMP AS (
+SELECT RES.RuleName,ORG.OrganName,SUM(RES.Score)/COUNT(RES.RuleName) AS SCORE
+FROM VOTE.DBO.AppAppraisements AS APP
+LEFT JOIN VOTE.DBO.AppAppraisementResults AS RES ON APP.Id=RES.AppraisementId
+LEFT JOIN VOTE.DBO.AppCandidateOrgUnits AS ORG ON RES.CandidateId=ORG.Id
+WHERE RES.Category=1 AND APP.Id='845D2034-273C-004A-DE4D-3A0D38E325AD'
+GROUP BY RES.RuleName,ORG.OrganName,ORG.Category)
+SELECT TEMP.OrganName,SUM(TEMP.SCORE) FROM TEMP 
+GROUP BY TEMP.OrganName
