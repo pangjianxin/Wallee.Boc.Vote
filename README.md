@@ -16,3 +16,11 @@ LEFT JOIN VOTE.DBO.AppAppraisementResults AS RES ON APP.Id=RES.AppraisementId
 LEFT JOIN VOTE.DBO.AppCandidateOrgUnits AS ORG ON RES.CandidateId=ORG.Id 
 LEFT JOIN VOTE.DBO.AppAppraisementResultScoreDetails AS DETAILS ON RES.ID=DETAILS.AppraisementResultId
 WHERE RES.Category=1 AND APP.Id='845D2034-273C-004A-DE4D-3A0D38E325AD'  AND DETAILS.Comment NOT IN ('',N'无')
+
+--获取某一类行领导打分细项
+select result.Score, result.RuleName,org.OrganName 
+from vote.dbo.AppAppraisementResults result 
+left join vote.dbo.AppCandidateOrgUnits org
+ on result.CandidateId=org.Id 
+ where AppraisementId='52F40FC0-A68B-014E-BA70-3A0FFF576870' 
+ and RuleName =N'包头分行行长' order by result.Score desc
